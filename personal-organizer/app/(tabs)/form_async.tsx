@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from 'react-native'
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import CheckBox from '@react-native-community/checkbox';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 enum GenderEnum {
     female = "female",
@@ -10,7 +11,7 @@ enum GenderEnum {
 }
 
 interface IFormInput {
-    firstName: String;
+    firstName: string;
     gender: GenderEnum;
     // morning_brush_checkbox: boolean;
 }
@@ -22,10 +23,19 @@ type CheckBoxActivities = {
 
 export default function App() {
     const { control, register, handleSubmit } = useForm<IFormInput>(
-
+        
     );
 
-    const onSubmit: SubmitHandler<IFormInput> = data => console.log(data);
+    const onSubmit: SubmitHandler<IFormInput> = async data => {
+        try {
+            await AsyncStorage.setItem(data.firstName, data.gender);
+            } catch (e) {
+            // saving error
+        }
+        alert(JSON.stringify(data));
+
+      };
+    
 
     const [checkboxStates, setCheckboxStates] = useState<CheckBoxActivities>({
         morning_brush: false,

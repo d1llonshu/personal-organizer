@@ -1,5 +1,6 @@
 {
   "expo": {
+    "newArchEnabled": true,
     "name": "personal-organizer",
     "slug": "personal-organizer",
     "version": "1.0.0",
