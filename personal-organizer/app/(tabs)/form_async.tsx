@@ -10,9 +10,15 @@ enum GenderEnum {
     other = "other"
 }
 
+enum BrushEnum {
+    yes = "yes",
+    no = "no"
+}
+
 interface IFormInput {
-    firstName: string;
-    gender: GenderEnum;
+    testKeyName: string;
+    bikingDuration: number;
+    brushTest: BrushEnum
     // morning_brush_checkbox: boolean;
 }
 
@@ -25,10 +31,15 @@ export default function App() {
     const { control, register, handleSubmit } = useForm<IFormInput>(
         
     );
-
+    const today = new Date(1);
+    const dateFormat: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    };
     const onSubmit: SubmitHandler<IFormInput> = async data => {
         try {
-            await AsyncStorage.setItem(data.firstName, data.gender);
+            await AsyncStorage.setItem(today.toLocaleDateString(undefined, dateFormat), JSON.stringify(data));
             } catch (e) {
             // saving error
         }
@@ -51,14 +62,18 @@ export default function App() {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-        <label>First Name</label>
-        <input {...register("firstName")} />
-        <label>Gender Selection</label>
-        <select {...register("gender")} >
-            <option value="female">female</option>
-            <option value="male">male</option>
-            <option value="other">other</option>
+        <label>Key Name</label>
+        <input {...register("testKeyName")} />
+
+        <label>Biking Duration</label>
+        <input {...register("bikingDuration")} />
+
+        <label>Brushed?</label>
+        <select {...register("brushTest")} >
+            <option value="yes">yes</option>
+            <option value="no">no</option>
         </select>
+
         {/* <label>Morning Brush</label>
             <Controller
                 name="morning_brush_checkbox"

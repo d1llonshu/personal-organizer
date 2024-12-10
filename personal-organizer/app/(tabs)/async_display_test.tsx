@@ -1,38 +1,51 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { KeyValuePair } from '@react-native-async-storage/async-storage/lib/typescript/types';
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 
 const getData = async () => {
     try {
         const keys : string[] = [...await AsyncStorage.getAllKeys()]
-        console.log(keys)
-        //const result = await AsyncStorage.multiGet(keys);
-        return keys
+        // console.log(keys)
+        const keyValuePairs : KeyValuePair[] = [...await AsyncStorage.multiGet(keys)]
+
+        return keyValuePairs
     } catch(e) {
         console.log(e)
     }
     
   };
+const clearAll = async () => {
+  try {
+    await AsyncStorage.clear()
+  } catch(e) {
+    // clear error
+  }
+}
 const DataDisplay = () => {
     
-    const [data, setData] = useState<string[]>();
-  
+    const [data, setData] = useState<KeyValuePair[]>();
+
     useEffect(() => {
       const fetchData = async () => {
         const result = await getData();
-        console.log(result)
+        // console.log(result)
         setData(result)
       };
   
       fetchData();
     }, []);
+
   
     return (
       <View style={styles.container}>
+        
         <Text style={styles.text}>
-          {data ? JSON.stringify(data) : 'No data found'}
+          {data}
         </Text>
+        <Button onPress={clearAll} title="Clear Storage"/>
       </View>
+      
     );
   };
 
