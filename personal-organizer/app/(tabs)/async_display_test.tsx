@@ -6,7 +6,6 @@ import { View, Text, StyleSheet, Button } from 'react-native';
 const getData = async () => {
     try {
         const keys : string[] = [...await AsyncStorage.getAllKeys()]
-        // console.log(keys)
         const keyValuePairs : KeyValuePair[] = [...await AsyncStorage.multiGet(keys)]
 
         return keyValuePairs
@@ -36,12 +35,18 @@ const DataDisplay = () => {
       fetchData();
     }, []);
 
-  
+    
     return (
       <View style={styles.container}>
-        
+
         <Text style={styles.text}>
-          {data}
+        {/* null handling */}
+          {data ? (
+            data.map(pair => {
+              return pair[1]
+            })) 
+            : ("No Data Found")
+          }
         </Text>
         <Button onPress={clearAll} title="Clear Storage"/>
       </View>
