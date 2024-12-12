@@ -7,7 +7,6 @@ const getData = async () => {
     try {
         const keys : string[] = [...await AsyncStorage.getAllKeys()]
         const keyValuePairs : KeyValuePair[] = [...await AsyncStorage.multiGet(keys)]
-
         return keyValuePairs
     } catch(e) {
         console.log(e)
@@ -18,7 +17,7 @@ const clearAll = async () => {
   try {
     await AsyncStorage.clear()
   } catch(e) {
-    // clear error
+    console.log(e)
   }
 }
 const DataDisplay = () => {
@@ -43,7 +42,10 @@ const DataDisplay = () => {
         {/* null handling */}
           {data ? (
             data.map(pair => {
-              return pair[1]
+              if (true) {
+                return pair[1]
+              }
+              
             })) 
             : ("No Data Found")
           }

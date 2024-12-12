@@ -40,7 +40,8 @@ export default function App() {
     const onSubmit: SubmitHandler<IFormInput> = async data => {
         try {
             await AsyncStorage.setItem(today.toLocaleDateString(undefined, dateFormat), JSON.stringify(data));
-            } catch (e) {
+        } 
+        catch (e) {
             // saving error
         }
         alert(JSON.stringify(data));
