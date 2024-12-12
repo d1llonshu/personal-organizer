@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, TextInput, Button, Alert  } from 'react-native'
+import { Text, View, TextInput, Button, StyleSheet  } from 'react-native'
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import CheckBox from '@react-native-community/checkbox';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -42,12 +42,13 @@ export default function App() {
     };
     const onSubmit: SubmitHandler<IFormInput> = async data => {
         try {
-            await AsyncStorage.setItem(today.toLocaleDateString(undefined, dateFormat), JSON.stringify(data));
+            // await AsyncStorage.setItem(today.toLocaleDateString(undefined, dateFormat), JSON.stringify(data));
+            await AsyncStorage.setItem(data.testKeyName, JSON.stringify(data));
         } 
         catch (e) {
             // saving error
         }
-        // alert(JSON.stringify(data));
+        alert(JSON.stringify(data));
 
       };
     
@@ -65,7 +66,7 @@ export default function App() {
     };
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={styles.container}>
             <View>
                 <Text>Test Form</Text>
                 <Controller
@@ -74,24 +75,26 @@ export default function App() {
                     required: true,
                     }}
                     render={({ field: { onChange, onBlur, value } }) => (
-                        <TextInput
-                            placeholder="Test Key Name"
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                        />
+                        <View>
+                            <TextInput
+                                placeholder="Test Key Name"
+                                onBlur={onBlur}
+                                onChangeText={onChange}
+                                value={value}
+                            />
+                        </View>
+                        
                     )}
                     name="testKeyName"
                 />
-                {/* {errors.firstName && <Text>This is required.</Text>} */}
 
-                <Controller
+                {/* <Controller
                     control={control}
                     rules={{
                     maxLength: 100,
                     }}
                     render={({ field: { onChange, onBlur, value } }) => (
-                    <TextInput
+                        <TextInput
                         placeholder="Test Input"
                         onBlur={onBlur}
                         onChangeText={onChange}
@@ -100,10 +103,21 @@ export default function App() {
                     />
                     )}
                     name="bikingDuration"
-                />
+                /> */}
 
                 <Button title="Submit" onPress={handleSubmit(onSubmit)} />
             </View>
         </SafeAreaView>
     );
 }
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#eaeaea',
+    },
+    text: {
+      fontSize: 18,
+    },
+});

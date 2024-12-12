@@ -37,7 +37,7 @@ const DataDisplay = () => {
 
     
     return (
-      <SafeAreaView>
+      // <SafeAreaView>
         <View style={styles.container}>
           <Text style={styles.text}>
           {/* null handling */}
@@ -50,7 +50,7 @@ const DataDisplay = () => {
           </Text>
           <Button onPress={clearAll} title="Clear Storage"/>
         </View>
-      </SafeAreaView>
+      // </SafeAreaView>
     );
   };
 
@@ -59,9 +59,11 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
+      backgroundColor: '#eaeaea',
     },
     text: {
       fontSize: 18,
+      color: '#20232a',
     },
 });
   
