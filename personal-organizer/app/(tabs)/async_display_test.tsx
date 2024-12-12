@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { KeyValuePair } from '@react-native-async-storage/async-storage/lib/typescript/types';
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const getData = async () => {
     try {
@@ -36,23 +37,20 @@ const DataDisplay = () => {
 
     
     return (
-      <View style={styles.container}>
-
-        <Text style={styles.text}>
-        {/* null handling */}
-          {data ? (
-            data.map(pair => {
-              if (true) {
+      <SafeAreaView>
+        <View style={styles.container}>
+          <Text style={styles.text}>
+          {/* null handling */}
+            {data ? (
+              data.map(pair => {
                 return pair[1]
-              }
-              
-            })) 
-            : ("No Data Found")
-          }
-        </Text>
-        <Button onPress={clearAll} title="Clear Storage"/>
-      </View>
-      
+              })) 
+              : ("No Data Found")
+            }
+          </Text>
+          <Button onPress={clearAll} title="Clear Storage"/>
+        </View>
+      </SafeAreaView>
     );
   };
 

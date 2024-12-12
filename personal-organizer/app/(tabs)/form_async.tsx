@@ -3,7 +3,7 @@ import { Text, View, TextInput, Button, Alert  } from 'react-native'
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import CheckBox from '@react-native-community/checkbox';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import { AsyncStorage } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 enum GenderEnum {
     female = "female",
@@ -18,7 +18,7 @@ enum BrushEnum {
 
 interface IFormInput {
     testKeyName: string;
-    bikingDuration: number;
+    bikingDuration: string;
     brushTest: BrushEnum;
     testInput: string;
     // morning_brush_checkbox: boolean;
@@ -30,9 +30,10 @@ type CheckBoxActivities = {
 }
 
 export default function App() {
-    const { control, register, handleSubmit } = useForm<IFormInput>(
+    const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm<IFormInput>();
+    // const { control, register, handleSubmit } = useForm(
         
-    );
+    // );
     const today = new Date(1);
     const dateFormat: Intl.DateTimeFormatOptions = {
         year: 'numeric',
@@ -46,7 +47,7 @@ export default function App() {
         catch (e) {
             // saving error
         }
-        alert(JSON.stringify(data));
+        // alert(JSON.stringify(data));
 
       };
     
@@ -64,57 +65,45 @@ export default function App() {
     };
 
     return (
-        <View>
-            <Controller
-                control={control}
-                rules={{
-                required: true,
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
+        <SafeAreaView>
+            <View>
+                <Text>Test Form</Text>
+                <Controller
+                    control={control}
+                    rules={{
+                    required: true,
+                    }}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                        <TextInput
+                            placeholder="Test Key Name"
+                            onBlur={onBlur}
+                            onChangeText={onChange}
+                            value={value}
+                        />
+                    )}
+                    name="testKeyName"
+                />
+                {/* {errors.firstName && <Text>This is required.</Text>} */}
+
+                <Controller
+                    control={control}
+                    rules={{
+                    maxLength: 100,
+                    }}
+                    render={({ field: { onChange, onBlur, value } }) => (
                     <TextInput
-                        placeholder="Test Key Name"
+                        placeholder="Test Input"
                         onBlur={onBlur}
                         onChangeText={onChange}
                         value={value}
+                        keyboardType='numeric'
                     />
-                )}
-                name="testKeyName"
-            />
-            {/* {errors.firstName && <Text>This is required.</Text>} */}
-
-            {/* <Controller
-                control={control}
-                rules={{
-                maxLength: 100,
-                }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                <TextInput
-                    placeholder="Test Input"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    keyboardType='numeric'
+                    )}
+                    name="bikingDuration"
                 />
-                )}
-                name="bikingDuration"
-            /> */}
 
-            <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+                <Button title="Submit" onPress={handleSubmit(onSubmit)} />
             </View>
-        // <form onSubmit={handleSubmit(onSubmit)}>
-        // <label>Key Name</label>
-        // <input {...register("testKeyName")} />
-
-        // <label>Biking Duration</label>
-        // <input {...register("bikingDuration")} />
-
-        // <label>Brushed?</label>
-        // <select {...register("brushTest")} >
-        //     <option value="yes">yes</option>
-        //     <option value="no">no</option>
-        // </select>
-        
-        // <input type="submit" />
-        // </form>
+        </SafeAreaView>
     );
 }
