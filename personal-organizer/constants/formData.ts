@@ -1,4 +1,6 @@
 export type formData = {
+    dateSubmitted : Date;
+
     morningBrush: boolean;
     nightBrush: boolean;
     usedMouthwash: boolean;
