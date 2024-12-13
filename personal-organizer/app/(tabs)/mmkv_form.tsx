@@ -4,38 +4,40 @@ import { MMKV, useMMKVListener, useMMKVObject, useMMKVString } from 'react-nativ
 // import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { storage } from "../../constants/storage"
-import { formData } from "../../constants/formData"
-import { useExpoRouter } from 'expo-router/build/global-state/router-store';
+import { storage } from "@/constants/storage"
+import { formData } from "@/constants/formData"
+import { dateFormat } from '@/constants/DateFormat';
 
 export default function App() {
-    const dateFormat: Intl.DateTimeFormatOptions = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    };
+    let today = new Date();
+    let submissionKey: string = 
+      today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()
+    const [data, setData] = useMMKVObject<formData>(submissionKey)
+
     const [text, setText] = useState<string>('');
     const [key, setKey] = useState<string>('');
     const [keys, setKeys] = useState<string[]>([]);
 
+    //todo - integrate form hook controller
     //Personal Care
-    const [morningBrush, setMorningBrush] = useState<boolean>(false);
-    const [nightBrush, setNightBrush] = useState<boolean>(false);
-    const [usedMouthwash, setUsedMouthwash] = useState<boolean>(false);
-    const [washedFace, setWashedFace] = useState<boolean>(false);
-    const [usedExfoliator, setUsedExfoliator] = useState<boolean>(false);
+    const [morningBrush, setMorningBrush] = useState<boolean>(data ? data.morningBrush : false);
+    const [nightBrush, setNightBrush] = useState<boolean>(data ? data.nightBrush : false);
+    const [usedMouthwash, setUsedMouthwash] = useState<boolean>(data ? data.usedMouthwash : false);
+    const [washedFace, setWashedFace] = useState<boolean>(data ? data.washedFace : false);
+    const [usedExfoliator, setUsedExfoliator] = useState<boolean>(data ? data.usedExfoliator : false);
 
     //Workout
-    const [minutesBiked, setMinutesBiked] = useState<string>('0');
-    const [situpsDone, setSitupsDone] = useState<string>('0');
-    const [pushupsDone, setPushupsDone] = useState<string>('0');
+    const [minutesBiked, setMinutesBiked] = useState<string>(data ? data.minutesBiked.toString() : "0");
+    const [situpsDone, setSitupsDone] = useState<string>(data ? data.situpsDone.toString() : "0");
+    const [pushupsDone, setPushupsDone] = useState<string>(data ? data.pushupsDone.toString() : "0");
 
     //Productivity
-    const [minutesWorked, setMinutesWorked] = useState<string>('0');
+    const [minutesWorked, setMinutesWorked] = useState<string>(data ? data.minutesWorked.toString() : "0");
 
-    let today = new Date().toLocaleDateString(undefined, dateFormat);
-    const [data, setData] = useMMKVObject<formData>(today)
-  
+    //for useCallback updating, should contain all args
+    const allArgs = [morningBrush, nightBrush, usedMouthwash, washedFace, usedExfoliator, 
+      minutesBiked, situpsDone, pushupsDone, minutesWorked];
+
     const save = useCallback(() => {
       if (key == null) {
         Alert.alert('Empty key!', 'Enter a key first.');
@@ -44,6 +46,7 @@ export default function App() {
       try {
         console.log('Saving...');
         let submission : formData = {
+            dateSubmitted: today,
             morningBrush: morningBrush,
             nightBrush: nightBrush,
             usedMouthwash: usedMouthwash,
@@ -55,11 +58,10 @@ export default function App() {
             minutesWorked: parseInt(minutesWorked)   
         }
         setData(submission);
-        console.log(data?.morningBrush);
       } catch (e) {
         console.error('Error:', e);
       }
-    }, []);
+    }, allArgs);
     
     const read = useCallback(() => {
       if (key == null || key.length < 1) {
@@ -89,6 +91,8 @@ export default function App() {
     }, []);
   
     return (
+      //todo: handle updating one field at a time/reading so you don't have to do it in one sitting (done, sort of)
+      //      edit today's and previous days submissions
       <View style={styles.container}>
         <Text>Personal Care: </Text>
         <View style={styles.row}>
@@ -124,7 +128,6 @@ export default function App() {
         <View style={styles.row}>
             <Text>Situps: </Text>
             <TextInput
-                placeholder="0"
                 style={styles.textInput}
                 value={situpsDone}
                 onChangeText={setSitupsDone}
@@ -134,7 +137,6 @@ export default function App() {
         <View style={styles.row}>
             <Text>Biking (minutes): </Text>
             <TextInput
-                placeholder="0"
                 style={styles.textInput}
                 value={minutesBiked}
                 onChangeText={setMinutesBiked}
@@ -145,7 +147,6 @@ export default function App() {
         <View style={styles.row}>
             <Text>Time Worked (minutes): </Text>
             <TextInput
-                placeholder="0"
                 style={styles.textInput}
                 value={minutesWorked}
                 onChangeText={setMinutesWorked}
