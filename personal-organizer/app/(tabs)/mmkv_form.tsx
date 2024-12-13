@@ -25,6 +25,8 @@ export default function App() {
     const [usedMouthwash, setUsedMouthwash] = useState<boolean>(data ? data.usedMouthwash : false);
     const [washedFace, setWashedFace] = useState<boolean>(data ? data.washedFace : false);
     const [usedExfoliator, setUsedExfoliator] = useState<boolean>(data ? data.usedExfoliator : false);
+    const [showered, setShowered] = useState<boolean>(data ? data.showered : false);
+    const [tookMedicine, setTookMedicine] = useState<boolean>(data ? data.tookMedicine : false);
 
     //Workout
     const [minutesBiked, setMinutesBiked] = useState<string>(data ? data.minutesBiked.toString() : "0");
@@ -32,11 +34,14 @@ export default function App() {
     const [pushupsDone, setPushupsDone] = useState<string>(data ? data.pushupsDone.toString() : "0");
 
     //Productivity
-    const [minutesWorked, setMinutesWorked] = useState<string>(data ? data.minutesWorked.toString() : "0");
+    const [leetcodeMinutes, setLeetcodeMinutes] = useState<string>(data ? data.leetcodeMinutes.toString() : "0");
+    const [personalProjectMinutes, setPersonalProjectMinutes] = useState<string>(data ? data.personalProjectMinutes.toString() : "0");
+    const [artMinutes, setArtMinutes] = useState<string>(data ? data.artMinutes.toString() : "0");
+
 
     //for useCallback updating, should contain all args
-    const allArgs = [morningBrush, nightBrush, usedMouthwash, washedFace, usedExfoliator, 
-      minutesBiked, situpsDone, pushupsDone, minutesWorked];
+    const allArgs = [morningBrush, nightBrush, usedMouthwash, washedFace, usedExfoliator, showered, tookMedicine,
+      minutesBiked, situpsDone, pushupsDone, leetcodeMinutes, personalProjectMinutes, artMinutes];
 
     const save = useCallback(() => {
       if (key == null) {
@@ -52,10 +57,14 @@ export default function App() {
             usedMouthwash: usedMouthwash,
             washedFace: washedFace,
             usedExfoliator: usedExfoliator,
+            showered: showered,
+            tookMedicine: tookMedicine,
             minutesBiked: parseInt(minutesBiked),
             situpsDone: parseInt(situpsDone),
             pushupsDone: parseInt(pushupsDone),
-            minutesWorked: parseInt(minutesWorked)   
+            leetcodeMinutes: parseInt(leetcodeMinutes),
+            personalProjectMinutes: parseInt(personalProjectMinutes),
+            artMinutes: parseInt(artMinutes)
         }
         setData(submission);
       } catch (e) {
@@ -94,65 +103,112 @@ export default function App() {
       //todo: handle updating one field at a time/reading so you don't have to do it in one sitting (done, sort of)
       //      edit today's and previous days submissions
       <View style={styles.container}>
-        <Text>Personal Care: </Text>
-        <View style={styles.row}>
-            <Button
-                title={"Brushed Teeth (Morning)"}
-                onPress={() => setMorningBrush(!morningBrush)}
-                color={morningBrush ? "green" : "red"}
-            />
-            <Button
-                title={"Brushed Teeth (Night)"}
-                onPress={() => setNightBrush(!nightBrush)}
-                color={nightBrush ? "green" : "red"}
-            />
-            <Button
-                title={"Used Mouthwash"}
-                onPress={() => setUsedMouthwash(!usedMouthwash)}
-                color={usedMouthwash ? "green" : "red"}
-            />
-            <Button
-                title={"Washed Face"}
-                onPress={() => setWashedFace(!washedFace)}
-                color={washedFace ? "green" : "red"}
-            />
-            <Button
-                title={"Used Exfoliator"}
-                onPress={() => setUsedExfoliator(!usedExfoliator)}
-                color={usedExfoliator ? "green" : "red"}
-            />
+        <View>
+          <Text style={styles.title}>Personal Care: </Text>
+          <View style={styles.row}>
+              <Button
+                  title={"Brushed Teeth (Morning)"}
+                  onPress={() => setMorningBrush(!morningBrush)}
+                  color={morningBrush ? "green" : "red"}
+              />
+              <Button
+                  title={"Brushed Teeth (Night)"}
+                  onPress={() => setNightBrush(!nightBrush)}
+                  color={nightBrush ? "green" : "red"}
+              />
+              <Button
+                  title={"Used Mouthwash"}
+                  onPress={() => setUsedMouthwash(!usedMouthwash)}
+                  color={usedMouthwash ? "green" : "red"}
+              />
+              <Button
+                  title={"Washed Face"}
+                  onPress={() => setWashedFace(!washedFace)}
+                  color={washedFace ? "green" : "red"}
+              />
+              <Button
+                  title={"Used Exfoliator"}
+                  onPress={() => setUsedExfoliator(!usedExfoliator)}
+                  color={usedExfoliator ? "green" : "red"}
+              />
+              <Button
+                  title={"Showered"}
+                  onPress={() => setShowered(!showered)}
+                  color={showered ? "green" : "red"}
+              />
+              <Button
+                  title={"Took Medication"}
+                  onPress={() => setTookMedicine(!tookMedicine)}
+                  color={tookMedicine ? "green" : "red"}
+              />
+          </View>
         </View>
 
 
-        <Text>Workout: </Text>
-        <View style={styles.row}>
-            <Text>Situps: </Text>
-            <TextInput
-                style={styles.textInput}
-                value={situpsDone}
-                onChangeText={setSitupsDone}
-                keyboardType='numeric'
-            />
+        <View>
+          <Text style={styles.title}>Workout: </Text>
+          <View style={styles.row}>
+              <Text>Biking (minutes): </Text>
+              <TextInput
+                  style={styles.textInput}
+                  value={minutesBiked}
+                  onChangeText={setMinutesBiked}
+                  keyboardType='numeric'
+              />
+          </View>
+          <View style={styles.row}>
+              <Text>Situps: </Text>
+              <TextInput
+                  style={styles.textInput}
+                  value={situpsDone}
+                  onChangeText={setSitupsDone}
+                  keyboardType='numeric'
+              />
+          </View>
+          <View style={styles.row}>
+              <Text>Pushups: </Text>
+              <TextInput
+                  style={styles.textInput}
+                  value={pushupsDone}
+                  onChangeText={setPushupsDone}
+                  keyboardType='numeric'
+              />
+          </View>
         </View>
-        <View style={styles.row}>
-            <Text>Biking (minutes): </Text>
-            <TextInput
-                style={styles.textInput}
-                value={minutesBiked}
-                onChangeText={setMinutesBiked}
-                keyboardType='numeric'
-            />
-        </View>
+        
 
-        <View style={styles.row}>
-            <Text>Time Worked (minutes): </Text>
-            <TextInput
-                style={styles.textInput}
-                value={minutesWorked}
-                onChangeText={setMinutesWorked}
-            />
+        <View>
+          <Text style={styles.title}>Productivity</Text>
+          <View style={styles.row}>
+              <Text>Leetcode (minutes): </Text>
+              <TextInput
+                  style={styles.textInput}
+                  value={leetcodeMinutes}
+                  onChangeText={setLeetcodeMinutes}
+                  keyboardType='numeric'
+              />
+          </View>
+          <View style={styles.row}>
+              <Text>Personal Project (minutes): </Text>
+              <TextInput
+                  style={styles.textInput}
+                  value={personalProjectMinutes}
+                  onChangeText={setPersonalProjectMinutes}
+                  keyboardType='numeric'
+              />
+          </View>
+          <View style={styles.row}>
+              <Text>Art (minutes): </Text>
+              <TextInput
+                  style={styles.textInput}
+                  value={artMinutes}
+                  onChangeText={setArtMinutes}
+                  keyboardType='numeric'
+              />
+          </View>
+          
         </View>
-
+    
         <Button                 
             title={"Submit"}
             onPress={save}
@@ -167,6 +223,7 @@ export default function App() {
       alignItems: 'flex-start',
       justifyContent: 'center',
       paddingHorizontal: 20,
+      backgroundColor: '#eaeaea',
     },
     keys: {
       fontSize: 14,
