@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { storage } from "@/constants/storage"
 import { formData } from "@/constants/formData"
-import { dateFormat } from '@/constants/DateFormat';
+import { dateFormat } from '@/constants/dateFormat';
 
 export default function App() {
     let today = new Date();
@@ -105,7 +105,7 @@ export default function App() {
       <View style={styles.container}>
         <View>
           <Text style={styles.title}>Personal Care: </Text>
-          <View style={styles.row}>
+          <View style={styles.row2}>
               <Button
                   title={"Brushed Teeth (Morning)"}
                   onPress={() => setMorningBrush(!morningBrush)}
@@ -209,10 +209,11 @@ export default function App() {
           
         </View>
     
-        <Button                 
+        <Button               
             title={"Submit"}
             onPress={save}
-            color="green"/>
+            color="green"
+          />
       </View>
     );
   }
@@ -237,6 +238,11 @@ export default function App() {
     row: {
       flexDirection: 'row',
       alignItems: 'center',
+    },
+    row2: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      padding: 10,
     },
     textInput: {
       flex: 1,

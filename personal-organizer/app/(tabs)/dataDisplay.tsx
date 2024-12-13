@@ -4,7 +4,7 @@ import { MMKV, useMMKVObject} from 'react-native-mmkv';
 
 import { storage } from "@/constants/storage"
 import { formData } from "@/constants/formData"
-import { dateFormat } from '@/constants/DateFormat';
+import { dateFormat } from '@/constants/dateFormat';
 import singleDayDataDisplay from '@/components/singleDayDataDisplay';
 
 export default function DataDisplay() {
@@ -16,17 +16,16 @@ export default function DataDisplay() {
     let submissionKey : string = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()
     // const [data, setData] = useMMKVObject<formData>(submissionKey);
     // const today_date = data? data.dateSubmitted.toLocaleDateString("en-US", dateFormat) : "No Data Found";
+    const keys = storage.getAllKeys() 
     return (
         <View style={styles.container}>
-            {singleDayDataDisplay(submissionKey)}
+            {keys?.map((key:string) => (
+              <View key={key}>
+                {singleDayDataDisplay(key)}
+                <Text> </Text>
+              </View>
+            ))}
         </View>
-        // <View>
-        //     <Text>Date: {submissionKey}</Text>
-        //     <Text>Minutes Biked: {data ? data.minutesBiked : "No Data Found" }</Text>
-        //     <Text>Situps: {data ? data.situpsDone : "No Data Found" }</Text>
-        //     <Text>Pushups: {data ? data.pushupsDone : "No Data Found" }</Text>
-        //     <Text>Minutes Worked: {data ? data.minutesWorked: "No Data Found" }</Text>
-        // </View>
     )
 }
 const styles = StyleSheet.create({

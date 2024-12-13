@@ -4,13 +4,13 @@ import { MMKV, useMMKVObject} from 'react-native-mmkv';
 
 import { storage } from "@/constants/storage"
 import { formData } from "@/constants/formData"
-import { dateFormat } from '@/constants/DateFormat';
+import { dateFormat } from '@/constants/dateFormat';
 
 export default function singleDayDataDisplay(submissionKey : string) {
     const [data, setData] = useMMKVObject<formData>(submissionKey);
     return (
         <View>
-            <Text>Date: {submissionKey}</Text>
+            <Text style={styles.title}>{submissionKey}</Text>
 
             <Text>Brushed Teeth (Morning): {data ? (data.morningBrush ? "Yes" : "No"): "No Data Found" }</Text>
             <Text>Brushed Teeth (Night): {data ? (data.nightBrush ? "Yes" : "No"): "No Data Found" }</Text>
@@ -30,4 +30,23 @@ export default function singleDayDataDisplay(submissionKey : string) {
         </View>
     )
 }
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+      paddingHorizontal: 20,
+      backgroundColor: '#eaeaea',
+    },
+    title: {
+      fontSize: 16,
+      color: 'black',
+      marginRight: 10,
+      fontWeight: 'bold',
+    },
+    row: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+});
 
