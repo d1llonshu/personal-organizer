@@ -5,22 +5,8 @@ import { MMKV, useMMKVListener, useMMKVObject, useMMKVString } from 'react-nativ
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { storage } from "../../constants/storage"
+import { formData } from "../../constants/formData"
 import { useExpoRouter } from 'expo-router/build/global-state/router-store';
-
-// const storage = new MMKV();
-type formData = {
-    morningBrush: boolean;
-    nightBrush: boolean;
-    usedMouthwash: boolean;
-    washedFace: boolean;
-    usedExfoliator: boolean;
-
-    minutesBiked: number;
-    situpsDone: number;
-    pushupsDone: number;
-
-    minutesWorked: number;
-}
 
 export default function App() {
     const dateFormat: Intl.DateTimeFormatOptions = {
@@ -49,13 +35,6 @@ export default function App() {
 
     let today = new Date().toLocaleDateString(undefined, dateFormat);
     const [data, setData] = useMMKVObject<formData>(today)
-
-
-    // const [example, setExample] = useMMKVString('yeeeet');
-  
-    // useMMKVListener((k) => {
-    //   console.log(`${k} changed!`);
-    // });
   
     const save = useCallback(() => {
       if (key == null) {
@@ -79,9 +58,8 @@ export default function App() {
         console.log(data?.morningBrush);
       } catch (e) {
         console.error('Error:', e);
-        Alert.alert('Failed to set value for key "test"!', JSON.stringify(e));
       }
-    }, [key, text]);
+    }, []);
     
     const read = useCallback(() => {
       if (key == null || key.length < 1) {
@@ -110,40 +88,8 @@ export default function App() {
       }
     }, []);
   
-    // useEffect(() => {
-    //   console.log(`Value of useMMKVString: ${example}`);
-    //   const interval = setInterval(() => {
-    //     setExample((val) => {
-    //       return val === 'yeeeet' ? undefined : 'yeeeet';
-    //     });
-    //   }, 1000);
-    //   return () => {
-    //     clearInterval(interval);
-    //   };
-    // }, [example, setExample]);
-  
     return (
       <View style={styles.container}>
-        <Text style={styles.keys}>Available Keys: {keys.join(', ')}</Text>
-        <View style={styles.row}>
-          <Text style={styles.title}>Key:</Text>
-          <TextInput
-            placeholder="Key"
-            style={styles.textInput}
-            value={key}
-            onChangeText={setKey}
-          />
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.title}>Value:</Text>
-          <TextInput
-            placeholder="Value"
-            style={styles.textInput}
-            value={text}
-            onChangeText={setText}
-          />
-        </View>
-
         <Text>Personal Care: </Text>
         <View style={styles.row}>
             <Button
@@ -172,6 +118,7 @@ export default function App() {
                 color={usedExfoliator ? "green" : "red"}
             />
         </View>
+
 
         <Text>Workout: </Text>
         <View style={styles.row}>
@@ -216,7 +163,7 @@ export default function App() {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      alignItems: 'center',
+      alignItems: 'flex-start',
       justifyContent: 'center',
       paddingHorizontal: 20,
     },
