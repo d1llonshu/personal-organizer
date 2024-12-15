@@ -1,4 +1,4 @@
-export type formData = {
+export interface formDataInterface {
     dateSubmitted : Date;
 
     //personal care
@@ -20,3 +20,59 @@ export type formData = {
     personalProjectMinutes: number;
     artMinutes: number;
 }
+
+export class formData implements formDataInterface {
+    dateSubmitted: Date;
+  
+    // personal care
+    morningBrush: boolean;
+    nightBrush: boolean;
+    usedMouthwash: boolean;
+    washedFace: boolean;
+    usedExfoliator: boolean;
+    showered: boolean;
+    tookMedicine: boolean;
+  
+    // fitness goals
+    minutesBiked: number;
+    situpsDone: number;
+    pushupsDone: number;
+  
+    // personal goals
+    leetcodeMinutes: number;
+    personalProjectMinutes: number;
+    artMinutes: number;
+  
+    constructor(
+      dateSubmitted: Date,
+      morningBrush: boolean = false,
+      nightBrush: boolean = false,
+      usedMouthwash: boolean = false,
+      washedFace: boolean = false,
+      usedExfoliator: boolean = false,
+      showered: boolean = false,
+      tookMedicine: boolean = false,
+      minutesBiked: number = 0,
+      situpsDone: number = 0,
+      pushupsDone: number = 0,
+      leetcodeMinutes: number = 0,
+      personalProjectMinutes: number = 0,
+      artMinutes: number = 0
+    ) {
+      this.dateSubmitted = dateSubmitted;
+      this.morningBrush = morningBrush;
+      this.nightBrush = nightBrush;
+      this.usedMouthwash = usedMouthwash;
+      this.washedFace = washedFace;
+      this.usedExfoliator = usedExfoliator;
+      this.showered = showered;
+      this.tookMedicine = tookMedicine;
+      this.minutesBiked = minutesBiked;
+      this.situpsDone = situpsDone;
+      this.pushupsDone = pushupsDone;
+      this.leetcodeMinutes = leetcodeMinutes;
+      this.personalProjectMinutes = personalProjectMinutes;
+      this.artMinutes = artMinutes;
+    }
+}
+

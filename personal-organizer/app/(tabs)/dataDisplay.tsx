@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { StyleSheet, View, Button, Text } from 'react-native';
+import { StyleSheet, View, Button, Text, ScrollView } from 'react-native';
 import { MMKV, useMMKVObject} from 'react-native-mmkv';
 
 import { storage } from "@/constants/storage"
@@ -34,8 +34,13 @@ export default function DataDisplay() {
     let daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
 
     const monthlyKeys = new Array(daysInMonth).fill(null).map((_, i) => keyTemplate + (i + 1).toString());
+    const currentMonthKeys = new Array(today.getDate()).fill(null).map((_, i) => keyTemplate + (i + 1).toString());
+
     //current solution probably won't deal with updates well..., may need to have a listener with mmkv or something to use useEffect on
-    let monthlyData = monthlyKeys.map((key) => { return getDataAsArray(key) })
+    let monthlyData = currentMonthKeys.map((key) => { return getDataAsArray(key) })
+    let totalOne = monthlyData.map((data) => {return data[0]})
+                  .reduce((accumulator, currentValue) => accumulator + currentValue, 0)//sums the array
+
 
     // useEffect(() => {
 
@@ -49,15 +54,17 @@ export default function DataDisplay() {
     // const today_date = data? data.dateSubmitted.toLocaleDateString("en-US", dateFormat) : "No Data Found";
     
     return (
-        <View style={styles.container}>
+        <ScrollView>
+          <View style={styles.container}>
             {/* {keys?.map((key:string) => (
-              <View key={key}>
-                {singleDayDataDisplay(key)}
-                <Text> </Text>
-              </View>
-            ))} */}
+                <View key={key}>
+                  {singleDayDataDisplay(key)}
+                  <Text> </Text>
+                </View>
+              ))} */}
             <Text>{monthlyData.toString()}</Text>
-        </View>
+          </View>
+        </ScrollView>
     )
 }
 const styles = StyleSheet.create({
@@ -67,6 +74,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       paddingHorizontal: 20,
       backgroundColor: '#eaeaea',
+      
     },
     keys: {
       fontSize: 14,

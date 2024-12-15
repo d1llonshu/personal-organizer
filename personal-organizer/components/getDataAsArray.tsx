@@ -7,27 +7,28 @@ import { formData } from "@/constants/formData"
 import { dateFormat } from '@/constants/dateFormat';
 
 export default function getDataAsArray(submissionKey : string) {
+    //gets data from formdata as an array
     console.log(submissionKey)
     const [data, setData] = useMMKVObject<formData>(submissionKey);
+    let intendedDate = new Date(submissionKey)
     let result: number[] = [];
+    console.log(typeof data)
+
+    //create the object if it doesnt exist already
+    if (typeof data != "object") {
+        setData(new formData(intendedDate))
+    }
 
     for (const key in data) {
-        if (data.hasOwnProperty(key)) {
-            let val = data[key as keyof formData]
-            if (typeof val == "boolean"){
-                if (val){
-                    result.push(1)
-                }
-                else{
-                    result.push(0)
-                }
-            }
-            else if (typeof val == "number"){
-                result.push(val);
-            }
+        let val = data[key as keyof formData]
+        if (typeof val == "boolean"){
+            result.push(val ? 1 : 0)
         }
-      }
-    console.log(result)
+        else if (typeof val == "number"){
+            result.push(val);
+        }
+    }
+    // console.log(test)
     return result
 }
 

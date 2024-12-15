@@ -19,7 +19,7 @@ export default function App() {
     const [keys, setKeys] = useState<string[]>([]);
 
     //todo - integrate form hook controller
-    //Personal Care
+    //Personal Care 
     const [morningBrush, setMorningBrush] = useState<boolean>(data ? data.morningBrush : false);
     const [nightBrush, setNightBrush] = useState<boolean>(data ? data.nightBrush : false);
     const [usedMouthwash, setUsedMouthwash] = useState<boolean>(data ? data.usedMouthwash : false);
@@ -50,6 +50,7 @@ export default function App() {
       }
       try {
         console.log('Saving...');
+        // storage.clearAll()
         let submission : formData = {
             dateSubmitted: today,
             morningBrush: morningBrush,
