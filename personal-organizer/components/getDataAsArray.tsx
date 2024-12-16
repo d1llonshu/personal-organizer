@@ -8,11 +8,9 @@ import { dateFormat } from '@/constants/dateFormat';
 
 export default function getDataAsArray(submissionKey : string) {
     //gets data from formdata as an array
-    console.log(submissionKey)
     const [data, setData] = useMMKVObject<formData>(submissionKey);
     let intendedDate = new Date(submissionKey)
     let result: number[] = [];
-    console.log(typeof data)
 
     //create the object if it doesnt exist already
     if (typeof data != "object") {

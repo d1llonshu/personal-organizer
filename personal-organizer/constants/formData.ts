@@ -74,5 +74,20 @@ export class formData implements formDataInterface {
       this.personalProjectMinutes = personalProjectMinutes;
       this.artMinutes = artMinutes;
     }
-}
 
+    getAllPropertiesExceptDate?(): string[] {
+        const properties: string[] = [];
+    
+        for (const key in this) {
+            console.log(key)
+            properties.push(key);
+        }
+
+        const index = properties.indexOf("dateSubmitted");
+
+        // return properties.splice(index, 1);
+        console.log(properties)
+        return properties
+    }
+}
+export type formKeys = keyof formDataInterface

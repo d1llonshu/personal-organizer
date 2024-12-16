@@ -3,10 +3,11 @@ import { StyleSheet, View, Button, Text, ScrollView } from 'react-native';
 import { MMKV, useMMKVObject} from 'react-native-mmkv';
 
 import { storage } from "@/constants/storage"
-import { formData } from "@/constants/formData"
+import { formData, formKeys } from "@/constants/formData"
 import { dateFormat } from '@/constants/dateFormat';
 import getDataAsArray  from "@/components/getDataAsArray"
 import singleDayDataDisplay from '@/components/singleDayDataDisplay';
+import getValueFromForm from '@/components/getValueFromForm';
 
 export default function DataDisplay() {
     //rolling? averages
@@ -27,19 +28,38 @@ export default function DataDisplay() {
     //   const allKeys = storage.getAllKeys();
     //   setKeys(allKeys);
     // }, []);
-    const [keys, setKeys] = useState<string[]>(storage.getAllKeys());
+
     // const [test, setTest] = useState<number[]>([]);
     let today = new Date();
     let keyTemplate : string = today.getFullYear() + "/" + (today.getMonth() + 1) + "/";
     let daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-
     const monthlyKeys = new Array(daysInMonth).fill(null).map((_, i) => keyTemplate + (i + 1).toString());
     const currentMonthKeys = new Array(today.getDate()).fill(null).map((_, i) => keyTemplate + (i + 1).toString());
 
-    //current solution probably won't deal with updates well..., may need to have a listener with mmkv or something to use useEffect on
+    //getDataAsArray also populates missing entries
     let monthlyData = currentMonthKeys.map((key) => { return getDataAsArray(key) })
-    let totalOne = monthlyData.map((data) => {return data[0]})
-                  .reduce((accumulator, currentValue) => accumulator + currentValue, 0)//sums the array
+    let totals : number[] = [];
+
+    monthlyData.forEach((v, index) =>
+      v.forEach((val, i) => {
+        totals[i] = totals[i] ? totals[i] : 0;
+        totals[i] += val;
+      })
+    );
+
+
+    //gets all props for class
+    //we know this should not be undefined so long as getDataAsArray is run before it
+    const [todaysEntry, setTodaysEntry] = useMMKVObject<formData>(currentMonthKeys[0]);
+    let props = Object.getOwnPropertyNames(todaysEntry);
+    props = props.splice(1, props.length); //removes the date 
+
+    //props and totals should be synced up in terms of index
+    const indicies =  new Array(totals.length).fill(null).map((_, i) => i + 1);
+    console.log(indicies)
+
+    // let totalOne = monthlyData.map((data) => {return data[0]})
+    //               .reduce((accumulator, currentValue) => accumulator + currentValue, 0)//sums the array
 
 
     // useEffect(() => {
@@ -62,7 +82,13 @@ export default function DataDisplay() {
                   <Text> </Text>
                 </View>
               ))} */}
-            <Text>{monthlyData.toString()}</Text>
+            {indicies?.map((key:number) => (
+                <View key={key}>
+                  <Text>{props[key]}: {totals[key]}</Text>
+                  
+                  <Text> </Text>
+                </View>
+              ))}
           </View>
         </ScrollView>
     )

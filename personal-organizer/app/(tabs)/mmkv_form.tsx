@@ -11,7 +11,7 @@ import { dateFormat } from '@/constants/dateFormat';
 export default function App() {
     let today = new Date();
     let submissionKey: string = 
-      today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()
+      today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + (today.getDate())
     const [data, setData] = useMMKVObject<formData>(submissionKey)
 
     const [text, setText] = useState<string>('');
