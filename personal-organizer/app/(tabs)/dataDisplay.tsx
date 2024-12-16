@@ -34,9 +34,14 @@ export default function DataDisplay() {
     let keyTemplate : string = today.getFullYear() + "/" + (today.getMonth() + 1) + "/";
     let daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
     const monthlyKeys = new Array(daysInMonth).fill(null).map((_, i) => keyTemplate + (i + 1).toString());
-    const currentMonthKeys = new Array(today.getDate()).fill(null).map((_, i) => keyTemplate + (i + 1).toString());
+    let currentMonthKeys = new Array(today.getDate()).fill(null).map((_, i) => keyTemplate + (i + 1).toString());
+    if (today.getDate() - 1 == 0){
+      let daysInPrevMonth = new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+      keyTemplate = today.getFullYear() + "/" + (today.getMonth()) + "/";
+      currentMonthKeys = new Array(today.getDate()).fill(null).map((_, i) => keyTemplate + (i + 1).toString());
+    }
 
-    //getDataAsArray also populates missing entries
+    //getDataAsArray also populates missing entries if the key doesn't exist
     let monthlyData = currentMonthKeys.map((key) => { return getDataAsArray(key) })
     let totals : number[] = [];
 
@@ -46,6 +51,9 @@ export default function DataDisplay() {
         totals[i] += val;
       })
     );
+    let averages : number[] = totals.map((val) => {
+      return val/currentMonthKeys.length
+    })
 
 
     //gets all props for class
@@ -55,7 +63,7 @@ export default function DataDisplay() {
     props = props.splice(1, props.length); //removes the date 
 
     //props and totals should be synced up in terms of index
-    const indicies =  new Array(totals.length).fill(null).map((_, i) => i + 1);
+    const indicies =  [...Array(totals.length).keys()]//new Array(totals.length).fill(null).map((_, i) => i + 1);
     console.log(indicies)
 
     // let totalOne = monthlyData.map((data) => {return data[0]})
@@ -85,6 +93,7 @@ export default function DataDisplay() {
             {indicies?.map((key:number) => (
                 <View key={key}>
                   <Text>{props[key]}: {totals[key]}</Text>
+                  <Text>Monthly Average: {averages[key].toFixed(2)}/day</Text>
                   
                   <Text> </Text>
                 </View>
