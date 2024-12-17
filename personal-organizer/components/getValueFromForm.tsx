@@ -18,18 +18,6 @@ export default function getValueFromForm(submissionKey : string, field: string) 
         setData(new formData(intendedDate))
     }
 
-    // for (const key in data) {
-    //     console.log(key)
-    //     if (fields.includes(key)){
-    //         let val = data[key as keyof formData]
-    //         if (typeof val == "boolean"){
-    //             result.push(val ? 1 : 0)
-    //         }
-    //         else if (typeof val == "number"){
-    //             result.push(val);
-    //         }
-    //     }   
-    // }
     let val = data ? data[field as keyof formData] : 0
     console.log(val)
     if (typeof val == "boolean"){

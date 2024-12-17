@@ -6,5 +6,4 @@ export type streakData = {
     currentStreak: number;
     longestStreak: number;
     mostRecentDate: Date;
-    
 }

@@ -14,22 +14,6 @@ export default function DataDisplay() {
     //totals?
     //streaks?
 
-    // const [keys, setKeys] = useState<string[]>([]);
-    // const [test, setTest] = useState<any>(null);
-    
-    // useEffect(() => {
-    //   let today = new Date();
-    //   let keyTemplate: string = today.getFullYear() + "/" + (today.getMonth() + 1) + "/";
-    //   let daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-  
-    //   const monthlyKeys = new Array(daysInMonth).fill(null).map((_, i) => keyTemplate + (i + 1).toString());
-    //   setTest(getDataAsArray(monthlyKeys[0]));
-  
-    //   const allKeys = storage.getAllKeys();
-    //   setKeys(allKeys);
-    // }, []);
-
-    // const [test, setTest] = useState<number[]>([]);
     let today = new Date();
     let keyTemplate : string = today.getFullYear() + "/" + (today.getMonth() + 1) + "/";
     let daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
@@ -69,18 +53,6 @@ export default function DataDisplay() {
     // let totalOne = monthlyData.map((data) => {return data[0]})
     //               .reduce((accumulator, currentValue) => accumulator + currentValue, 0)//sums the array
 
-
-    // useEffect(() => {
-
-    // }, [test]);
-
-    //const [data, setData] = useMMKVObject<formData>(submissionKey);
-    //create array of acceptable keys, something like either last 30 days or all keys for a given month
-    //use some method to go through each key, calculate totals/averages, etc. in theory for any size array
-    // 
-    // const [data, setData] = useMMKVObject<formData>(submissionKey);
-    // const today_date = data? data.dateSubmitted.toLocaleDateString("en-US", dateFormat) : "No Data Found";
-    
     return (
         <ScrollView>
           <View style={styles.container}>

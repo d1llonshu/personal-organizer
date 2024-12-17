@@ -90,4 +90,20 @@ export class formData implements formDataInterface {
         return properties
     }
 }
-export type formKeys = keyof formDataInterface
+//needs to be manually changed
+export const formKeys = 
+        ["dateSubmitted",
+          "morningBrush",
+          "nightBrush",
+         " usedMouthwash",
+          "washedFace",
+          "usedExfoliator",
+          "showered",
+          "tookMedicine",
+          "minutesBiked",
+          "situpsDone",
+          "pushupsDone",
+          "leetcodeMinutes",
+          "personalProjectMinutes",
+          "artMinutes"
+        ]

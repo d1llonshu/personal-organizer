@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { storage } from "@/constants/storage"
 import { formData } from "@/constants/formData"
 import { dateFormat } from '@/constants/dateFormat';
+import updateStreaks from '@/components/updateStreaks'
 
 export default function App() {
     let today = new Date();
@@ -68,6 +69,7 @@ export default function App() {
             artMinutes: parseInt(artMinutes)
         }
         setData(submission);
+        updateStreaks()
       } catch (e) {
         console.error('Error:', e);
       }
