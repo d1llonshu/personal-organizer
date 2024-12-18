@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { StyleSheet, View, Button, Text, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { storage } from "@/constants/storage"
 import { formData, formKeysMinusDate } from "@/constants/formData"
@@ -9,7 +10,6 @@ import { populateStreaks  } from '@/constants/testData';
 import updateStreaks from "@/components/updateStreaks"
 
 function singleDayStreakDisplay(data:streakData){
-
     return (
         <View>
             <Text>Name:{data.name} 
@@ -29,22 +29,28 @@ export default function streakDisplay(){
 
     const allKeys = storage.getAllKeys()
     const [streakData, setStreakData] = useMMKVObject<streakData[]>("streaks");
+    // if(typeof streakData == undefined){
+    //     populateStreaks()
+    // }
     
     return(
-        <ScrollView>
-            {streakData!.map((d) => {
-                return <View key={d.name}>{singleDayStreakDisplay(d)}</View>
-            })}
-            {/* {streakKeys}
-            {allKeys} */}
-            <Button
-                  title={"Populate Streaks"}
-                  onPress={() => populateStreaks()}
-            />
-            <Button
-                  title={"Update Streaks"}
-                //   onPress={() => updateStreaks()}
-            />
-        </ScrollView>
+        <SafeAreaView>
+            <ScrollView>
+                {streakData!.map((d) => {
+                    return <View key={d.name}>{singleDayStreakDisplay(d)}</View>
+                })}
+                {/* {streakKeys}
+                {allKeys} */}
+                <Button
+                    title={"Populate Streaks"}
+                    onPress={() => populateStreaks()}
+                />
+                <Button
+                    title={"Update Streaks"}
+                    //   onPress={() => updateStreaks()}
+                />
+            </ScrollView>
+        </SafeAreaView>
+        
     )
 }

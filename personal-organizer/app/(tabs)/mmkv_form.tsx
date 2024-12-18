@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { StyleSheet, View, TextInput, Alert, Button, Text } from 'react-native';
+import { StyleSheet, View, TextInput, Alert, Button, Text, ScrollView } from 'react-native';
 import { MMKV, useMMKVListener, useMMKVObject, useMMKVString } from 'react-native-mmkv';
 // import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,6 +9,8 @@ import { formData, formKeysMinusDate } from "@/constants/formData"
 import { dateFormat } from '@/constants/dateFormat';
 import updateStreaks from '@/components/updateStreaks'
 import { streakData } from '@/constants/streaks';
+import {CustomButton} from "@/components/customButton"
+import { styles } from '@/constants/stylesheet'
 
 export default function App() {
     let today = new Date();
@@ -111,191 +113,122 @@ export default function App() {
     return (
       //todo: handle updating one field at a time/reading so you don't have to do it in one sitting (done, sort of)
       //      edit today's and previous days submissions
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.title}>Personal Care: </Text>
-          <View style={styles.row2}>
-              <Button
-                  title={"Brushed Teeth (Morning)"}
+      <SafeAreaView>
+        <ScrollView >
+          <View>
+            <Text style={styles.title}>Personal Care: </Text>
+            <View style={styles.buttonRow}>
+                <CustomButton 
+                  title={"Brushed Teeth (Morning)"} 
                   onPress={() => setMorningBrush(!morningBrush)}
-                  color={morningBrush ? "green" : "red"}
-              />
-              <Button
-                  title={"Brushed Teeth (Night)"}
-                  onPress={() => setNightBrush(!nightBrush)}
-                  color={nightBrush ? "green" : "red"}
-              />
-              <Button
-                  title={"Used Mouthwash"}
-                  onPress={() => setUsedMouthwash(!usedMouthwash)}
-                  color={usedMouthwash ? "green" : "red"}
-              />
-              <Button
-                  title={"Washed Face"}
-                  onPress={() => setWashedFace(!washedFace)}
-                  color={washedFace ? "green" : "red"}
-              />
-              <Button
-                  title={"Used Exfoliator"}
-                  onPress={() => setUsedExfoliator(!usedExfoliator)}
-                  color={usedExfoliator ? "green" : "red"}
-              />
-              <Button
-                  title={"Showered"}
-                  onPress={() => setShowered(!showered)}
-                  color={showered ? "green" : "red"}
-              />
-              <Button
-                  title={"Took Medication"}
-                  onPress={() => setTookMedicine(!tookMedicine)}
-                  color={tookMedicine ? "green" : "red"}
-              />
+                  color={morningBrush ? "green" : "red"}/>
+                <CustomButton
+                    title={"Brushed Teeth (Night)"}
+                    onPress={() => setNightBrush(!nightBrush)}
+                    color={nightBrush ? "green" : "red"}
+                />
+                <CustomButton
+                    title={"Mouthwash"}
+                    onPress={() => setUsedMouthwash(!usedMouthwash)}
+                    color={usedMouthwash ? "green" : "red"}
+                />
+                <CustomButton
+                    title={"Washed Face"}
+                    onPress={() => setWashedFace(!washedFace)}
+                    color={washedFace ? "green" : "red"}
+                />
+                <CustomButton
+                    title={"Used Exfoliator"}
+                    onPress={() => setUsedExfoliator(!usedExfoliator)}
+                    color={usedExfoliator ? "green" : "red"}
+                />
+                <CustomButton
+                    title={"Showered"}
+                    onPress={() => setShowered(!showered)}
+                    color={showered ? "green" : "red"}
+                />
+                <CustomButton
+                    title={"Took Medication"}
+                    onPress={() => setTookMedicine(!tookMedicine)}
+                    color={tookMedicine ? "green" : "red"}
+                />
+            </View>
           </View>
-        </View>
 
 
-        <View>
-          <Text style={styles.title}>Workout: </Text>
-          <View style={styles.row}>
-              <Text>Biking (minutes): </Text>
-              <TextInput
-                  style={styles.textInput}
-                  value={minutesBiked}
-                  onChangeText={setMinutesBiked}
-                  keyboardType='numeric'
-              />
-          </View>
-          <View style={styles.row}>
-              <Text>Situps: </Text>
-              <TextInput
-                  style={styles.textInput}
-                  value={situpsDone}
-                  onChangeText={setSitupsDone}
-                  keyboardType='numeric'
-              />
-          </View>
-          <View style={styles.row}>
-              <Text>Pushups: </Text>
-              <TextInput
-                  style={styles.textInput}
-                  value={pushupsDone}
-                  onChangeText={setPushupsDone}
-                  keyboardType='numeric'
-              />
-          </View>
-        </View>
-        
-
-        <View>
-          <Text style={styles.title}>Productivity</Text>
-          <View style={styles.row}>
-              <Text>Leetcode (minutes): </Text>
-              <TextInput
-                  style={styles.textInput}
-                  value={leetcodeMinutes}
-                  onChangeText={setLeetcodeMinutes}
-                  keyboardType='numeric'
-              />
-          </View>
-          <View style={styles.row}>
-              <Text>Personal Project (minutes): </Text>
-              <TextInput
-                  style={styles.textInput}
-                  value={personalProjectMinutes}
-                  onChangeText={setPersonalProjectMinutes}
-                  keyboardType='numeric'
-              />
-          </View>
-          <View style={styles.row}>
-              <Text>Art (minutes): </Text>
-              <TextInput
-                  style={styles.textInput}
-                  value={artMinutes}
-                  onChangeText={setArtMinutes}
-                  keyboardType='numeric'
-              />
+          <View>
+            <Text style={styles.title}>Workout: </Text>
+            <View style={styles.row}>
+                <Text style={styles.textInputTitle}>Biking:</Text>
+                <TextInput
+                    style={styles.textInput}
+                    value={minutesBiked}
+                    onChangeText={setMinutesBiked}
+                    keyboardType='numeric'
+                />
+            </View>
+            <View style={styles.row}>
+                <Text style={styles.textInputTitle}>Situps:</Text>
+                <TextInput
+                    style={styles.textInput}
+                    value={situpsDone}
+                    onChangeText={setSitupsDone}
+                    keyboardType='numeric'
+                />
+            </View>
+            <View style={styles.row}>
+                <Text style={styles.textInputTitle}>Pushups:</Text>
+                <TextInput
+                    style={styles.textInput}
+                    value={pushupsDone}
+                    onChangeText={setPushupsDone}
+                    keyboardType='numeric'
+                />
+            </View>
           </View>
           
-        </View>
-    
-        <Button               
-            title={"Submit"}
-            onPress={()=>{
-              save();
-            }}
-            // onPress={save}
-            color="green"
-          />
-      </View>
+
+          <View>
+            <Text style={styles.title}>Productivity</Text>
+            <View style={styles.row}>
+                <Text style={styles.textInputTitle}>Leetcode:</Text>
+                <TextInput
+                    style={styles.textInput}
+                    value={leetcodeMinutes}
+                    onChangeText={setLeetcodeMinutes}
+                    keyboardType='numeric'
+                />
+            </View>
+            <View style={styles.row}>
+                <Text style={styles.textInputTitle}>Personal Project:</Text>
+                <TextInput
+                    style={styles.textInput}
+                    value={personalProjectMinutes}
+                    onChangeText={setPersonalProjectMinutes}
+                    keyboardType='numeric'
+                />
+            </View>
+            <View style={styles.row}>
+                <Text style={styles.textInputTitle}>Art:</Text>
+                <TextInput
+                    style={styles.textInput}
+                    placeholder={artMinutes}
+                    value={artMinutes}
+                    onChangeText={setArtMinutes}
+                    keyboardType='numeric'
+                />
+            </View>
+            
+          </View>
+      
+          <CustomButton               
+              title={"Submit"}
+              onPress={()=>{
+                save();
+              }}
+              color="green"
+            />
+        </ScrollView>
+      </SafeAreaView>
     );
   }
-  
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-      paddingHorizontal: 20,
-      backgroundColor: '#eaeaea',
-    },
-    keys: {
-      fontSize: 14,
-      color: 'grey',
-    },
-    title: {
-      fontSize: 16,
-      color: 'black',
-      marginRight: 10,
-    },
-    row: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    row2: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      padding: 10,
-    },
-    textInput: {
-      flex: 1,
-      marginVertical: 20,
-      borderWidth: StyleSheet.hairlineWidth,
-      borderColor: 'black',
-      borderRadius: 5,
-      padding: 10,
-    },
-  });
-// export default function App() {
-    
-//     const [testKey, setTestKey] = useMMKVString('testKey') 
-//     const [testValue, setTestValue] = useMMKVString('testValue')
-
-//     useEffect(() => {
-//         const submitButton = () => {
-//             setTestKey(testKey)
-//             setTestValue(testValue)
-//         }
-//     })
-//     return (
-//         <SafeAreaView>
-//             <View>
-//                 <TextInput
-//                     // onChangeText={setTestKey}
-//                     value={testKey}
-//                 />
-//                 <TextInput
-//                     // onChangeText={setTestValue}
-//                     value={testValue}
-//                 />
-//                 <Button
-//                     title="Submit"
-//                     // onPress={useEffect(() => {setTestKey}, [])}
-//                     // onPress = {() => submitButton}
-//                     onPress = {() => setTestKey}
-//                  />
-//                 <Text>{testKey} {testValue}</Text>
-//             </View>
-//         </SafeAreaView>
-//     )
-// }
-// storage.set('test_number1', 'one')

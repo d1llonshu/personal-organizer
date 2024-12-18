@@ -3,8 +3,6 @@ import { formData, formKeysMinusDate } from "@/constants/formData"
 import { MMKV, useMMKVObject} from 'react-native-mmkv';
 import { streakData } from "@/constants/streaks";
 
-
-
 export default function updateStreaks(streaks:streakData[], submission:formData){
     if (streaks.length == 0){
         throw new Error("No streak data found for updateStreaks")
