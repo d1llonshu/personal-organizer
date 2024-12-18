@@ -6,7 +6,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { storage } from "@/constants/storage"
 import { formData, formKeysMinusDate } from "@/constants/formData"
-import { dateFormat } from '@/constants/dateFormat';
 import updateStreaks from '@/components/updateStreaks'
 import { streakData } from '@/constants/streaks';
 import {CustomButton} from "@/components/customButton"
@@ -19,10 +18,6 @@ export default function App() {
     
     const [data, setData] = useMMKVObject<formData>(submissionKey)
     const [streaks, setStreaks] = useMMKVObject<streakData[]>('streaks')
-
-    const [text, setText] = useState<string>('');
-    const [key, setKey] = useState<string>('');
-    const [keys, setKeys] = useState<string[]>([]);
 
     //todo - integrate form hook controller
     //Personal Care 
@@ -49,10 +44,6 @@ export default function App() {
     const allArgs = formKeysMinusDate;
 
     const save = useCallback(() => {
-      if (key == null) {
-        Alert.alert('Empty key!', 'Enter a key first.');
-        return;
-      }
       try {
         console.log('Saving...');
         // storage.clearAll()
@@ -78,37 +69,7 @@ export default function App() {
         console.error('Error:', e);
       }
     }, allArgs);
-    // const checkStreaks = useCallback(() => {
-    //   console.log("iamhere")
-      
-      
-    // }, [data])
-    const read = useCallback(() => {
-      if (key == null || key.length < 1) {
-        Alert.alert('Empty key!', 'Enter a key first.');
-        return;
-      }
-      try {
-        console.log('getting...');
-        const value = storage.getString(key);
-        console.log('got:', value);
-        Alert.alert('Result', `"${key}" = "${value}"`);
-      } catch (e) {
-        console.error('Error:', e);
-        Alert.alert('Failed to get value for key "test"!', JSON.stringify(e));
-      }
-    }, [key]);
-  
-    useEffect(() => {
-      try {
-        console.log('getting all keys...');
-        const _keys = storage.getAllKeys();
-        setKeys(_keys);
-        console.log('MMKV keys:', _keys);
-      } catch (e) {
-        console.error('Error:', e);
-      }
-    }, []);
+
   
     return (
       //todo: handle updating one field at a time/reading so you don't have to do it in one sitting (done, sort of)

@@ -15,14 +15,10 @@ export const styles = StyleSheet.create({
       fontSize: 18,
       color: 'black',
       marginRight: 10,
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      marginLeft: 3,
     },
     row: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      alignItems: 'center',
-    },
-    buttonRow: {
       flexDirection: 'row',
       flexWrap: 'wrap',
       alignItems: 'center',
@@ -35,6 +31,19 @@ export const styles = StyleSheet.create({
       borderRadius: 5,
       paddingLeft: 5
     },
+    textInputTitle:{
+        fontSize: 14,
+        color: 'black',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        flex:0.2,
+    },
+    buttonRow: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        marginLeft: 5,
+    },
     buttonContainer: {
         paddingHorizontal: 2,
         paddingVertical: 2,
@@ -43,11 +52,6 @@ export const styles = StyleSheet.create({
         textAlign: 'center',
         color: 'white'
     },
-    textInputTitle:{
-        fontSize: 14,
-        color: 'black',
-        fontWeight: 'bold',
-        textAlign: 'center',
-        flex:0.2
-    }
+
+
   });
