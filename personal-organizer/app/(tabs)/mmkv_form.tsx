@@ -5,15 +5,18 @@ import { MMKV, useMMKVListener, useMMKVObject, useMMKVString } from 'react-nativ
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { storage } from "@/constants/storage"
-import { formData } from "@/constants/formData"
+import { formData, formKeysMinusDate } from "@/constants/formData"
 import { dateFormat } from '@/constants/dateFormat';
 import updateStreaks from '@/components/updateStreaks'
+import { streakData } from '@/constants/streaks';
 
 export default function App() {
     let today = new Date();
     let submissionKey: string = 
       today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + (today.getDate())
+    
     const [data, setData] = useMMKVObject<formData>(submissionKey)
+    const [streaks, setStreaks] = useMMKVObject<streakData[]>('streaks')
 
     const [text, setText] = useState<string>('');
     const [key, setKey] = useState<string>('');
@@ -41,8 +44,7 @@ export default function App() {
 
 
     //for useCallback updating, should contain all args
-    const allArgs = [morningBrush, nightBrush, usedMouthwash, washedFace, usedExfoliator, showered, tookMedicine,
-      minutesBiked, situpsDone, pushupsDone, leetcodeMinutes, personalProjectMinutes, artMinutes];
+    const allArgs = formKeysMinusDate;
 
     const save = useCallback(() => {
       if (key == null) {
@@ -69,12 +71,16 @@ export default function App() {
             artMinutes: parseInt(artMinutes)
         }
         setData(submission);
-        updateStreaks()
+        setStreaks(updateStreaks(streaks ? streaks : [], submission))
       } catch (e) {
         console.error('Error:', e);
       }
     }, allArgs);
-    
+    // const checkStreaks = useCallback(() => {
+    //   console.log("iamhere")
+      
+      
+    // }, [data])
     const read = useCallback(() => {
       if (key == null || key.length < 1) {
         Alert.alert('Empty key!', 'Enter a key first.');
@@ -214,7 +220,10 @@ export default function App() {
     
         <Button               
             title={"Submit"}
-            onPress={save}
+            onPress={()=>{
+              save();
+            }}
+            // onPress={save}
             color="green"
           />
       </View>

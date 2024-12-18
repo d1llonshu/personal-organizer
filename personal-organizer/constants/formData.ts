@@ -91,11 +91,10 @@ export class formData implements formDataInterface {
     }
 }
 //needs to be manually changed
-export const formKeys = 
-        ["dateSubmitted",
-          "morningBrush",
+export const formKeysMinusDate = 
+        [ "morningBrush", 
           "nightBrush",
-         " usedMouthwash",
+          "usedMouthwash",
           "washedFace",
           "usedExfoliator",
           "showered",

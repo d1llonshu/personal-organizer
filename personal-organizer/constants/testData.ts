@@ -1,22 +1,42 @@
-import { formData, formKeys } from "./formData"
+import { formData, formKeysMinusDate } from "./formData"
 import { streakData } from "./streaks"
 import { storage } from "./storage"
 
-export function populateStreaks(){
-    const streakKeys = formKeys.map((key) => {
-        return key+"Streak"
-    })
-    const today = new Date()
+function getKeysForDate(today:Date) : {todaysKey:string, yesterdaysKey:string}{
+    let todaysKey : string = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate();
 
-    streakKeys.map((key) => {
+    //create yesterday's key
+    let yesterdaysKey : string = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + (today.getDate()-1);
+    if (today.getDate() - 1 == 0){//if its the first of the month
+        let daysInLastMonth = new Date(today.getFullYear(), today.getMonth(), 0).getDate()
+        if (today.getMonth() == 0){//if its january
+            yesterdaysKey = (today.getFullYear()-1) + "/" + (12) + "/" + (31);
+        }
+        else{//any other month
+            yesterdaysKey = today.getFullYear() + "/" + (today.getMonth()) + "/" + (daysInLastMonth);
+        }
+    }
+    return {todaysKey,yesterdaysKey}
+}
+
+export function populateStreaks(){
+    const streakKeys = formKeysMinusDate
+
+    const today = new Date()
+    let yesterday = new Date()
+    yesterday.setDate(today.getDate()-1)
+    let {todaysKey, yesterdaysKey} = getKeysForDate(today)
+
+    let streakData = streakKeys.map((key) => {
         let streakValue : streakData = {
             name : key,
             currentStreak: 1,
             longestStreak: 1,
-            mostRecentDate: today
+            mostRecentDate: yesterdaysKey
         }
-        storage.set(key, JSON.stringify(streakValue))
+        return streakValue
     })
+    storage.set('streaks', JSON.stringify(streakData))
 }
 export function populateFormData(){
     let today = new Date();

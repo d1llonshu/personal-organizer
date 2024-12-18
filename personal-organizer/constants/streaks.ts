@@ -5,5 +5,5 @@ export type streakData = {
     name: string;
     currentStreak: number;
     longestStreak: number;
-    mostRecentDate: Date;
+    mostRecentDate: string;
 }

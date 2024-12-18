@@ -2,19 +2,20 @@ import { useState, useCallback, useEffect } from 'react';
 import { StyleSheet, View, Button, Text, ScrollView } from 'react-native';
 
 import { storage } from "@/constants/storage"
-import { formData, formKeys } from "@/constants/formData"
+import { formData, formKeysMinusDate } from "@/constants/formData"
 import { MMKV, useMMKVObject} from 'react-native-mmkv';
 import { streakData } from "@/constants/streaks";
 import { populateStreaks  } from '@/constants/testData';
+import updateStreaks from "@/components/updateStreaks"
 
-function singleDayStreakDisplay(streakKey:string){
-    const [data, setData] = useMMKVObject<streakData>(streakKey);
+function singleDayStreakDisplay(data:streakData){
+
     return (
         <View>
-            <Text>Name:{data!.name} 
-                Current Streak: {data!.currentStreak} 
-                Longest Streak: {data!.longestStreak} 
-                Most Recent: {data!.mostRecentDate.toString()}
+            <Text>Name:{data.name} 
+                Current Streak: {data.currentStreak} 
+                Longest Streak: {data.longestStreak} 
+                Most Recent: {data.mostRecentDate}
             </Text>
             {/* <Text>{typeof data}</Text> */}
         </View>
@@ -22,20 +23,27 @@ function singleDayStreakDisplay(streakKey:string){
 }
 
 export default function streakDisplay(){
-    const streakKeys = formKeys.map((key) => {
+    const streakKeys = formKeysMinusDate.map((key) => {
         return key+"Streak"
     })
-    
+
     const allKeys = storage.getAllKeys()
+    const [streakData, setStreakData] = useMMKVObject<streakData[]>("streaks");
     
     return(
         <ScrollView>
-            {streakKeys.map((key) => (
-                singleDayStreakDisplay(key)
-            ))}
+            {streakData!.map((d) => {
+                return <View key={d.name}>{singleDayStreakDisplay(d)}</View>
+            })}
+            {/* {streakKeys}
+            {allKeys} */}
             <Button
                   title={"Populate Streaks"}
                   onPress={() => populateStreaks()}
+            />
+            <Button
+                  title={"Update Streaks"}
+                //   onPress={() => updateStreaks()}
             />
         </ScrollView>
     )

@@ -3,7 +3,7 @@ import { StyleSheet, View, Button, Text, ScrollView } from 'react-native';
 import { MMKV, useMMKVObject} from 'react-native-mmkv';
 
 import { storage } from "@/constants/storage"
-import { formData, formKeys } from "@/constants/formData"
+import { formData, formKeysMinusDate } from "@/constants/formData"
 import { dateFormat } from '@/constants/dateFormat';
 import getDataAsArray  from "@/components/getDataAsArray"
 import singleDayDataDisplay from '@/components/singleDayDataDisplay';
