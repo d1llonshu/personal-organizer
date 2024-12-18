@@ -2,14 +2,15 @@ import { useState, useCallback, useEffect } from 'react';
 import { StyleSheet, View, Button, Text, ScrollView } from 'react-native';
 import { MMKV, useMMKVObject} from 'react-native-mmkv';
 
+import { styles } from '@/constants/stylesheet';
 import { storage } from "@/constants/storage"
-import { formData, formKeysMinusDate } from "@/constants/formData"
+import { formData, formKeyAdditionalKeywords, formKeyClassifications, formKeysMinusDate, formKeysMinusDatePretty } from "@/constants/formData"
 import { dateFormat } from '@/constants/dateFormat';
 import getDataAsArray  from "@/components/getDataAsArray"
 import singleDayDataDisplay from '@/components/singleDayDataDisplay';
 import getValueFromForm from '@/components/getValueFromForm';
 
-export default function DataDisplay() {
+export default function monthlySummary() {
     //rolling? averages
     //totals?
     //streaks?
@@ -17,7 +18,7 @@ export default function DataDisplay() {
     let today = new Date();
     let keyTemplate : string = today.getFullYear() + "/" + (today.getMonth() + 1) + "/";
     let daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-    const monthlyKeys = new Array(daysInMonth).fill(null).map((_, i) => keyTemplate + (i + 1).toString());
+    //const monthlyKeys = new Array(daysInMonth).fill(null).map((_, i) => keyTemplate + (i + 1).toString());
     let currentMonthKeys = new Array(today.getDate()).fill(null).map((_, i) => keyTemplate + (i + 1).toString());
     if (today.getDate() - 1 == 0){
       let daysInPrevMonth = new Date(today.getFullYear(), today.getMonth(), 0).getDate();
@@ -42,9 +43,7 @@ export default function DataDisplay() {
 
     //gets all props for class
     //we know this should not be undefined so long as getDataAsArray is run before it
-    const [todaysEntry, setTodaysEntry] = useMMKVObject<formData>(currentMonthKeys[0]);
-    let props = Object.getOwnPropertyNames(todaysEntry);
-    props = props.splice(1, props.length); //removes the date 
+    let props = formKeysMinusDate
 
     //props and totals should be synced up in terms of index
     const indicies =  [...Array(totals.length).keys()]//new Array(totals.length).fill(null).map((_, i) => i + 1);
@@ -55,54 +54,30 @@ export default function DataDisplay() {
 
     return (
         <ScrollView>
-          <View style={styles.container}>
-            {/* {keys?.map((key:string) => (
-                <View key={key}>
-                  {singleDayDataDisplay(key)}
-                  <Text> </Text>
-                </View>
-              ))} */}
+          <View>
+            <Text style={styles.title}>Monthly Summary</Text>
             {indicies?.map((key:number) => (
-                <View key={key}>
-                  <Text>{props[key]}: {totals[key]}</Text>
-                  <Text>Monthly Average: {averages[key].toFixed(2)}/day</Text>
-                  
-                  <Text> </Text>
+                <View key={key} >
+                  {appropriateSummaryView(props[key], totals[key], currentMonthKeys.length)}
+                  {/* <Text>Monthly Average: {(averages[key]*100).toFixed(2)}%</Text> */}
                 </View>
               ))}
           </View>
         </ScrollView>
     )
 }
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-      paddingHorizontal: 20,
-      backgroundColor: '#eaeaea',
-      
-    },
-    keys: {
-      fontSize: 14,
-      color: 'grey',
-    },
-    title: {
-      fontSize: 16,
-      color: 'black',
-      marginRight: 10,
-    },
-    row: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    textInput: {
-      flex: 1,
-      marginVertical: 20,
-      borderWidth: StyleSheet.hairlineWidth,
-      borderColor: 'black',
-      borderRadius: 5,
-      padding: 10,
-    },
-});
+
+function appropriateSummaryView(key : string, total : number, maxDays : number){
+  if(formKeyClassifications[key  as keyof typeof formKeyClassifications] == "Once Daily" || formKeyClassifications[key as keyof typeof formKeyClassifications] == "Once Weekly"){
+    return (
+      <Text style={styles.regularText}>{formKeysMinusDatePretty[key as keyof typeof formKeysMinusDatePretty]}: {total}/{maxDays}</Text>
+    )
+  }
+  else if(formKeyClassifications[key as keyof typeof formKeyClassifications] == "Greater than Zero"){
+    return(
+      <Text style={styles.regularText}>{formKeysMinusDatePretty[key as keyof typeof formKeysMinusDatePretty]}: {total} {formKeyAdditionalKeywords[key as keyof typeof formKeyAdditionalKeywords]}</Text>
+    )
+  }
+
+}
 

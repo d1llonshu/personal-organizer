@@ -65,6 +65,9 @@ export const styles = StyleSheet.create({
         height: 20,
         resizeMode: 'contain',
         marginLeft: -7.5,
+    },
+    regularText: {
+        marginLeft: 3,
     }
 
   });

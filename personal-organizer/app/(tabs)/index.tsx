@@ -6,6 +6,7 @@ import { styles } from '@/constants/stylesheet';
 
 import streakPreview from '@/components/streakPreview'
 import monthlyAverages from '@/components/monthlyAverages'
+import monthlySummary from '@/components/monthlySummary';
 
 export default function HomeScreen() {
   const [streaks, setStreaks] = useMMKVObject<streakData[]>('streaks')
@@ -17,9 +18,10 @@ export default function HomeScreen() {
         </View>
         <View>
           {streakPreview(streaks ? streaks : [])}
+          {monthlySummary()}
         </View>
         <View>
-          {monthlyAverages()}
+          
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -92,7 +92,8 @@ export class formData implements formDataInterface {
 }
 //needs to be manually changed
 export const formKeysMinusDate = 
-        [ "morningBrush", 
+        [ 
+          "morningBrush", 
           "nightBrush",
           "usedMouthwash",
           "washedFace",
@@ -108,7 +109,8 @@ export const formKeysMinusDate =
         ]
 
 export const formKeysMinusDatePretty = 
-        {"morningBrush" : "Brushed Teeth (Morning)", 
+        {
+          "morningBrush" : "Brushed Teeth (Morning)", 
           "nightBrush" : "Brushed Teeth (Night)",
           "usedMouthwash" : "Mouthwash",
           "washedFace" : "Washed Face",
@@ -122,3 +124,38 @@ export const formKeysMinusDatePretty =
           "personalProjectMinutes" : "Personal Project",
           "artMinutes" : "Art",
       }
+
+export const formKeyClassifications = 
+      {
+        "morningBrush" : "Once Daily", 
+        "nightBrush" : "Once Daily",
+        "usedMouthwash" : "Once Daily",
+        "washedFace" : "Once Daily",
+        "usedExfoliator" : "Once Weekly",
+        "showered" : "Once Weekly",
+        "tookMedicine" : "Only Daily",
+        "minutesBiked" : "Greater than Zero",
+        "situpsDone" : "Greater than Zero",
+        "pushupsDone" : "Greater than Zero",
+        "leetcodeMinutes" : "Greater than Zero",
+        "personalProjectMinutes" : "Greater than Zero",
+        "artMinutes" : "Greater than Zero",
+      }
+
+export const formKeyAdditionalKeywords = 
+  {
+    "morningBrush" : "", 
+    "nightBrush" : "",
+    "usedMouthwash" : "",
+    "washedFace" : "",
+    "usedExfoliator" : "",
+    "showered" : "",
+    "tookMedicine" : "",
+    "minutesBiked" : "Minutes",
+    "situpsDone" : "",
+    "pushupsDone" : "",
+    "leetcodeMinutes" : "Minutes",
+    "personalProjectMinutes" : "Minutes",
+    "artMinutes" : "Minutes",
+  }
+
