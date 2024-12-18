@@ -8,10 +8,10 @@ import { storage } from "@/constants/storage"
 import { formData, formKeysMinusDate } from "@/constants/formData"
 import updateStreaks from '@/components/updateStreaks'
 import { streakData } from '@/constants/streaks';
-import {CustomButton} from "@/components/customButton"
+import { CustomButton } from "@/components/customButton"
 import { styles } from '@/constants/stylesheet'
 
-export default function App() {
+export default function Form() {
     let today = new Date();
     let submissionKey: string = 
       today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + (today.getDate())
@@ -43,32 +43,56 @@ export default function App() {
     //for useCallback updating, should contain all args
     const allArgs = formKeysMinusDate;
 
-    const save = useCallback(() => {
-      try {
-        console.log('Saving...');
-        // storage.clearAll()
-        let submission : formData = {
-            dateSubmitted: today,
-            morningBrush: morningBrush,
-            nightBrush: nightBrush,
-            usedMouthwash: usedMouthwash,
-            washedFace: washedFace,
-            usedExfoliator: usedExfoliator,
-            showered: showered,
-            tookMedicine: tookMedicine,
-            minutesBiked: parseInt(minutesBiked),
-            situpsDone: parseInt(situpsDone),
-            pushupsDone: parseInt(pushupsDone),
-            leetcodeMinutes: parseInt(leetcodeMinutes),
-            personalProjectMinutes: parseInt(personalProjectMinutes),
-            artMinutes: parseInt(artMinutes)
-        }
-        setData(submission);
-        setStreaks(updateStreaks(streaks ? streaks : [], submission))
-      } catch (e) {
-        console.error('Error:', e);
+    // const save = useCallback(() => {
+    //   try {
+    //     console.log('Saving...');
+    //     // storage.clearAll()
+    //     let submission : formData = {
+    //         dateSubmitted: today,
+    //         morningBrush: morningBrush,
+    //         nightBrush: nightBrush,
+    //         usedMouthwash: usedMouthwash,
+    //         washedFace: washedFace,
+    //         usedExfoliator: usedExfoliator,
+    //         showered: showered,
+    //         tookMedicine: tookMedicine,
+    //         minutesBiked: parseInt(minutesBiked),
+    //         situpsDone: parseInt(situpsDone),
+    //         pushupsDone: parseInt(pushupsDone),
+    //         leetcodeMinutes: parseInt(leetcodeMinutes),
+    //         personalProjectMinutes: parseInt(personalProjectMinutes),
+    //         artMinutes: parseInt(artMinutes)
+    //     }
+    //     setData(submission);
+    //     //setStreaks(updateStreaks(streaks ? streaks : [], submission))
+    //   } catch (e) {
+    //     console.error('Error:', e);
+    //   }
+    // }, allArgs);
+
+    const save = () => {
+      console.log('Saving...');
+      let submission : formData = {
+        dateSubmitted: today,
+        morningBrush: morningBrush,
+        nightBrush: nightBrush,
+        usedMouthwash: usedMouthwash,
+        washedFace: washedFace,
+        usedExfoliator: usedExfoliator,
+        showered: showered,
+        tookMedicine: tookMedicine,
+        minutesBiked: parseInt(minutesBiked),
+        situpsDone: parseInt(situpsDone),
+        pushupsDone: parseInt(pushupsDone),
+        leetcodeMinutes: parseInt(leetcodeMinutes),
+        personalProjectMinutes: parseInt(personalProjectMinutes),
+        artMinutes: parseInt(artMinutes)
       }
-    }, allArgs);
+      // storage.clearAll()
+      setData(submission);
+      setStreaks(updateStreaks(streaks ? streaks : [], submission))
+      
+    }
 
   
     return (
@@ -81,7 +105,7 @@ export default function App() {
             <View style={styles.buttonRow}>
                 <CustomButton 
                   title={"Brushed Teeth (Morning)"} 
-                  onPress={() => setMorningBrush(!morningBrush)}
+                  onPress={() => {console.log("Updated!"); setMorningBrush(!morningBrush)}}
                   color={morningBrush ? "green" : "red"}/>
                 <CustomButton
                     title={"Brushed Teeth (Night)"}
@@ -150,13 +174,13 @@ export default function App() {
           
 
           <View>
-            <Text style={styles.title}>Productivity</Text>
+            <Text style={styles.title}>Productivity:</Text>
             <View style={styles.row}>
                 <Text style={styles.textInputTitle}>Leetcode:</Text>
                 <TextInput
                     style={styles.textInput}
                     value={leetcodeMinutes}
-                    onChangeText={setLeetcodeMinutes}
+                    onChangeText={(text) => { console.log("Updated!"); setLeetcodeMinutes(text); }}
                     keyboardType='numeric'
                 />
             </View>

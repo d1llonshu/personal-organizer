@@ -104,5 +104,21 @@ export const formKeysMinusDate =
           "pushupsDone",
           "leetcodeMinutes",
           "personalProjectMinutes",
-          "artMinutes"
+          "artMinutes",
         ]
+
+export const formKeysMinusDatePretty = 
+        {"morningBrush" : "Brushed Teeth (Morning)", 
+          "nightBrush" : "Brushed Teeth (Night)",
+          "usedMouthwash" : "Mouthwash",
+          "washedFace" : "Washed Face",
+          "usedExfoliator" : "Exfoliated",
+          "showered" : "Showered",
+          "tookMedicine" : "Took Medication",
+          "minutesBiked" : "Biking",
+          "situpsDone" : "Situps",
+          "pushupsDone" : "Pushups",
+          "leetcodeMinutes" : "Leetcode",
+          "personalProjectMinutes" : "Personal Project",
+          "artMinutes" : "Art",
+      }

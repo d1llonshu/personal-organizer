@@ -1,15 +1,22 @@
 import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
+    homescreenTitle: {
+        fontSize: 26,
+        color: 'black',
+        marginRight: 10,
+        fontWeight: 'bold',
+        marginLeft: 3,
+    },
+    safeAreaContainer: {
+        flex: 1,
+        marginTop: 25,
+    },
     container: {
       flex: 1,
       alignItems: 'flex-start',
       justifyContent: 'center',
       backgroundColor: '#eaeaea',
-    },
-    keys: {
-      fontSize: 14,
-      color: 'grey',
     },
     title: {
       fontSize: 18,
@@ -17,6 +24,7 @@ export const styles = StyleSheet.create({
       marginRight: 10,
       fontWeight: 'bold',
       marginLeft: 3,
+      marginTop: 3,
     },
     row: {
       flexDirection: 'row',
@@ -50,8 +58,13 @@ export const styles = StyleSheet.create({
     },
     buttonTitle: {
         textAlign: 'center',
-        color: 'white'
+        color: 'white',
     },
-
+    streakFire: {
+        width: 20,
+        height: 20,
+        resizeMode: 'contain',
+        marginLeft: -7.5,
+    }
 
   });
