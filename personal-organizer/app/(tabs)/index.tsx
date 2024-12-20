@@ -12,11 +12,11 @@ export default function HomeScreen() {
   const [streaks, setStreaks] = useMMKVObject<streakData[]>('streaks')
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
-      <ScrollView>
+      <ScrollView style={styles.container}>
         <View>
           <Text style={styles.homescreenTitle}>Welcome Back!</Text>
         </View>
-        <View>
+        <View style={styles.container}>
           {streakPreview(streaks ? streaks : [])}
           {monthlySummary()}
         </View>

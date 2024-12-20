@@ -24,15 +24,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="dataDisplay"
-        options={{
-          title: 'Data Screen',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="mmkv_form"
         options={{
           title: 'Form',

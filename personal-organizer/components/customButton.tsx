@@ -4,11 +4,11 @@ import { styles } from '@/constants/stylesheet'
 export const CustomButton = ({ onPress, title, color}: { onPress: () => void; title: string, color: string}) => (
     <View style = {styles.buttonContainer}>
         <Pressable
-            android_ripple={{color : 'black'}}
+            android_ripple={{color : 'white'}}
             onPress={onPress}
             style={({pressed}) => [
                 {
-                    backgroundColor: pressed ? 'black' : color,
+                    backgroundColor: color,
                     padding: 5,
                     borderRadius: 4,
                 },

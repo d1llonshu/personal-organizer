@@ -55,7 +55,7 @@ export default function monthlySummary() {
     return (
         <ScrollView>
           <View>
-            <Text style={styles.title}>Monthly Summary</Text>
+            <Text style={styles.homeScreenSubtitle}>Monthly Summary</Text>
             {indicies?.map((key:number) => (
                 <View key={key} >
                   {appropriateSummaryView(props[key], totals[key], currentMonthKeys.length)}
@@ -70,7 +70,7 @@ export default function monthlySummary() {
 function appropriateSummaryView(key : string, total : number, maxDays : number){
   if(formKeyClassifications[key  as keyof typeof formKeyClassifications] == "Once Daily" || formKeyClassifications[key as keyof typeof formKeyClassifications] == "Once Weekly"){
     return (
-      <Text style={styles.regularText}>{formKeysMinusDatePretty[key as keyof typeof formKeysMinusDatePretty]}: {total}/{maxDays}</Text>
+      <Text style={styles.regularText}>{formKeysMinusDatePretty[key as keyof typeof formKeysMinusDatePretty]}: {total} out of {maxDays}</Text>
     )
   }
   else if(formKeyClassifications[key as keyof typeof formKeyClassifications] == "Greater than Zero"){

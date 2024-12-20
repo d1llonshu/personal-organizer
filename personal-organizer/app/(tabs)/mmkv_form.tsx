@@ -93,49 +93,51 @@ export default function Form() {
       setStreaks(updateStreaks(streaks ? streaks : [], submission))
       
     }
-
+    const buttonColorFalse = "#CF6679";
+    const buttonColorTrue = "#4f7942";
+    // "#BB86FC" "#3700B3" "#84b067"
   
     return (
       //todo: handle updating one field at a time/reading so you don't have to do it in one sitting (done, sort of)
       //      edit today's and previous days submissions
       <SafeAreaView>
-        <ScrollView >
+        <ScrollView style={styles.container}>
           <View>
             <Text style={styles.title}>Personal Care: </Text>
             <View style={styles.buttonRow}>
                 <CustomButton 
                   title={"Brushed Teeth (Morning)"} 
                   onPress={() => {console.log("Updated!"); setMorningBrush(!morningBrush)}}
-                  color={morningBrush ? "green" : "red"}/>
+                  color={morningBrush ? buttonColorTrue : buttonColorFalse }/>
                 <CustomButton
                     title={"Brushed Teeth (Night)"}
                     onPress={() => setNightBrush(!nightBrush)}
-                    color={nightBrush ? "green" : "red"}
+                    color={nightBrush ? buttonColorTrue : buttonColorFalse }
                 />
                 <CustomButton
                     title={"Mouthwash"}
                     onPress={() => setUsedMouthwash(!usedMouthwash)}
-                    color={usedMouthwash ? "green" : "red"}
+                    color={usedMouthwash ? buttonColorTrue : buttonColorFalse}
                 />
                 <CustomButton
                     title={"Washed Face"}
                     onPress={() => setWashedFace(!washedFace)}
-                    color={washedFace ? "green" : "red"}
+                    color={washedFace ? buttonColorTrue : buttonColorFalse}
                 />
                 <CustomButton
                     title={"Used Exfoliator"}
                     onPress={() => setUsedExfoliator(!usedExfoliator)}
-                    color={usedExfoliator ? "green" : "red"}
+                    color={usedExfoliator ? buttonColorTrue : buttonColorFalse}
                 />
                 <CustomButton
                     title={"Showered"}
                     onPress={() => setShowered(!showered)}
-                    color={showered ? "green" : "red"}
+                    color={showered ? buttonColorTrue : buttonColorFalse}
                 />
                 <CustomButton
                     title={"Took Medication"}
                     onPress={() => setTookMedicine(!tookMedicine)}
-                    color={tookMedicine ? "green" : "red"}
+                    color={tookMedicine ? buttonColorTrue : buttonColorFalse}
                 />
             </View>
           </View>
@@ -211,7 +213,7 @@ export default function Form() {
               onPress={()=>{
                 save();
               }}
-              color="green"
+              color = {buttonColorTrue}
             />
         </ScrollView>
       </SafeAreaView>

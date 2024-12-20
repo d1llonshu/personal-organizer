@@ -10,10 +10,7 @@ export default function streakPreview(streaks:streakData[]) {
 
     return (
         <View>
-            <View style={styles.row}>
-                <Text style={styles.title}>Ongoing Streaks</Text>
-                <Image style = {styles.streakFire} source={require("@/assets/images/fireEmoji.png")}></Image>
-            </View>
+            <Text style={styles.homeScreenSubtitle}>Ongoing Streaks</Text>
             
             {sortStreakData(streaks)?.map((d) => (
                 <Text style={styles.regularText}>{formKeysMinusDatePretty[d!.name as keyof typeof formKeysMinusDatePretty]}: {d!.currentStreak} {(d!.currentStreak > 1) ? "days" : "day"}</Text>
