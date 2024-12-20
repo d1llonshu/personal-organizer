@@ -9,7 +9,7 @@ import { CustomButton } from "@/components/customButton"
 export default function streakPreview(streaks:streakData[]) {
 
     return (
-        <View>
+        <View style={styles.container}>
             <Text style={styles.homeScreenSubtitle}>Ongoing Streaks</Text>
             
             {sortStreakData(streaks)?.map((d) => (

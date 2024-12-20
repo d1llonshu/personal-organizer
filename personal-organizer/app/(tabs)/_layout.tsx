@@ -9,9 +9,9 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <Tabs
+    <Tabs 
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors[colorScheme ?? 'dark'].tint,
         headerShown: false,
       }}>
       <Tabs.Screen

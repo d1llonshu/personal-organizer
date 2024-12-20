@@ -9,6 +9,7 @@ import monthlyAverages from '@/components/monthlyAverages'
 import monthlySummary from '@/components/monthlySummary';
 
 export default function HomeScreen() {
+  //todo - view individual events and/or overhaul form to be able to add events easier i.e give the events its own type
   const [streaks, setStreaks] = useMMKVObject<streakData[]>('streaks')
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
@@ -16,7 +17,7 @@ export default function HomeScreen() {
         <View>
           <Text style={styles.homescreenTitle}>Welcome Back!</Text>
         </View>
-        <View style={styles.container}>
+        <View >
           {streakPreview(streaks ? streaks : [])}
           {monthlySummary()}
         </View>

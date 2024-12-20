@@ -18,6 +18,7 @@ export const styles = StyleSheet.create({
       // alignItems: 'flex-start',
       // justifyContent: 'center',
       backgroundColor: '#121212',
+      shadowColor: 'white',
     },
     title: {
       fontSize: 18,

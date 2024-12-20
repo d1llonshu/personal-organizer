@@ -100,7 +100,7 @@ export default function Form() {
     return (
       //todo: handle updating one field at a time/reading so you don't have to do it in one sitting (done, sort of)
       //      edit today's and previous days submissions
-      <SafeAreaView>
+      <SafeAreaView style = {styles.safeAreaContainer}>
         <ScrollView style={styles.container}>
           <View>
             <Text style={styles.title}>Personal Care: </Text>
