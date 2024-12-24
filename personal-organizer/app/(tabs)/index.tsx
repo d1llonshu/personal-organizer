@@ -19,7 +19,7 @@ export default function HomeScreen() {
         </View>
         <View >
           {streakPreview(streaks ? streaks : [])}
-          {monthlySummary()}
+          {monthlySummary()} 
         </View>
         <View>
           

@@ -12,6 +12,7 @@ export const styles = StyleSheet.create({
     safeAreaContainer: {
         flex: 1,
         marginTop: 25,
+        backgroundColor: '#121212',
     },
     container: {
       // flex: 1,
@@ -40,7 +41,9 @@ export const styles = StyleSheet.create({
       borderColor: '#E1D9D1',
       color: '#E1D9D1',
       borderRadius: 5,
-      paddingLeft: 5
+      padding: 5,
+      marginRight: 16,
+      height: 30,
     },
     textInputTitle:{
         fontSize: 14,
@@ -88,5 +91,64 @@ export const styles = StyleSheet.create({
       textAlign: 'center',
       
     },
-
+  });
+export const dropdownStyles = StyleSheet.create({
+    dropdown: {
+      marginBottom: 5,
+      marginTop: 5,
+      height: 30,
+      backgroundColor: 'white',
+      borderRadius: 5,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 1,
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 1.41,
+      elevation: 2,
+      flex: 1
+    },
+    icon: {
+      marginRight: 5,
+    },
+    item: {
+      padding: 17,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    textItem: {
+      marginLeft: 5,
+      flex: 1,
+      fontSize: 14,
+    },
+    placeholderStyle: {
+      fontSize: 14,
+    },
+    selectedTextStyle: {
+      fontSize: 14,
+    },
+    iconStyle: {
+      width: 20,
+      height: 20,
+    },
+    inputSearchStyle: {
+      height: 40,
+      fontSize: 16,
+    },
+    dropdownRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    title: {
+      marginLeft: 6,
+      textAlign: 'right',
+      alignItems: 'flex-end',
+      fontSize: 16,
+      flex: 0.25,
+      color: '#E1D9D1',
+      marginRight: 10,
+      fontWeight: 'bold',
+    }
   });
