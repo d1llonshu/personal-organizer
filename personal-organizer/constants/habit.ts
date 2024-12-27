@@ -1,4 +1,4 @@
-export interface habit {
+export interface Habit {
    keyName: string;
    prettyPrint: string;
    dataType: string;
@@ -24,5 +24,5 @@ export const categories = [
 ]
 
 export function keyPrettyPrint(keyName: string) {
-    return keyName.replace(/\s/g, "");
+    return keyName.replace(/\s/g, "_");
 }

@@ -2,14 +2,12 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { StyleSheet, View, TextInput, Alert, Button, Text, ScrollView, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Dropdown, IDropdownRef } from 'react-native-element-dropdown';
+import { MMKV, useMMKVObject} from 'react-native-mmkv';
 
-import { habit, dataTypes, timeClassifications, categories } from "@/constants/habit"
+import { Habit, dataTypes, timeClassifications, categories, keyPrettyPrint } from "@/constants/habit"
 import { styles, dropdownStyles } from "@/constants/stylesheet"
 import DropdownComponent from '@/components/dropdownComponent';
-
-
-
-
+import { CustomButton } from "@/components/customButton"
 
 const { width } = Dimensions.get('window');
 export default function newHabitForm() {
@@ -19,6 +17,21 @@ export default function newHabitForm() {
     const [dataType, setDataType] = useState<string>();
     const [timeClassification, setTimeClassification] = useState<string>()
     const [category, setCategory] = useState<string>()
+    const [habitsArray, setHabitsArray] = useMMKVObject<Habit[]>('allHabits')
+
+    const save = () => {
+      //needs field validation
+      console.log('Saving...');
+      let submission : Habit = {
+        prettyPrint: prettyPrint,
+        keyName:keyPrettyPrint(prettyPrint),
+        dataType: dataType ? dataType : "Error: No data type",
+        timeClassification: timeClassification ? timeClassification : "Error: No time classification",
+        category: category ? category : "Error, No category",
+      };
+      setHabitsArray([...habitsArray ? habitsArray:[], submission])
+      console.log(habitsArray)
+    }
 
     return (
         <SafeAreaView style={styles.safeAreaContainer}>
@@ -90,6 +103,13 @@ export default function newHabitForm() {
                           }}
                         />
                 </View>
+                <CustomButton               
+                    title={"Submit"}
+                    onPress={()=>{
+                      save();
+                    }}
+                    color = "#4f7942"
+                  />
             </ScrollView>
         </SafeAreaView>
     );
