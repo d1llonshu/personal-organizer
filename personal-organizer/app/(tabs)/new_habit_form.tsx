@@ -29,7 +29,12 @@ export default function newHabitForm() {
         timeClassification: timeClassification ? timeClassification : "Error: No time classification",
         category: category ? category : "Error, No category",
       };
-      setHabitsArray([...habitsArray ? habitsArray:[], submission])
+      setHabitsArray([...habitsArray ? habitsArray:[], submission]);
+      //clear form
+      setPrettyPrint("");
+      setDataType("");
+      setTimeClassification("");
+      setCategory("");
       console.log(habitsArray)
     }
 

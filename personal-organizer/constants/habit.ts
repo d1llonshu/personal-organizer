@@ -12,7 +12,7 @@ export const dataTypes = [
 ];
 export const timeClassifications = [
     { label: 'Once daily', value: 'Once Daily' },
-    { label: 'Once deekly', value: 'Once Weekly' },
+    { label: 'Once weekly', value: 'Once Weekly' },
     { label: 'More than once daily', value: 'Count Per Day' },
 ];
 export const categories = [

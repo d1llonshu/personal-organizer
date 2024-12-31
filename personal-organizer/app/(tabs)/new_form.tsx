@@ -5,15 +5,20 @@ import { MMKV, useMMKVListener, useMMKVObject, useMMKVString } from 'react-nativ
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { storage } from "@/constants/storage"
-import { formData, formKeysMinusDate } from "@/constants/formData"
+// import { formData, formKeysMinusDate } from "@/constants/formData"
 import { Habit, dataTypes, timeClassifications, categories, keyPrettyPrint } from "@/constants/habit"
 import updateStreaks from '@/components/updateStreaks'
 import { streakData } from '@/constants/streaks';
 import { CustomButton } from "@/components/customButton"
 import { styles } from '@/constants/stylesheet'
-import GenerateFormSection from "@/components/GenerateFormSection"
+
+interface formData {
+  [key: string]: any;
+}
 
 export default function Form() {
+    const buttonColorFalse = "#CF6679";
+    const buttonColorTrue = "#4f7942";
     let today = new Date();
     let submissionKey: string = 
       today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + (today.getDate());
@@ -23,12 +28,22 @@ export default function Form() {
     const [habits, setHabits] = useMMKVObject<Habit[]>('allHabits');
     const [test, setTest] = useState<string>('');
 
-    //for useCallback updating, should contain all args
-    const allArgs = formKeysMinusDate;
-
     const [formSections, setFormSections] = useState<JSX.Element[]>([]);
 
     useEffect(() => {
+      if (data == null && habits) {
+        let defaultData: formData = {};
+        habits.forEach((habit) => {
+          if (habit.dataType === 'boolean') {
+            defaultData[habit.keyName] = false;
+          } else if (habit.dataType === 'number') {
+            defaultData[habit.keyName] = '0';
+          } else {
+            defaultData[habit.keyName] = 'ERROR THIS SHOULD NOT APPEAR';
+          }
+        });
+        setData(defaultData);
+      }
       if (habits){
         let categories : string[] = (habits).map((h) => {
           return h.category
@@ -49,29 +64,44 @@ export default function Form() {
         generateForm(habitsByCategory)
       }
       
-    }, [habits]);
+    }, [data, habits]);
+  
+    const handleInputChange = (key: string, value: any) => {
+      setData((prevData: formData) => ({
+        ...prevData,
+        [key]: value,
+      }));
+    };
     const generateForm = (habitsByCategory: { [key: string]: Habit[] }) => {
       let sections: JSX.Element[] = [];
       for (const category in habitsByCategory) {
-        let habitElements = habitsByCategory[category].map((h) => {
+        let habitButtons = habitsByCategory[category].map((h) => {
           switch (h.dataType) {
             case 'boolean':
               return(
                 <CustomButton
                     title={h.prettyPrint}
-                    onPress={() => console.log("changed " + h.prettyPrint)}
-                    // color={usedExfoliator ? buttonColorTrue : buttonColorFalse}
-                    color={buttonColorTrue}
+                    onPress={() => handleInputChange(h.keyName, !data?.[h.keyName]) }
+                    color={(data?.[h.keyName]? buttonColorTrue : buttonColorFalse) || "#FFA500"}
                 />
               );
+            default:
+              return null;
+          }
+        });
+        let habitTextInputs = habitsByCategory[category].map((h) => {
+          switch (h.dataType) {
             case 'number':
               return(
-                <TextInput
-                  style={styles.textInput}
-                  value={test}
-                  onChangeText={setTest}
-                  keyboardType='numeric'
-                />
+                <View style={styles.row}>
+                  <Text style={styles.textInputTitle}>{h.prettyPrint}:</Text>
+                  <TextInput
+                    style={styles.textInput}
+                    value={data?.[h.keyName] || ''}
+                    onChangeText={(value) => handleInputChange(h.keyName, value)}
+                    keyboardType='numeric'
+                  />
+                </View>
               );
             default:
               return null;
@@ -79,15 +109,15 @@ export default function Form() {
         });
         sections.push(
           <View key={category}>
-            <Text>{category}</Text>
-            {habitElements}
+            <Text style={styles.title}>{category}:</Text>
+            <View style={styles.buttonRow}>{habitButtons}</View>
+            {habitTextInputs}
           </View>
         );
       }
       setFormSections(sections);
     }
-    const buttonColorFalse = "#CF6679";
-    const buttonColorTrue = "#4f7942";
+
     // "#BB86FC" "#3700B3" "#84b067"
   
     return (
