@@ -71,6 +71,7 @@ export default function Form() {
         ...prevData,
         [key]: value,
       }));
+      console.log(data)
     };
     const generateForm = (habitsByCategory: { [key: string]: Habit[] }) => {
       let sections: JSX.Element[] = [];
@@ -115,6 +116,16 @@ export default function Form() {
           </View>
         );
       }
+      sections.push(
+        <CustomButton               
+        title={"Save"}
+        onPress={()=>{
+          setData(data);
+          console.log(data)
+        }}
+        color = {buttonColorTrue}
+      />
+      )
       setFormSections(sections);
     }
 
@@ -123,8 +134,9 @@ export default function Form() {
     return (
       <SafeAreaView style = {styles.safeAreaContainer}>
           <ScrollView>
-          {/** TODO: generate page by passing in habits by category, which then sorts out the 
-           * habits by button/text input before creating the component
+          {/** TODO:  
+           * Add streaks to new form
+           * (?) Rework individual days storage from being the date as a key to putting all days in one JSON 
            */
            formSections
           }
