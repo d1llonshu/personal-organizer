@@ -11,6 +11,7 @@ import updateStreaks from '@/components/updateStreaks'
 import { streakData } from '@/constants/streaks';
 import { CustomButton } from "@/components/customButton"
 import { styles } from '@/constants/stylesheet'
+import GenerateFormSection from "@/components/GenerateFormSection"
 
 export default function Form() {
     let today = new Date();
@@ -20,43 +21,83 @@ export default function Form() {
     const [data, setData] = useMMKVObject<formData>(submissionKey);
     const [streaks, setStreaks] = useMMKVObject<streakData[]>('streaks');
     const [habits, setHabits] = useMMKVObject<Habit[]>('allHabits');
-    let categories : string[] = (habits? habits : []).map((h) => {
-        return h.category
-    });
-    let uniqueCategories = new Set<string>(categories);
-    let habitsByCategory: {[key: string]: string[]} = {};
-    uniqueCategories.forEach((c) => {
-        let hArr : string[] = [];
-        (habits? habits : []).map((h) => {
-            if (h.category == c){
-                hArr.push(h.keyName)
-            }
-        });
-        if(hArr.length > 0){
-            habitsByCategory[c] = hArr
-        }
-    })
-    console.log(habitsByCategory)
-    
+    const [test, setTest] = useState<string>('');
 
     //for useCallback updating, should contain all args
     const allArgs = formKeysMinusDate;
 
-    //mounting
+    const [formSections, setFormSections] = useState<JSX.Element[]>([]);
+
     useEffect(() => {
-
-    } , [habits])
-
+      if (habits){
+        let categories : string[] = (habits).map((h) => {
+          return h.category
+        });
+        let uniqueCategories = new Set<string>(categories);
+        let habitsByCategory: {[key: string]: Habit[]} = {};
+        uniqueCategories.forEach((c) => {
+            let hArr : Habit[] = [];
+            (habits? habits : []).map((h) => {
+                if (h.category == c){
+                    hArr.push(h)
+                }
+            });
+            if(hArr.length > 0){
+                habitsByCategory[c] = hArr
+            }
+        })
+        generateForm(habitsByCategory)
+      }
+      
+    }, [habits]);
+    const generateForm = (habitsByCategory: { [key: string]: Habit[] }) => {
+      let sections: JSX.Element[] = [];
+      for (const category in habitsByCategory) {
+        let habitElements = habitsByCategory[category].map((h) => {
+          switch (h.dataType) {
+            case 'boolean':
+              return(
+                <CustomButton
+                    title={h.prettyPrint}
+                    onPress={() => console.log("changed " + h.prettyPrint)}
+                    // color={usedExfoliator ? buttonColorTrue : buttonColorFalse}
+                    color={buttonColorTrue}
+                />
+              );
+            case 'number':
+              return(
+                <TextInput
+                  style={styles.textInput}
+                  value={test}
+                  onChangeText={setTest}
+                  keyboardType='numeric'
+                />
+              );
+            default:
+              return null;
+          }
+        });
+        sections.push(
+          <View key={category}>
+            <Text>{category}</Text>
+            {habitElements}
+          </View>
+        );
+      }
+      setFormSections(sections);
+    }
     const buttonColorFalse = "#CF6679";
     const buttonColorTrue = "#4f7942";
     // "#BB86FC" "#3700B3" "#84b067"
   
     return (
       <SafeAreaView style = {styles.safeAreaContainer}>
-        <ScrollView style={styles.container}>
+          <ScrollView>
           {/** TODO: generate page by passing in habits by category, which then sorts out the 
            * habits by button/text input before creating the component
-           */}
+           */
+           formSections
+          }
         </ScrollView>
       </SafeAreaView>
     );
