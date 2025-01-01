@@ -11,8 +11,8 @@ export default function HabitLayout() {
   return (
     <Stack>
         <Stack.Screen name="habitsOverview" options={{ headerShown: false }} />
-        <Stack.Screen name="newHabitForm" options={{ headerShown: false }} />
-        <Stack.Screen name="[habit]" />
+        <Stack.Screen name="newHabitForm" options={{ headerTitle: "New Habit" }}/>
+        <Stack.Screen name="[habit]" options={{  }}/>
     </Stack>
   );
 }

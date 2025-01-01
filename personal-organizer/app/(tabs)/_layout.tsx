@@ -32,7 +32,7 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="habits/habitsOverview"
         options={{
           title: 'Habits',
@@ -52,7 +52,7 @@ export default function TabLayout() {
         options={{
           href:null,
         }}
-      />
+      /> */}
       
     </Tabs>
   );
