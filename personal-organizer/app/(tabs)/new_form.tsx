@@ -25,7 +25,7 @@ export default function Form() {
     
     const [data, setData] = useMMKVObject<formData>(submissionKey);
     const [streaks, setStreaks] = useMMKVObject<streakData[]>('streaks');
-    const [habits, setHabits] = useMMKVObject<Habit[]>('allHabits');
+    const [habits, setHabits] = useMMKVObject<Habit[]>('activeHabits');
     const [test, setTest] = useState<string>('');
 
     const [formSections, setFormSections] = useState<JSX.Element[]>([]);

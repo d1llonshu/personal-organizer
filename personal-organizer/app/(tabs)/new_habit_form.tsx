@@ -17,7 +17,7 @@ export default function newHabitForm() {
     const [dataType, setDataType] = useState<string>();
     const [timeClassification, setTimeClassification] = useState<string>()
     const [category, setCategory] = useState<string>()
-    const [habitsArray, setHabitsArray] = useMMKVObject<Habit[]>('allHabits')
+    const [habitsArray, setHabitsArray] = useMMKVObject<Habit[]>('activeHabits')
 
     const save = () => {
       //needs field validation
