@@ -5,7 +5,6 @@ import { streakData } from '@/constants/streaks';
 import { styles } from '@/constants/stylesheet';
 
 import streakPreview from '@/components/streakPreview'
-import monthlyAverages from '@/components/monthlyAverages'
 import monthlySummary from '@/components/monthlySummary';
 
 export default function HomeScreen() {

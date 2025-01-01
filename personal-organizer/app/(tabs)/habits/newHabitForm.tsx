@@ -3,14 +3,17 @@ import { StyleSheet, View, TextInput, Alert, Button, Text, ScrollView, Dimension
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Dropdown, IDropdownRef } from 'react-native-element-dropdown';
 import { MMKV, useMMKVObject} from 'react-native-mmkv';
+import { Link, usePathname, useRouter } from 'expo-router';
 
 import { Habit, dataTypes, timeClassifications, categories, keyPrettyPrint } from "@/constants/habit"
 import { styles, dropdownStyles } from "@/constants/stylesheet"
 import DropdownComponent from '@/components/dropdownComponent';
 import { CustomButton } from "@/components/customButton"
 
+
 const { width } = Dimensions.get('window');
 export default function newHabitForm() {
+    const router = useRouter();
     //const [keyName, setkeyName] = useState<string>('exampleHabit');
     const [prettyPrint, setPrettyPrint] = useState<string>('');
     const ref = useRef<IDropdownRef>(null);
@@ -112,6 +115,7 @@ export default function newHabitForm() {
                     title={"Submit"}
                     onPress={()=>{
                       save();
+                      router.back()
                     }}
                     color = "#4f7942"
                   />

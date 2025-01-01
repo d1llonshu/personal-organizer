@@ -25,9 +25,7 @@ export default function habitsPage() {
                 sections.push(
                     <View key={h.prettyPrint}>
                         <Link href={{pathname:"/habits/[habit]", params: {habit: h.keyName}}}>
-                            
                                 <Text style={styles.regularText}>{h.prettyPrint}</Text>
-                            
                         </Link>
                     </View>
                     // <View key={h.keyName}>

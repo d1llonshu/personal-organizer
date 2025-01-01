@@ -3,6 +3,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { StyleSheet, View, TextInput, Alert, Button, Text, ScrollView } from 'react-native';
 import { MMKV, useMMKVListener, useMMKVObject, useMMKVString } from 'react-native-mmkv';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Link, usePathname, useRouter } from 'expo-router';
 
 import { storage } from "@/constants/storage"
 // import { formData, formKeysMinusDate } from "@/constants/formData"
@@ -17,6 +18,7 @@ interface formData {
 }
 
 export default function Form() {
+    const router = useRouter();
     const buttonColorFalse = "#CF6679";
     const buttonColorTrue = "#4f7942";
     let today = new Date();
@@ -118,13 +120,14 @@ export default function Form() {
       }
       sections.push(
         <CustomButton               
-        title={"Save"}
-        onPress={()=>{
-          setData(data);
-          console.log(data)
-        }}
-        color = {buttonColorTrue}
-      />
+          title={"Save"}
+          onPress={()=>{
+            setData(data);
+            console.log(data);
+            router.replace({ pathname: "/(tabs)" })//index
+          }}
+          color = {buttonColorTrue}
+        />
       )
       setFormSections(sections);
     }
