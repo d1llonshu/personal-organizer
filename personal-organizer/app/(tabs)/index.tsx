@@ -14,15 +14,10 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <ScrollView style={styles.container}>
-        <View>
+        <View key="body">
           <Text style={styles.homescreenTitle}>Welcome Back!</Text>
-        </View>
-        <View >
           {streakPreview(streaks ? streaks : [])}
           {monthlySummary()} 
-        </View>
-        <View>
-          
         </View>
       </ScrollView>
     </SafeAreaView>
