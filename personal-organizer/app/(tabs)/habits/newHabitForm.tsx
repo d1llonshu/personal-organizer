@@ -25,20 +25,28 @@ export default function newHabitForm() {
     const save = () => {
       //needs field validation
       console.log('Saving...');
-      let submission : Habit = {
-        prettyPrint: prettyPrint,
-        keyName:keyPrettyPrint(prettyPrint),
-        dataType: dataType ? dataType : "Error: No data type",
-        timeClassification: timeClassification ? timeClassification : "Error: No time classification",
-        category: category ? category : "Error, No category",
-      };
-      setHabitsArray([...habitsArray ? habitsArray:[], submission]);
-      //clear form
-      setPrettyPrint("");
-      setDataType("");
-      setTimeClassification("");
-      setCategory("");
-      console.log(habitsArray)
+      if (prettyPrint == "" || dataType == undefined || timeClassification == undefined || category == undefined){
+        Alert.alert("All fields are required");
+        return false;
+      }
+      else{
+        let submission : Habit = {
+          prettyPrint: prettyPrint,
+          keyName:keyPrettyPrint(prettyPrint),
+          dataType: dataType ? dataType : "Error: No data type",
+          timeClassification: timeClassification ? timeClassification : "Error: No time classification",
+          category: category ? category : "Error, No category",
+        };
+        setHabitsArray([...habitsArray ? habitsArray:[], submission]);
+        //clear form
+        setPrettyPrint("");
+        setDataType(undefined);
+        setTimeClassification(undefined);
+        setCategory(undefined);
+        console.log(habitsArray);
+        return true;
+      }
+     
     }
 
     return (
@@ -114,8 +122,9 @@ export default function newHabitForm() {
                 <CustomButton               
                     title={"Submit"}
                     onPress={()=>{
-                      save();
-                      router.back()
+                      if(save()){
+                        router.back()
+                      }
                     }}
                     color = "#4f7942"
                   />
