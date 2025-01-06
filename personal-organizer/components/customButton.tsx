@@ -6,7 +6,7 @@ export const CustomButton = ({ onPress, title, color}: { onPress: () => void; ti
         <Pressable
             android_ripple={{color : 'white'}}
             onPress={onPress}
-            style={({pressed}) => [
+            style={() => [
                 {
                     backgroundColor: color,
                     padding: 5,

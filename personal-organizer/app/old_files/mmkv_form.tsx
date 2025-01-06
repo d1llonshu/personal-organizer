@@ -5,7 +5,7 @@ import { MMKV, useMMKVListener, useMMKVObject, useMMKVString } from 'react-nativ
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { storage } from "@/constants/storage"
-import { formData, formKeysMinusDate } from "@/constants/formData"
+import { formData, formKeysMinusDate } from "@/constants/old_files/oldFormData"
 import updateStreaks from '@/components/updateStreaks'
 import { streakData } from '@/constants/streaks';
 import { CustomButton } from "@/components/customButton"

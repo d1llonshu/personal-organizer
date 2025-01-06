@@ -6,16 +6,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link, usePathname, useRouter } from 'expo-router';
 
 import { storage } from "@/constants/storage"
-// import { formData, formKeysMinusDate } from "@/constants/formData"
 import { Habit, dataTypes, timeClassifications, categories, keyPrettyPrint } from "@/constants/habit"
 import updateStreaks from '@/components/updateStreaks'
 import { streakData } from '@/constants/streaks';
 import { CustomButton } from "@/components/customButton"
 import { styles } from '@/constants/stylesheet'
-
-interface formData {
-  [key: string]: any;
-}
+import { FormData, Submissions } from '@/constants/FormData';
 
 export default function Form() {
     const router = useRouter();
@@ -24,28 +20,47 @@ export default function Form() {
     let today = new Date();
     let submissionKey: string = 
       today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + (today.getDate());
+
+    const [submissions, setSubmissions] = useMMKVObject<Submissions>("submissions")
     
-    const [data, setData] = useMMKVObject<formData>(submissionKey);
+    const [data, setData] = useState<FormData>(submissions![submissionKey]);
     const [streaks, setStreaks] = useMMKVObject<streakData[]>('streaks');
     const [habits, setHabits] = useMMKVObject<Habit[]>('activeHabits');
     const [test, setTest] = useState<string>('');
 
     const [formSections, setFormSections] = useState<JSX.Element[]>([]);
-
+    
     useEffect(() => {
-      if (data == null && habits) {
-        let defaultData: formData = {};
-        habits.forEach((habit) => {
-          if (habit.dataType === 'boolean') {
-            defaultData[habit.keyName] = false;
-          } else if (habit.dataType === 'number') {
-            defaultData[habit.keyName] = '0';
-          } else {
-            defaultData[habit.keyName] = 'ERROR THIS SHOULD NOT APPEAR';
-          }
-        });
-        setData(defaultData);
+      //if there is an existing submission for the day
+      if(submissions && submissions[submissionKey]) {
+        console.log("submission found for today")
+        setData(submissions[submissionKey]);
       }
+      //if there is not an existing submission for the day
+      else{
+        console.log("no submission found for today, making new form")
+        if (habits) {
+          let defaultData: FormData = {};
+          habits.forEach((habit) => {
+            if (habit.dataType === 'boolean') {
+              defaultData[habit.keyName] = false;
+            } else if (habit.dataType === 'number') {
+              defaultData[habit.keyName] = '0';
+            } else {
+              defaultData[habit.keyName] = 'ERROR THIS SHOULD NOT APPEAR';
+            }
+          });
+          setData(defaultData);
+          setSubmissions({
+            ...submissions,
+            [submissionKey]: defaultData,
+          });
+        }
+        else{
+          throw Error("Habits not found");
+        }
+      }
+
       if (habits){
         let categories : string[] = (habits).map((h) => {
           return h.category
@@ -66,14 +81,27 @@ export default function Form() {
         generateForm(habitsByCategory)
       }
       
-    }, [data, habits]);
+    }, [habits, submissions]);
   
     const handleInputChange = (key: string, value: any) => {
-      setData((prevData: formData) => ({
-        ...prevData,
-        [key]: value,
-      }));
-      console.log(data)
+      // setData((prevData: FormData) => ({
+      //   ...prevData,
+      //   [key]: value,
+      // }));
+      
+      if (data) {
+        let temp = data;
+        temp[key] = value;
+        setData(temp);
+        setSubmissions({
+          ...submissions,
+          [submissionKey]: temp,
+        });
+      }
+      console.log(key + ": " + value);
+      console.log(data);
+      console.log(submissions![submissionKey]);
+      
     };
     const generateForm = (habitsByCategory: { [key: string]: Habit[] }) => {
       let sections: JSX.Element[] = [];
@@ -84,7 +112,8 @@ export default function Form() {
               return(
                 <CustomButton
                     title={h.prettyPrint}
-                    onPress={() => handleInputChange(h.keyName, !data?.[h.keyName]) }
+                    onPress={() => {handleInputChange(h.keyName, !data?.[h.keyName])
+                    }}
                     color={(data?.[h.keyName]? buttonColorTrue : buttonColorFalse) || "#FFA500"}
                 />
               );

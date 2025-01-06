@@ -3,7 +3,7 @@ import { SafeAreaView, View, TextInput, Text, ScrollView, Image } from 'react-na
 
 import { styles } from '@/constants/stylesheet'
 import { streakData } from '@/constants/streaks';
-import { formKeysMinusDatePretty } from '@/constants/formData';
+import { formKeysMinusDatePretty } from '@/constants/old_files/oldFormData';
 import { CustomButton } from "@/components/customButton"
 
 export default function streakPreview(streaks:streakData[]) {
