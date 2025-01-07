@@ -7,11 +7,12 @@ import { Link, usePathname, useRouter } from 'expo-router';
 
 import { storage } from "@/constants/storage"
 import { Habit, dataTypes, timeClassifications, categories, keyPrettyPrint } from "@/constants/habit"
-import updateStreaks from '@/components/updateStreaks'
+// import updateStreaks from '@/components/updateStreaks'
 import { streakData } from '@/constants/streaks';
 import { CustomButton } from "@/components/customButton"
 import { styles } from '@/constants/stylesheet'
 import { FormData, Submissions } from '@/constants/FormData';
+import printStreaks from '@/components/updateStreaksNew';
 
 export default function Form() {
     const router = useRouter();
@@ -21,7 +22,7 @@ export default function Form() {
     let submissionKey: string = 
       today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + (today.getDate());
 
-    const [submissions, setSubmissions] = useMMKVObject<Submissions>("submissions")
+    const [submissions, setSubmissions] = useMMKVObject<Submissions>("submissions");
     
     const [data, setData] = useState<FormData>(submissions![submissionKey]);
     const [streaks, setStreaks] = useMMKVObject<streakData[]>('streaks');
@@ -148,7 +149,8 @@ export default function Form() {
         );
       }
       sections.push(
-        <CustomButton               
+        <View key="SaveButton">
+          <CustomButton               
           title={"Save"}
           onPress={()=>{
             setData(data);
@@ -157,6 +159,8 @@ export default function Form() {
           }}
           color = {buttonColorTrue}
         />
+        </View>
+        
       )
       setFormSections(sections);
     }

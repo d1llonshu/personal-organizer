@@ -45,6 +45,7 @@ export default function habitsPage() {
             {/** TODO:  
              * Add streaks to new form
              * (?) Rework individual days storage from being the date as a key to putting all days in one JSON 
+             * setting goals/targets to reach
              */
                 pageSections
             }
