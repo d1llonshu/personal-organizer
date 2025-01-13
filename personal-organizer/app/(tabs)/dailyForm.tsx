@@ -24,11 +24,9 @@ export default function Form() {
 
     const [submissions, setSubmissions] = useMMKVObject<Submissions>("submissions");
     
-    const [data, setData] = useState<FormData>(submissions![submissionKey]);
-    const [streaks, setStreaks] = useMMKVObject<streakData[]>('streaks');
+    const [data, setData] = useState<FormData>();
     const [habits, setHabits] = useMMKVObject<Habit[]>('activeHabits');
-    const [test, setTest] = useState<string>('');
-
+    
     const [formSections, setFormSections] = useState<JSX.Element[]>([]);
     
     useEffect(() => {
@@ -126,7 +124,7 @@ export default function Form() {
           switch (h.dataType) {
             case 'number':
               return(
-                <View key={h.prettyPrint+"TextInput"} style={styles.row}>
+                <View style={styles.row}>
                   <Text style={styles.textInputTitle}>{h.prettyPrint}:</Text>
                   <TextInput
                     style={styles.textInput}

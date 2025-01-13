@@ -12,12 +12,13 @@ import { FormData, Submissions } from '@/constants/FormData';
 
 export default function printStreaks(habits: Habit[], submissions: Submissions){
     let sections: JSX.Element[] = [];
-    sections.push(
-        <View key="StreakHomePageHeader">
-            <Text style={styles.homeScreenSubtitle}>Current Streaks</Text>
-        </View>
-    )
+
     if(habits&&submissions){
+        sections.push(
+            <View key="StreakHomePageHeader">
+                <Text style={styles.homeScreenSubtitle}>Streaks</Text>
+            </View>
+        )
         let streaks = calculateStreaks(habits, submissions);
         
         for (let i = 0; i < streaks.length; i++){
@@ -32,7 +33,13 @@ export default function printStreaks(habits: Habit[], submissions: Submissions){
         return sections
     }
     else{
-        throw Error("Habits or submissions missing")
+        //throw Error("Habits or submissions missing")
+        sections.push(
+            <View key="StreakHomePageHeader">
+                <Text style={styles.homeScreenSubtitle}>No Streaks, add some habits to get started! </Text>
+            </View>
+        )
+        return sections
     }
    
 }
