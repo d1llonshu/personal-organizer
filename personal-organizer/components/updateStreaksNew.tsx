@@ -47,12 +47,9 @@ function calculateStreaks(habits: Habit[], submissions: Submissions) : number[] 
             let d1 = new Date(dateKeys[i].replaceAll("/", "-")).getTime();
             let d2 = new Date(dateKeys[i+1].replaceAll("/", "-")).getTime();
             let stillCounting = 0;
-            console.log(d1-d2);
             if(d1-d2 === 86400000){//because key is a formatted date, d1-d2 should be exactly 86400000 ms apart
-                
                 let sub = submissions[dateKeys[i+1]];//skips first day on first run, which should be present day
                 for(let hIndex = 0; hIndex < habits.length; hIndex++){//goes through each habit
-
                     let currentHabit = habits[hIndex];
                     if(currentHabit){//sometimes habits might not exist in earlier submissions
                         if (currentHabit.dataType == "boolean"){
@@ -72,16 +69,16 @@ function calculateStreaks(habits: Habit[], submissions: Submissions) : number[] 
                 minForStreak++;
             }
             else{
-                console.log("exiting because of missing entry")
-                console.log(streakCount)
+                // console.log("exiting because of missing entry")
+                // console.log(streakCount)
                 i = dateKeys.length - 1;
             }
             if (stillCounting === 0){
-                console.log("exiting because reached end for each habit")
-                console.log(streakCount)
+                // console.log("exiting because reached end for each habit")
+                // console.log(streakCount)
                 i = dateKeys.length - 1;
             }
-            console.log(dateKeys);
+            // console.log(dateKeys);
         }
         return streakCount
     }

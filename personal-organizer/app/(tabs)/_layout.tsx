@@ -26,22 +26,31 @@ export default function TabLayout() {
       <Tabs.Screen
         name="dailyForm"
         options={{
-          title: 'Form',
+          title: 'Checklist',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
-          ),
-        }}
-      />
-      {/* <Tabs.Screen
-        name="habits/habitsOverview"
-        options={{
-          title: 'Habits',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'checkbox' : 'checkbox-outline'} color={color} />
           ),
         }}
       />
       <Tabs.Screen
+        name="day"
+        options={{
+          title: 'History',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'calendar' : 'calendar-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="habits"
+        options={{
+          title: 'Habits',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'list' : 'list-outline'} color={color} />
+          ),
+        }}
+      />
+      {/* <Tabs.Screen
         name="habits/[habit]"
         options={{
           href:null,

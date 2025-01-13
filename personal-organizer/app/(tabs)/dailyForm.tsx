@@ -126,7 +126,7 @@ export default function Form() {
           switch (h.dataType) {
             case 'number':
               return(
-                <View style={styles.row}>
+                <View key={h.prettyPrint+"TextInput"} style={styles.row}>
                   <Text style={styles.textInputTitle}>{h.prettyPrint}:</Text>
                   <TextInput
                     style={styles.textInput}

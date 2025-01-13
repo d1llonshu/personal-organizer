@@ -10,6 +10,7 @@ import monthlySummary from '@/components/monthlySummary';
 import { FormData, Submissions } from '@/constants/FormData';
 import { Habit, dataTypes, timeClassifications, categories, keyPrettyPrint } from "@/constants/habit"
 import printStreaks from '@/components/updateStreaksNew';
+import monthlySummaryNew from '@/components/monthlySummaryNew';
 
 export default function HomeScreen() {
   //todo - view individual events and/or overhaul form to be able to add events easier i.e give the events its own type
@@ -18,9 +19,11 @@ export default function HomeScreen() {
   const [submissions, setSubmissions] = useMMKVObject<Submissions>("submissions");
   
   const [streakSection, setStreakSection] = useState<JSX.Element[]>([]);
+  const [summarySection, setSummarySection] = useState<JSX.Element[]>([]);
   //go through each submission checking the dates, if it's 1 day apart keep adding the streaks, else stop.
   useEffect(() => {
       setStreakSection(printStreaks(habits!, submissions!))
+      setSummarySection(monthlySummaryNew(habits!, submissions!))
   }, [submissions])
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
@@ -31,6 +34,9 @@ export default function HomeScreen() {
           {monthlySummary()}  */}
           {
             streakSection
+          }
+          {
+            summarySection
           }
         </View>
       </ScrollView>
