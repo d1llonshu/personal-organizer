@@ -20,7 +20,7 @@ export default function daysOverview() {
         if (days){
             sections.push(
                 <View key="header">
-                    <Text style={styles.title}>days:</Text>
+                    <Text style={styles.title}>History:</Text>
                 </View>
             );
             keys.map((d) => {

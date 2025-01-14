@@ -77,6 +77,11 @@ export const styles = StyleSheet.create({
         fontFamily: 'Roboto',
         color: '#E1D9D1',
     },
+    regularSubtitle: {
+      paddingLeft: 6,
+      fontFamily: 'Roboto',
+      color: '#E1D9D1',
+    },
     homeScreenSubtitle: {
       textAlign: 'center',
       fontSize: 18,
