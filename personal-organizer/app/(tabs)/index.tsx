@@ -5,8 +5,8 @@ import { MMKV, useMMKVListener, useMMKVObject, useMMKVString } from 'react-nativ
 import { streakData } from '@/constants/streaks';
 import { styles } from '@/constants/stylesheet';
 
-import streakPreview from '@/components/streakPreview'
-import monthlySummary from '@/components/monthlySummary';
+import streakPreview from '@/components/old_files/streakPreview'
+import monthlySummary from '@/components/old_files/monthlySummary';
 import { FormData, Submissions } from '@/constants/FormData';
 import { Habit, dataTypes, timeClassifications, categories, keyPrettyPrint } from "@/constants/habit"
 import printStreaks from '@/components/updateStreaksNew';

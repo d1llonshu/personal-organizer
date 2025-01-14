@@ -7,7 +7,7 @@ import { formData, formKeysMinusDate } from "@/constants/old_files/oldFormData"
 import { MMKV, useMMKVObject} from 'react-native-mmkv';
 import { streakData } from "@/constants/streaks";
 import { populateStreaks  } from '@/constants/testData';
-import updateStreaks from "@/components/updateStreaks"
+import updateStreaks from "@/components/old_files/updateStreaks"
 
 function singleDayStreakDisplay(data:streakData){
     return (

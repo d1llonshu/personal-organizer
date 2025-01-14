@@ -22,6 +22,11 @@ export default function Form() {
     let submissionKey: string = 
       today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + (today.getDate());
 
+    const [todaysKey, setTodaysKey] = useMMKVObject<String>("todaysKey");
+    if(submissionKey !== todaysKey){
+      setTodaysKey(submissionKey);
+    }
+    
     const [submissions, setSubmissions] = useMMKVObject<Submissions>("submissions");
     
     const [data, setData] = useState<FormData>();
@@ -31,33 +36,40 @@ export default function Form() {
     
     useEffect(() => {
       //if there is an existing submission for the day
-      if(submissions && submissions[submissionKey]) {
-        console.log("submission found for today")
-        setData(submissions[submissionKey]);
+      if(submissions) {
+        console.log("submissions exists");
+        if(submissions[submissionKey]){
+          console.log("submission found for today: ");
+          console.log(submissions[submissionKey]);
+          setData(submissions[submissionKey]);
+        }
+        else{
+          console.log("no submission found for today, making new form")
+          if (habits) {
+            let defaultData: FormData = {};
+            habits.forEach((habit) => {
+              if (habit.dataType === 'boolean') {
+                defaultData[habit.keyName] = false;
+              } else if (habit.dataType === 'number') {
+                defaultData[habit.keyName] = '0';
+              } else {
+                defaultData[habit.keyName] = 'ERROR THIS SHOULD NOT APPEAR';
+              }
+            });
+            setData(defaultData);
+            setSubmissions({
+              ...submissions,
+              [submissionKey]: defaultData,
+            });
+          }
+          else{
+            throw Error("Habits not found");
+          }
+        }
       }
       //if there is not an existing submission for the day
       else{
-        console.log("no submission found for today, making new form")
-        if (habits) {
-          let defaultData: FormData = {};
-          habits.forEach((habit) => {
-            if (habit.dataType === 'boolean') {
-              defaultData[habit.keyName] = false;
-            } else if (habit.dataType === 'number') {
-              defaultData[habit.keyName] = '0';
-            } else {
-              defaultData[habit.keyName] = 'ERROR THIS SHOULD NOT APPEAR';
-            }
-          });
-          setData(defaultData);
-          setSubmissions({
-            ...submissions,
-            [submissionKey]: defaultData,
-          });
-        }
-        else{
-          throw Error("Habits not found");
-        }
+        throw Error("Submissions not found")
       }
 
       if (habits){
@@ -80,7 +92,7 @@ export default function Form() {
         generateForm(habitsByCategory)
       }
       
-    }, [habits, submissions]);
+    }, [habits, submissions, todaysKey]);
   
     const handleInputChange = (key: string, value: any) => {
       // setData((prevData: FormData) => ({
@@ -109,12 +121,15 @@ export default function Form() {
           switch (h.dataType) {
             case 'boolean':
               return(
-                <CustomButton
+                <View key={h.keyName+"Button"}>
+                  <CustomButton
                     title={h.prettyPrint}
                     onPress={() => {handleInputChange(h.keyName, !data?.[h.keyName])
                     }}
                     color={(data?.[h.keyName]? buttonColorTrue : buttonColorFalse) || "#FFA500"}
-                />
+                  />
+                </View>
+                
               );
             default:
               return null;
@@ -124,7 +139,7 @@ export default function Form() {
           switch (h.dataType) {
             case 'number':
               return(
-                <View style={styles.row}>
+                <View key={h.keyName+"TextInput"}style={styles.row}>
                   <Text style={styles.textInputTitle}>{h.prettyPrint}:</Text>
                   <TextInput
                     style={styles.textInput}

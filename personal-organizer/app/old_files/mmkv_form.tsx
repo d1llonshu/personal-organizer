@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { storage } from "@/constants/storage"
 import { formData, formKeysMinusDate } from "@/constants/old_files/oldFormData"
-import updateStreaks from '@/components/updateStreaks'
+import updateStreaks from '@/components/old_files/updateStreaks'
 import { streakData } from '@/constants/streaks';
 import { CustomButton } from "@/components/customButton"
 import { styles } from '@/constants/stylesheet'
