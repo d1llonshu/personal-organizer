@@ -1,0 +1,28 @@
+export interface Habit {
+   keyName: string;
+   prettyPrint: string;
+   dataType: string;
+   timeClassification: string;
+   category: string;
+}
+
+export const dataTypes = [
+    { label: 'complete/not complete', value: 'boolean' },
+    { label: 'minutes', value: 'number' },
+];
+export const timeClassifications = [
+    { label: 'Once daily', value: 'Once Daily' },
+    { label: 'Once weekly', value: 'Once Weekly' },
+    { label: 'More than once daily', value: 'Count Per Day' },
+];
+export const categories = [
+    { label: 'Personal Care', value: 'Personal Care' },
+    { label: 'Fitness', value: 'Fitness' },
+    { label: 'Productivity', value: 'Productivity' },
+    { label: 'Hobby', value: 'Hobby' },
+    { label: 'Other', value: 'Other' },
+]
+
+export function keyPrettyPrint(keyName: string) {
+    return keyName.replace(/\s/g, "_");
+}

@@ -1,0 +1,68 @@
+import { Tabs, Stack } from 'expo-router';
+import React from 'react';
+
+import { TabBarIcon } from '@/components/navigation/TabBarIcon';
+import { Colors } from '@/constants/Colors';
+import { useColorScheme } from '@/hooks/useColorScheme';
+ 
+export default function TabLayout() {
+  const colorScheme = useColorScheme();
+
+  return (
+    <Tabs 
+      screenOptions={{
+        tabBarActiveTintColor: Colors[colorScheme ?? 'dark'].tint,
+        headerShown: false,
+      }}>
+      <Tabs.Screen
+        name="index"
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="dailyForm"
+        options={{
+          title: 'Checklist',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'checkbox' : 'checkbox-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="day"
+        options={{
+          title: 'History',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'calendar' : 'calendar-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="habits"
+        options={{
+          title: 'Habits',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'list' : 'list-outline'} color={color} />
+          ),
+        }}
+      />
+      {/* <Tabs.Screen
+        name="habits/[habit]"
+        options={{
+          href:null,
+        }}
+      />
+      <Tabs.Screen
+        name="habits/newHabitForm"
+        options={{
+          href:null,
+        }}
+      /> */}
+      
+    </Tabs>
+  );
+}
