@@ -142,10 +142,10 @@ export const dropdownStyles = StyleSheet.create({
       alignItems: 'center',
     },
     title: {
-      marginLeft: 6,
+      marginLeft: 2,
       textAlign: 'right',
       alignItems: 'flex-end',
-      fontSize: 16,
+      fontSize: 14,
       flex: 0.25,
       color: '#E1D9D1',
       marginRight: 10,

@@ -7,8 +7,8 @@ export interface Habit {
 }
 
 export const dataTypes = [
-    { label: 'boolean', value: 'boolean' },
-    { label: 'number', value: 'number' },
+    { label: 'complete/not complete', value: 'boolean' },
+    { label: 'minutes', value: 'number' },
 ];
 export const timeClassifications = [
     { label: 'Once daily', value: 'Once Daily' },

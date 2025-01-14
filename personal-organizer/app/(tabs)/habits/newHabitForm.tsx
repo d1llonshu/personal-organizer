@@ -63,7 +63,7 @@ export default function newHabitForm() {
                     />
                 </View>
                 <View style={dropdownStyles.dropdownRow}>
-                    <Text style={dropdownStyles.title}>Type:</Text>
+                    <Text style={dropdownStyles.title}>Metric:</Text>
                         <Dropdown
                           style={dropdownStyles.dropdown}
                           placeholderStyle={dropdownStyles.placeholderStyle}
@@ -82,7 +82,7 @@ export default function newHabitForm() {
                         />
                 </View>
                 <View style={dropdownStyles.dropdownRow}>
-                    <Text style={dropdownStyles.title}>Time Scale:</Text>
+                    <Text style={dropdownStyles.title}>Completion Goal:</Text>
                         <Dropdown
                           style={dropdownStyles.dropdown}
                           placeholderStyle={dropdownStyles.placeholderStyle}
