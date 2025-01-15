@@ -2,7 +2,8 @@ export interface Habit {
    keyName: string;
    prettyPrint: string;
    dataType: string;
-   timeClassification: string;
+   goal: string;
+   timeframe: string;
    category: string;
 }
 
@@ -10,11 +11,15 @@ export const dataTypes = [
     { label: 'complete/not complete', value: 'boolean' },
     { label: 'minutes', value: 'number' },
 ];
-export const timeClassifications = [
+export const boolGoals = [
     { label: 'Once daily', value: 'Once Daily' },
     { label: 'Once weekly', value: 'Once Weekly' },
     { label: 'More than once daily', value: 'Count Per Day' },
 ];
+export const timeframes = [
+    { label: 'Daily', value: 'Daily' },
+    { label: 'Weekly', value: 'Weekly' },
+]
 export const categories = [
     { label: 'Personal Care', value: 'Personal Care' },
     { label: 'Fitness', value: 'Fitness' },

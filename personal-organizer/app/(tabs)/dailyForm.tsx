@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link, usePathname, useRouter } from 'expo-router';
 
 import { storage } from "@/constants/storage"
-import { Habit, dataTypes, timeClassifications, categories, keyPrettyPrint } from "@/constants/habit"
+import { Habit, dataTypes, boolGoals, categories, keyPrettyPrint } from "@/constants/habit"
 // import updateStreaks from '@/components/updateStreaks'
 import { streakData } from '@/constants/streaks';
 import { CustomButton } from "@/components/customButton"
@@ -56,6 +56,7 @@ export default function Form() {
                 defaultData[habit.keyName] = 'ERROR THIS SHOULD NOT APPEAR';
               }
             });
+
             setData(defaultData);
             setSubmissions({
               ...submissions,
@@ -93,7 +94,7 @@ export default function Form() {
       }
       
     }, [habits, submissions, todaysKey]);
-  
+
     const handleInputChange = (key: string, value: any) => {
       // setData((prevData: FormData) => ({
       //   ...prevData,

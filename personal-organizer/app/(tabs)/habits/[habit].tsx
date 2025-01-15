@@ -5,7 +5,7 @@ import { Dropdown, IDropdownRef } from 'react-native-element-dropdown';
 import { MMKV, useMMKVObject} from 'react-native-mmkv';
 import { Link, usePathname, useLocalSearchParams, Stack} from 'expo-router';
 
-import { Habit, dataTypes, timeClassifications, categories, keyPrettyPrint } from "@/constants/habit"
+import { Habit, dataTypes, boolGoals, categories, keyPrettyPrint } from "@/constants/habit"
 import { styles, dropdownStyles } from "@/constants/stylesheet"
 
 export default function habitsPage() {

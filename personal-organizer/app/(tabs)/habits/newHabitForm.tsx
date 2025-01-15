@@ -5,43 +5,57 @@ import { Dropdown, IDropdownRef } from 'react-native-element-dropdown';
 import { MMKV, useMMKVObject} from 'react-native-mmkv';
 import { Link, usePathname, useRouter } from 'expo-router';
 
-import { Habit, dataTypes, timeClassifications, categories, keyPrettyPrint } from "@/constants/habit"
+import { Habit, dataTypes, timeframes, categories, keyPrettyPrint } from "@/constants/habit"
 import { styles, dropdownStyles } from "@/constants/stylesheet"
 import DropdownComponent from '@/components/dropdownComponent';
 import { CustomButton } from "@/components/customButton"
 
-
-const { width } = Dimensions.get('window');
 export default function newHabitForm() {
     const router = useRouter();
     //const [keyName, setkeyName] = useState<string>('exampleHabit');
     const [prettyPrint, setPrettyPrint] = useState<string>('');
     const ref = useRef<IDropdownRef>(null);
     const [dataType, setDataType] = useState<string>();
-    const [timeClassification, setTimeClassification] = useState<string>()
-    const [category, setCategory] = useState<string>()
-    const [habitsArray, setHabitsArray] = useMMKVObject<Habit[]>('activeHabits')
+    const [goal, setGoal] = useState<string>();
+    const [timeframe, setTimeframe] = useState<string>();
+    const [category, setCategory] = useState<string>();
+    const [habitsArray, setHabitsArray] = useMMKVObject<Habit[]>('activeHabits');
+
 
     const save = () => {
-      //needs field validation
+      // needs field validation
       console.log('Saving...');
-      if (prettyPrint == "" || dataType == undefined || timeClassification == undefined || category == undefined){
+      if (prettyPrint == "" || dataType == undefined || goal == undefined || category == undefined || timeframe == undefined){
         Alert.alert("All fields are required");
+        return false;
+      }
+      else if (Number(goal) <= 0){
+        Alert.alert("Goal should be greater than 0!");
+        return false;
+      }
+      else if(dataType == "boolean" && (timeframe == "Daily" && Number(goal) > 1)){
+        Alert.alert("Yes/No habits can only be done once per day");
+        return false;
+      }
+      else if(dataType == "boolean" && (timeframe == "Weekly" && Number(goal) > 7)){
+        Alert.alert("Yes/No habits can only be done once per day and cannot be done more than 7 times a week");
         return false;
       }
       else{
         let submission : Habit = {
           prettyPrint: prettyPrint,
           keyName:keyPrettyPrint(prettyPrint),
-          dataType: dataType ? dataType : "Error: No data type",
-          timeClassification: timeClassification ? timeClassification : "Error: No time classification",
-          category: category ? category : "Error, No category",
+          dataType: dataType ? dataType : "No data type",
+          goal: goal ? goal : "No goal",
+          timeframe: timeframe ? timeframe : "No timeframe",
+          category: category ? category : "No category",
         };
         setHabitsArray([...habitsArray ? habitsArray:[], submission]);
         //clear form
         setPrettyPrint("");
         setDataType(undefined);
-        setTimeClassification(undefined);
+        setGoal(undefined);
+        setTimeframe(undefined);
         setCategory(undefined);
         console.log(habitsArray);
         return true;
@@ -52,82 +66,97 @@ export default function newHabitForm() {
     return (
         <SafeAreaView style={styles.safeAreaContainer}>
             <ScrollView>
-                <View style={styles.row}>
-                    <Text style={dropdownStyles.title}>Habit:</Text>
-                    <TextInput
-                        style={styles.textInput}
-                        placeholder='Biking'
-                        placeholderTextColor="gray" 
-                        value={prettyPrint}
-                        onChangeText={setPrettyPrint}
-                    />
-                </View>
-                <View style={dropdownStyles.dropdownRow}>
-                    <Text style={dropdownStyles.title}>Metric:</Text>
-                        <Dropdown
-                          style={dropdownStyles.dropdown}
-                          placeholderStyle={dropdownStyles.placeholderStyle}
-                          selectedTextStyle={dropdownStyles.selectedTextStyle}
-                          inputSearchStyle={dropdownStyles.inputSearchStyle}
-                          iconStyle={dropdownStyles.iconStyle}
-                          data={dataTypes}
-                          maxHeight={300}
-                          labelField="label"
-                          valueField="value"
-                          placeholder="Select item"
-                          value={dataType}
-                          onChange={item => {
-                            setDataType(item.value);
-                          }}
-                        />
-                </View>
-                <View style={dropdownStyles.dropdownRow}>
-                    <Text style={dropdownStyles.title}>Completion Goal:</Text>
-                        <Dropdown
-                          style={dropdownStyles.dropdown}
-                          placeholderStyle={dropdownStyles.placeholderStyle}
-                          selectedTextStyle={dropdownStyles.selectedTextStyle}
-                          inputSearchStyle={dropdownStyles.inputSearchStyle}
-                          iconStyle={dropdownStyles.iconStyle}
-                          data={timeClassifications}
-                          maxHeight={300}
-                          labelField="label"
-                          valueField="value"
-                          placeholder="Select item"
-                          value={timeClassification}
-                          onChange={item => {
-                            setTimeClassification(item.value);
-                          }}
-                        />
-                </View>
-                <View style={dropdownStyles.dropdownRow}>
-                    <Text style={dropdownStyles.title}>Category:</Text>
-                        <Dropdown
-                          style={dropdownStyles.dropdown}
-                          placeholderStyle={dropdownStyles.placeholderStyle}
-                          selectedTextStyle={dropdownStyles.selectedTextStyle}
-                          inputSearchStyle={dropdownStyles.inputSearchStyle}
-                          iconStyle={dropdownStyles.iconStyle}
-                          data={categories}
-                          maxHeight={300}
-                          labelField="label"
-                          valueField="value"
-                          placeholder="Select item"
-                          value={category}
-                          onChange={item => {
-                            setCategory(item.value);
-                          }}
-                        />
-                </View>
-                <CustomButton               
-                    title={"Submit"}
-                    onPress={()=>{
-                      if(save()){
-                        router.back()
-                      }
+            
+            <View key={"nameInput"}style={styles.row}>
+              <Text style={dropdownStyles.title}>Habit:</Text>
+              <TextInput
+                  style={styles.textInput}
+                  placeholder='Biking'
+                  placeholderTextColor="gray" 
+                  value={prettyPrint}
+                  onChangeText={setPrettyPrint}
+              />
+            </View>
+
+            <View key={"categoryInput"}style={dropdownStyles.dropdownRow}>
+              <Text style={dropdownStyles.title}>Category:</Text>
+              <Dropdown
+                style={dropdownStyles.dropdown}
+                placeholderStyle={dropdownStyles.placeholderStyle}
+                selectedTextStyle={dropdownStyles.selectedTextStyle}
+                inputSearchStyle={dropdownStyles.inputSearchStyle}
+                iconStyle={dropdownStyles.iconStyle}
+                data={categories}
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                placeholder="Select item"
+                value={category}
+                onChange={item => {
+                  setCategory(item.value);
+                }}
+              />
+            </View>
+
+            <View key={"dataTypeInput"} style={dropdownStyles.dropdownRow}>
+              <Text style={dropdownStyles.title}>Metric:</Text>
+                  <Dropdown
+                    style={dropdownStyles.dropdown}
+                    placeholderStyle={dropdownStyles.placeholderStyle}
+                    selectedTextStyle={dropdownStyles.selectedTextStyle}
+                    inputSearchStyle={dropdownStyles.inputSearchStyle}
+                    iconStyle={dropdownStyles.iconStyle}
+                    data={dataTypes}
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select item"
+                    value={dataType}
+                    onChange={item => {
+                      setDataType(item.value);
                     }}
-                    color = "#4f7942"
                   />
+            </View>
+
+            <View key={"goalInput"}style={dropdownStyles.dropdownRow}>
+              <Text style={dropdownStyles.title}>Target Time:</Text>
+              <TextInput
+                  style={dropdownStyles.dropdownTextInput}
+                  placeholder='15'
+                  placeholderTextColor="gray" 
+                  keyboardType='numeric'
+                  value={goal}
+                  onChangeText={setGoal}
+              />
+              <Dropdown
+                    style={dropdownStyles.dropdownSmall}
+                    placeholderStyle={dropdownStyles.placeholderStyle}
+                    selectedTextStyle={dropdownStyles.selectedTextStyle}
+                    inputSearchStyle={dropdownStyles.inputSearchStyle}
+                    iconStyle={dropdownStyles.iconStyle}
+                    data={timeframes}
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder="Select"
+                    value={timeframe}
+                    onChange={item => {
+                      setTimeframe(item.value);
+                    }}
+                  />
+            </View>
+
+            <View key={"submitButton"}>
+              <CustomButton               
+                title={"Submit"}
+                onPress={()=>{
+                  if(save()){
+                    router.back()
+                  }
+                }}
+                color = "#4f7942"
+              />
+            </View>
             </ScrollView>
         </SafeAreaView>
     );

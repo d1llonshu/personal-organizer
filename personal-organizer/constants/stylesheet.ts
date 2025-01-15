@@ -155,5 +155,32 @@ export const dropdownStyles = StyleSheet.create({
       color: '#E1D9D1',
       marginRight: 10,
       fontWeight: 'bold',
-    }
+    },
+    dropdownSmall: {
+      marginBottom: 5,
+      marginTop: 5,
+      height: 30,
+      backgroundColor: 'white',
+      borderRadius: 5,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 1,
+      },
+      shadowOpacity: 0.2,
+      shadowRadius: 1.41,
+      elevation: 2,
+      flex: 0.33
+    },
+    dropdownTextInput: {
+      flex: 0.6,
+      marginVertical: 5,
+      borderWidth: StyleSheet.hairlineWidth,
+      borderColor: '#E1D9D1',
+      color: '#E1D9D1',
+      borderRadius: 5,
+      padding: 5,
+      marginRight: 10,
+      height: 30,
+    },
   });

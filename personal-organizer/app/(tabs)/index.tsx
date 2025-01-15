@@ -8,7 +8,7 @@ import { styles } from '@/constants/stylesheet';
 import streakPreview from '@/components/old_files/streakPreview'
 import monthlySummary from '@/components/old_files/monthlySummary';
 import { FormData, Submissions } from '@/constants/FormData';
-import { Habit, dataTypes, timeClassifications, categories, keyPrettyPrint } from "@/constants/habit"
+import { Habit, dataTypes, boolGoals, categories, keyPrettyPrint } from "@/constants/habit"
 import printStreaks from '@/components/updateStreaksNew';
 import monthlySummaryNew from '@/components/monthlySummaryNew';
 
@@ -24,7 +24,7 @@ export default function HomeScreen() {
   useEffect(() => {
       setStreakSection(printStreaks(habits!, submissions!))
       setSummarySection(monthlySummaryNew(habits!, submissions!))
-  }, [submissions])
+  }, [habits, submissions])
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <ScrollView style={styles.container}>
