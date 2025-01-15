@@ -1,11 +1,10 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { StyleSheet, View, TextInput, Alert, Button, Text, ScrollView, Dimensions, Pressable } from 'react-native';
+import { StyleSheet, View, TextInput, Alert, Button, Text, ScrollView} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Dropdown, IDropdownRef } from 'react-native-element-dropdown';
 import { MMKV, useMMKVObject} from 'react-native-mmkv';
 import { Link, usePathname, useLocalSearchParams, Stack} from 'expo-router';
 
-import { Habit, dataTypes, boolGoals, categories, keyPrettyPrint } from "@/constants/habit"
+import { Habit, dataTypes, categories, keyPrettyPrint } from "@/constants/habit"
 import { styles, dropdownStyles } from "@/constants/stylesheet"
 
 export default function habitsPage() {

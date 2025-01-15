@@ -8,7 +8,7 @@ import { styles } from '@/constants/stylesheet';
 import streakPreview from '@/components/old_files/streakPreview'
 import monthlySummary from '@/components/old_files/monthlySummary';
 import { FormData, Submissions } from '@/constants/FormData';
-import { Habit, dataTypes, boolGoals, categories, keyPrettyPrint } from "@/constants/habit"
+import { Habit, dataTypes, categories, keyPrettyPrint } from "@/constants/habit"
 import printStreaks from '@/components/updateStreaksNew';
 import monthlySummaryNew from '@/components/monthlySummaryNew';
 

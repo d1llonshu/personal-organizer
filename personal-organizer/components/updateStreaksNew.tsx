@@ -1,13 +1,11 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { StyleSheet, View, TextInput, Alert, Button, Text, ScrollView, Dimensions, Pressable } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { MMKV, useMMKVObject} from 'react-native-mmkv';
-import { Link, usePathname, useLocalSearchParams, Stack} from 'expo-router';
 
-import { Habit, dataTypes, boolGoals, categories, keyPrettyPrint } from "@/constants/habit"
+import { Habit, dataTypes, timeframes, categories, keyPrettyPrint } from "@/constants/habit"
 import { styles, dropdownStyles } from "@/constants/stylesheet"
 import { FormData, Submissions } from '@/constants/FormData';
 
+import { calculateStatsForPeriod, generateDifferentDaysKey, generateConsecutiveKeys, habitValueAsInt } from "@/components/helper"
 
 
 export default function printStreaks(habits: Habit[], submissions: Submissions){
@@ -22,7 +20,7 @@ export default function printStreaks(habits: Habit[], submissions: Submissions){
         let streaks = calculateStreaks(habits, submissions);
         
         for (let i = 0; i < streaks.length; i++){
-            if(habits[i].timeframe != "Once Weekly"){
+            if(habits[i].timeframe != "Weekly"){
                 sections.push(
                     <View key={habits[i].keyName+"StreakPrint"}>
                         <Text style={styles.regularText}>{habits[i].prettyPrint}: {streaks[i]} {(streaks[i] == 1) ? "day" : "days"}</Text>
@@ -144,85 +142,4 @@ function calculateStreaks(habits: Habit[], submissions: Submissions) : number[] 
         return streakCount
     }
     return []
-}
-// Important: Assumes it takes in consecutive keys
-// number[] returns at index:
-// 0: sum
-// 1: streak length (starting from first entry)
-function calculateStatsForPeriod(habits: Habit[], submissions: Submissions, keys: string[]) : {[key: string] : number[]}{
-    let ret : {[key: string] : number[]} = {}
-    let totalsCount = Array<number>(habits.length).fill(0);
-    habits.forEach((h) => {
-        ret[h.keyName] = Array<number>(2).fill(0);
-    });
-    let reqForStreak = 0;
-    keys.forEach((key)=>{
-        //if the submission exists
-        if(submissions[key]){
-            habits.forEach((h) => {
-                let val = habitValueAsInt(h.keyName, submissions[key], h.dataType);
-                // increment sum
-                ret[h.keyName][0] = ret[h.keyName][0] + val; 
-                // if positive and hasn't missed any days, increment streak
-                if(val > 0 && ret[h.keyName][1] == reqForStreak){
-                    ret[h.keyName][1]++;
-                }
-            });
-        }
-        reqForStreak++;
-        console.log(reqForStreak);
-    })
-    return ret;
-}
-
-// Returns habit value as int, such that boolean true = 1 and false = 0. 
-// Inputs:
-// habit - habit.keyName, assumes valid for submission
-// submission - formData for a given day
-// dtype - valid habit datatype (currently "boolean" or "number")
-// Output:
-// a number correpsonding to habit data for given day such that boolean true = 1 and false = 0
-function habitValueAsInt(habit: string, submission: FormData, dtype: string) : number {
-    if(dtype === "boolean"){
-        switch(submission[habit]){
-            case true:
-                return 1;
-            case false:
-                return 0;
-            case undefined:
-                return 0;
-        }
-    } 
-    if (dtype === "number"){
-        switch(submission[habit]){
-            case undefined:
-                return 0;
-            default: 
-                return Number(submission[habit]);
-        }
-    }
-    
-    return 0;//replace w/ throw error?
-}
-
-function generateDifferentDaysKey(key:string, daysBeforeProvidedKey:number){
-    let newTime = new Date(key.replaceAll("/", "-")).getTime() - 86400000*daysBeforeProvidedKey;
-    let newDate = new Date(newTime);
-    // console.log(newDate)
-    // console.log(newDate.getUTCDate());
-    return(String(newDate.getUTCFullYear()) + "/" + String(newDate.getUTCMonth()+1) + "/" + String(newDate.getUTCDate()));
-}
-
-// starts from key provided then goes back x days
-// arr[0] = key provided
-function generateConsecutiveKeys(key:string, days:number){
-    let arr = [];
-    let count = 0;
-
-    while(count < days){
-        arr.push(generateDifferentDaysKey(key, count));
-        count = count + 1;
-    }
-
-    return arr
 }

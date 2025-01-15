@@ -1,6 +1,6 @@
 import { StyleSheet, View, Button, Text, ScrollView } from 'react-native';
 
-import { Habit, dataTypes, boolGoals, categories, keyPrettyPrint } from "@/constants/habit"
+import { Habit, dataTypes, categories, keyPrettyPrint } from "@/constants/habit"
 import { styles, dropdownStyles } from "@/constants/stylesheet"
 import { FormData, Submissions } from '@/constants/FormData';
 

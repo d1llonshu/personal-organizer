@@ -6,7 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link, usePathname, useRouter } from 'expo-router';
 
 import { storage } from "@/constants/storage"
-import { Habit, dataTypes, boolGoals, categories, keyPrettyPrint } from "@/constants/habit"
+import { Habit, dataTypes, categories, keyPrettyPrint } from "@/constants/habit"
 // import updateStreaks from '@/components/updateStreaks'
 import { streakData } from '@/constants/streaks';
 import { CustomButton } from "@/components/customButton"
