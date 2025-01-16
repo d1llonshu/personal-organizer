@@ -1,7 +1,6 @@
 import { FormData, Submissions } from '@/constants/FormData';
 import { Habit } from "@/constants/habit"
 
-
 // Important: Assumes it takes in consecutive keys
 // number[] returns at index:
 // 0: sum

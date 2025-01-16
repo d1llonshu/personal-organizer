@@ -12,21 +12,24 @@ import { Habit, dataTypes, categories, keyPrettyPrint } from "@/constants/habit"
 import printStreaks from '@/components/updateStreaksNew';
 import monthlySummaryNew from '@/components/monthlySummaryNew';
 
+import currentWeekSummary from '@/components/habitProgress';
+// import { ProgressBar, MD3Colors } from 'react-native-paper';
+
 import { sampleSubmissions, sampleHabits } from '@/constants/sampleData';
 
 export default function HomeScreen() {
-  //todo - view individual events and/or overhaul form to be able to add events easier i.e give the events its own type
   const [streaks, setStreaks] = useMMKVObject<streakData[]>('streaks');
   const [habits, setHabits] = useMMKVObject<Habit[]>('activeHabits');
   const [submissions, setSubmissions] = useMMKVObject<Submissions>("submissions");
+  const [todaysKey, setTodaysKey] = useMMKVObject<string>("todaysKey");
   
   const [streakSection, setStreakSection] = useState<JSX.Element[]>([]);
-  const [summarySection, setSummarySection] = useState<JSX.Element[]>([]);
+  const [currentWeekSection, setCurrentWeekSection] = useState<JSX.Element[]>([]);
   //go through each submission checking the dates, if it's 1 day apart keep adding the streaks, else stop.
   useEffect(() => {
-      setStreakSection(printStreaks(habits!, submissions!))
-      setSummarySection(monthlySummaryNew(habits!, submissions!))
-  }, [habits, submissions])
+      setStreakSection(printStreaks(habits!, submissions!));
+      setCurrentWeekSection(currentWeekSummary(habits!, submissions!, todaysKey!));
+  }, [habits, submissions, todaysKey])
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <ScrollView style={styles.container}>
@@ -34,11 +37,12 @@ export default function HomeScreen() {
           <Text style={styles.homescreenTitle}>Welcome Back!</Text>
           {/* {streakPreview(streaks ? streaks : [])}
           {monthlySummary()}  */}
+
           {
             streakSection
           }
           {
-            summarySection
+            currentWeekSection
           }
           <View key="setSampleData" style = {styles.buttonContainer}>
                     <Pressable onPress={() => {

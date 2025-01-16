@@ -58,7 +58,7 @@ function calculateStreaks(habits: Habit[], submissions: Submissions) : number[] 
         console.log("all keys: " + dateKeys)
         let yesterdaysKey = generateDifferentDaysKey(dateKeys[0], 1);
         // let yesterdaysKey = generateDifferentDaysKey("2025/1/13", 1);
-        let yesterDay = new Date(yesterdaysKey.replaceAll("/", "-")).getUTCDay();
+        let yesterDay = new Date(yesterdaysKey).getUTCDay();
         
         // since this may be tallied while the week is ongoing, we can't count weekly targets that aren't complete yet
         // so, generate keys needed to reach first sunday

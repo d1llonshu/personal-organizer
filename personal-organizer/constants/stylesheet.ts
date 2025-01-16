@@ -96,7 +96,32 @@ export const styles = StyleSheet.create({
       textAlign: 'center',
       
     },
+
   });
+export const progressBarStyles = StyleSheet.create({
+  progressBarSubtitle: {
+    fontFamily: 'Roboto',
+    color: '#E1D9D1',
+  },
+  progressBarTitle: {
+    paddingLeft: 10,
+    fontFamily: 'Roboto',
+    color: '#E1D9D1',
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  progressBarStyle: {
+    backgroundColor: '#E0E0E0',
+    height: 18,
+    borderRadius: 64,
+    marginHorizontal: 10,
+    marginBottom: 5,
+    flex: 0.6,
+  },
+  progressBarfillStyle: {
+    borderRadius: 64,
+  },
+});
 export const dropdownStyles = StyleSheet.create({
     dropdown: {
       marginBottom: 5,

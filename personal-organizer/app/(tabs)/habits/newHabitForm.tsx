@@ -29,19 +29,7 @@ export default function newHabitForm() {
         Alert.alert("All fields are required");
         return false;
       }
-      else if (Number(goal) <= 0){
-        Alert.alert("Goal should be greater than 0!");
-        return false;
-      }
-      else if(dataType == "boolean" && (timeframe == "Daily" && Number(goal) > 1)){
-        Alert.alert("Yes/No habits can only be done once per day");
-        return false;
-      }
-      else if(dataType == "boolean" && (timeframe == "Weekly" && Number(goal) > 7)){
-        Alert.alert("Yes/No habits can only be done once per day and cannot be done more than 7 times a week");
-        return false;
-      }
-      else{
+      if(passesFormValidation(prettyPrint, dataType, goal, category, timeframe, habitsArray ? habitsArray : [])){
         let submission : Habit = {
           prettyPrint: prettyPrint,
           keyName:keyPrettyPrint(prettyPrint),
@@ -59,6 +47,9 @@ export default function newHabitForm() {
         setCategory(undefined);
         console.log(habitsArray);
         return true;
+      }
+      else{
+        return false;
       }
      
     }
@@ -162,3 +153,25 @@ export default function newHabitForm() {
     );
 }
 
+function passesFormValidation(prettyPrint: string, dataType: string, goal: string, category: string, timeframe: string, habits: Habit[]) : Boolean {
+
+  if (Number(goal) <= 0){
+    Alert.alert("Goal should be greater than 0!");
+    return false;
+  }
+  else if(dataType == "boolean" && (timeframe == "Daily" && Number(goal) > 1)){
+    Alert.alert("Yes/No habits can only be done once per day");
+    return false;
+  }
+  else if(dataType == "boolean" && (timeframe == "Weekly" && Number(goal) > 7)){
+    Alert.alert("Yes/No habits can only be done once per day and cannot be done more than 7 times a week");
+    return false;
+  }
+  habits.forEach((h) => {
+    if(h.keyName === keyPrettyPrint(prettyPrint) || h.prettyPrint === prettyPrint){
+      Alert.alert("Habit already exists; please choose a different name");
+      return false;
+    }
+  });
+  return true
+}

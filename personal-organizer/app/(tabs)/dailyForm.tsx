@@ -22,7 +22,7 @@ export default function Form() {
     let submissionKey: string = 
       today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + (today.getDate());
 
-    const [todaysKey, setTodaysKey] = useMMKVObject<String>("todaysKey");
+    const [todaysKey, setTodaysKey] = useMMKVObject<string>("todaysKey");
     if(submissionKey !== todaysKey){
       setTodaysKey(submissionKey);
     }
