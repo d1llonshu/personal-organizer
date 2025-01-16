@@ -30,6 +30,9 @@ export default function Form() {
     const [submissions, setSubmissions] = useMMKVObject<Submissions>("submissions");
     
     const [data, setData] = useState<FormData>();
+    if(submissions && submissions[submissionKey] && data === undefined){
+      setData(submissions[submissionKey]);
+    }
     const [habits, setHabits] = useMMKVObject<Habit[]>('activeHabits');
     
     const [formSections, setFormSections] = useState<JSX.Element[]>([]);
