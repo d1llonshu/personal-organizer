@@ -1,6 +1,6 @@
-import { formData, formKeysMinusDate } from "./old_files/oldFormData"
-import { streakData } from "./streaks"
-import { storage } from "./storage"
+import { formData, formKeysMinusDate } from "./oldFormData"
+import { streakData } from "../streaks"
+import { storage } from "../storage"
 
 function getKeysForDate(today:Date) : {todaysKey:string, yesterdaysKey:string}{
     let todaysKey : string = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate();

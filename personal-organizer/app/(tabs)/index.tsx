@@ -1,4 +1,4 @@
-import { SafeAreaView, View, TextInput, Text, ScrollView } from 'react-native';
+import { SafeAreaView, View, TextInput, Text, ScrollView, Pressable } from 'react-native';
 import { useEffect, useState } from 'react';
 import { MMKV, useMMKVListener, useMMKVObject, useMMKVString } from 'react-native-mmkv';
 
@@ -11,6 +11,8 @@ import { FormData, Submissions } from '@/constants/FormData';
 import { Habit, dataTypes, categories, keyPrettyPrint } from "@/constants/habit"
 import printStreaks from '@/components/updateStreaksNew';
 import monthlySummaryNew from '@/components/monthlySummaryNew';
+
+import { sampleSubmissions, sampleHabits } from '@/constants/sampleData';
 
 export default function HomeScreen() {
   //todo - view individual events and/or overhaul form to be able to add events easier i.e give the events its own type
@@ -38,6 +40,21 @@ export default function HomeScreen() {
           {
             summarySection
           }
+          <View key="setSampleData" style = {styles.buttonContainer}>
+                    <Pressable onPress={() => {
+                        setHabits(sampleHabits);
+                        setSubmissions(sampleSubmissions);
+                    }}
+                        style={() => [
+                            {
+                                backgroundColor:  "#4f7942",
+                                padding: 5,
+                                borderRadius: 4,
+                            },
+                        ]}>
+                        <Text  style={styles.buttonTitle}>SET TO SAMPLE DATA</Text>
+                    </Pressable >
+                </View>
         </View>
       </ScrollView>
     </SafeAreaView>

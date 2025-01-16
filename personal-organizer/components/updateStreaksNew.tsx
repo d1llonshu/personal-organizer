@@ -20,10 +20,17 @@ export default function printStreaks(habits: Habit[], submissions: Submissions){
         let streaks = calculateStreaks(habits, submissions);
         
         for (let i = 0; i < streaks.length; i++){
-            if(habits[i].timeframe != "Weekly"){
+            if(habits[i].timeframe == "Daily"){
                 sections.push(
                     <View key={habits[i].keyName+"StreakPrint"}>
                         <Text style={styles.regularText}>{habits[i].prettyPrint}: {streaks[i]} {(streaks[i] == 1) ? "day" : "days"}</Text>
+                    </View>
+                )
+            }
+            if(habits[i].timeframe == "Weekly"){
+                sections.push(
+                    <View key={habits[i].keyName+"StreakPrint"}>
+                        <Text style={styles.regularText}>{habits[i].prettyPrint}: {streaks[i]} {(streaks[i] == 1) ? "week" : "weeks"}</Text>
                     </View>
                 )
             }
@@ -43,43 +50,20 @@ export default function printStreaks(habits: Habit[], submissions: Submissions){
 }
 function calculateStreaks(habits: Habit[], submissions: Submissions) : number[] {
     let dateKeys = Object.keys(submissions!).reverse();//assumes the submissions are sorted by date, newest first
-
-    let dailyTargets : Habit[] = [];
-    let weeklyTargets : Habit[] = [];
-    
-    habits.forEach((h) => {
-        console.log(h.keyName + ": " + h.timeframe);
-        if(h.timeframe == "Daily"){
-            dailyTargets.push(h);
-        }
-        else if(h.timeframe == "Weekly"){
-            weeklyTargets.push(h);
-            console.log(h.keyName)
-        }
-        else{//only options are "Daily" and "Weekly" in interface at the moment; pushes to daily to avoid crashing
-            dailyTargets.push(h);
-            console.log(h.keyName + " not Daily or Weekly timeframe");
-        }
-    });
-    
+    console.log("--------------------------------------------------------");
     if(submissions && habits && dateKeys.length >= 2){
         let streakCount : number[] = [];
-
-        let dailyStreaks = Array<number>(dailyTargets.length).fill(0);
-        let weeklyStreaks = Array<number>(weeklyTargets.length).fill(0);
-        let weeklyTotals = Array<number>(weeklyTargets.length).fill(0);
 
         // can we infer that dateKeys[0] is today as the form updates when the date is changed (?)
         console.log("all keys: " + dateKeys)
         let yesterdaysKey = generateDifferentDaysKey(dateKeys[0], 1);
         // let yesterdaysKey = generateDifferentDaysKey("2025/1/13", 1);
         let yesterDay = new Date(yesterdaysKey.replaceAll("/", "-")).getUTCDay();
-
         
         // since this may be tallied while the week is ongoing, we can't count weekly targets that aren't complete yet
         // so, generate keys needed to reach first sunday
         let keysBeforeFirstSunday = generateConsecutiveKeys(yesterdaysKey, yesterDay);
-        console.log("Keys Before Sunday " + keysBeforeFirstSunday);
+        console.log("Keys Before Sunday: " + keysBeforeFirstSunday);
 
         let stats = calculateStatsForPeriod(habits, submissions, keysBeforeFirstSunday);
 
@@ -87,10 +71,10 @@ function calculateStreaks(habits: Habit[], submissions: Submissions) : number[] 
         let reqForDailyStreak = keysBeforeFirstSunday.length; 
         let stillCounting : string[] = []; // array of habit.keyNames that are still ongoing, either weekly or daily
         let sundayKey = generateDifferentDaysKey(yesterdaysKey, yesterDay); // most recent sunday to indicate a end full week/start point for counting backwards
-        
+        console.log("streak req: " + reqForDailyStreak);
         habits.forEach((h) => {
             //if the habit either has an ongoing streak or has a weekly goal, add it to still going
-            if(h.timeframe === "Daily" && stats[h.keyName][0] === reqForDailyStreak){
+            if(h.timeframe === "Daily" && stats[h.keyName][1] === reqForDailyStreak){
                 stillCounting.push(h.keyName);
             }
             else if(h.timeframe === "Weekly"){
@@ -98,11 +82,13 @@ function calculateStreaks(habits: Habit[], submissions: Submissions) : number[] 
                 stillCounting.push(h.keyName);
             }
         });
-        console.log(stillCounting);
+        console.log("Still Counting: " + stillCounting);
         while(stillCounting.length > 0){
             let oneWeeksKeys = generateConsecutiveKeys(sundayKey, 7);
             let oneWeekStats = calculateStatsForPeriod(habits, submissions, oneWeeksKeys);
-
+            console.log("WEEK: " + oneWeeksKeys);
+            console.log("ONE WEEK: " + JSON.stringify(oneWeekStats));
+            
             reqForDailyStreak = reqForDailyStreak + 7;
 
             habits.forEach((h) => {
@@ -128,8 +114,9 @@ function calculateStreaks(habits: Habit[], submissions: Submissions) : number[] 
                     }
                 }
             })
-            console.log(stillCounting);
-            // stillCounting = [];
+            console.log("STATS: " + JSON.stringify(stats));
+            console.log("Still Counting: " + stillCounting);
+            console.log("********************************************************");
             sundayKey = generateDifferentDaysKey(oneWeeksKeys[6], 1);//get the key from the day before the last day in array
         }
 
