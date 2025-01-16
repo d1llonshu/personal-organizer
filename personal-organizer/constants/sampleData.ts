@@ -13,74 +13,78 @@ export let sampleHabits =
 export let sampleSubmissions = 
 {
     //WEEK 0
-    "2024/12/29": {
+    "2024-12-29": {
         "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
         "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 10,
     }, 
     //WEEK 1
-    "2024/12/30": {
+    "2024-12-30": {
         "weeklyBoolHit": true, "weeklyBoolMiss": false, "dailyBoolHit": true, "dailyBoolMiss": false,
         "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 10,
     }, 
-    "2024/12/31": {
+    "2024-12-31": {
         "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
         "weeklyNumHit": 0, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 10,
     }, 
-    "2025/1/1": {
+    "2025-1-1": {
         "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
         "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 10,
     }, 
-    "2025/1/2": {//
+    "2025-1-2": {//
         "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
         "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 0, "dailyNumMiss": 10,
     }, 
-    "2025/1/3": {
+    "2025-1-3": {
         "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
         "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 10,
     }, 
-    "2025/1/4": {
+    "2025-1-4": {
         "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
         "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 10,
     }, 
-    "2025/1/5": {
+    "2025-1-5": {
         "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
         "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 10,
     }, 
     //WEEK 2
-    "2025/1/6": {
+    "2025-1-6": {
         "weeklyBoolHit": true, "weeklyBoolMiss": false, "dailyBoolHit": true, "dailyBoolMiss": false,
         "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 0,
     }, 
-    "2025/1/7": {
+    "2025-1-7": {
         "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
         "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 10,
     }, 
-    "2025/1/8": {
+    "2025-1-8": {
         "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
         "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 10,
     }, 
-    "2025/1/9": {//weeklynummiss
+    "2025-1-9": {//weeklynummiss
         "weeklyBoolHit": true, "weeklyBoolMiss": false, "dailyBoolHit": true, "dailyBoolMiss": false,
         "weeklyNumHit": 10, "weeklyNumMiss": 0, "dailyNumHit": 10, "dailyNumMiss": 10,
     }, 
-    "2025/1/10": {
+    "2025-1-10": {
         "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
         "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 10,
     }, 
-    "2025/1/11": {
+    "2025-1-11": {
         "weeklyBoolHit": true, "weeklyBoolMiss": false, "dailyBoolHit": true, "dailyBoolMiss": false,
         "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 10,
     }, 
-    "2025/1/12": {
+    "2025-1-12": {
         "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
         "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 10,
     }, 
     //WEEK 3
-    "2025/1/13": {
+    "2025-1-13": {
         "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
         "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 10,
     }, 
-    "2025/1/14": {
+    "2025-1-14": {
+        "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
+        "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 20,
+    }, 
+    "2025-1-15": {
         "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
         "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 20,
     }, 

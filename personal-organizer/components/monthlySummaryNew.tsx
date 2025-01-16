@@ -11,13 +11,13 @@ export default function monthlySummaryNew(habits: Habit[], submissions: Submissi
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November","December"];
 
     let today = new Date();
-    let keyTemplate : string = today.getFullYear() + "/" + (today.getMonth() + 1) + "/";
+    let keyTemplate : string = today.getFullYear() + "-" + (today.getMonth() + 1) + "-";
     let daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
     //const monthlyKeys = new Array(daysInMonth).fill(null).map((_, i) => keyTemplate + (i + 1).toString());
     let currentMonthKeys = new Array(today.getDate()).fill(null).map((_, i) => keyTemplate + (i + 1).toString());
     if (today.getDate() - 1 == 0){
       let daysInPrevMonth = new Date(today.getFullYear(), today.getMonth(), 0).getDate();
-      keyTemplate = today.getFullYear() + "/" + (today.getMonth()) + "/";
+      keyTemplate = today.getFullYear() + "-" + (today.getMonth()) + "-";
       currentMonthKeys = new Array(today.getDate()).fill(null).map((_, i) => keyTemplate + (i + 1).toString());
     }
     if(habits&&submissions){

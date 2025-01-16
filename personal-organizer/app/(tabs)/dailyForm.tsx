@@ -20,7 +20,7 @@ export default function Form() {
     const buttonColorTrue = "#4f7942";
     let today = new Date();
     let submissionKey: string = 
-      today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + (today.getDate());
+      today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + (today.getDate());
 
     const [todaysKey, setTodaysKey] = useMMKVObject<String>("todaysKey");
     if(submissionKey !== todaysKey){

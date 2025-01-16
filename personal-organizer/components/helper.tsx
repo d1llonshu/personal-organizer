@@ -83,11 +83,11 @@ export function habitValueAsInt(habit: string, submission: FormData, dtype: stri
 }
 
 export function generateDifferentDaysKey(key:string, daysBeforeProvidedKey:number){
-    let newTime = new Date(key.replaceAll("/", "-")).getTime() - 86400000*daysBeforeProvidedKey;
+    let newTime = new Date(key).getTime() - 86400000*daysBeforeProvidedKey;
     let newDate = new Date(newTime);
     // console.log(newDate)
     // console.log(newDate.getUTCDate());
-    return(String(newDate.getUTCFullYear()) + "/" + String(newDate.getUTCMonth()+1) + "/" + String(newDate.getUTCDate()));
+    return(String(newDate.getUTCFullYear()) + "-" + String(newDate.getUTCMonth()+1) + "-" + String(newDate.getUTCDate()));
 }
 
 // starts from key provided then goes back x days
