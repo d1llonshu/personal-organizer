@@ -49,96 +49,94 @@ function calculateStreaks(habits: Habit[], submissions: Submissions) : number[] 
     
     habits.forEach((h) => {
         console.log(h.keyName + ": " + h.timeframe);
-        if(h.timeframe === "Daily"){
+        if(h.timeframe == "Daily"){
             dailyTargets.push(h);
         }
-        else{//only options are "Daily" and "Weekly" in interface at the moment
+        else if(h.timeframe == "Weekly"){
             weeklyTargets.push(h);
             console.log(h.keyName)
+        }
+        else{//only options are "Daily" and "Weekly" in interface at the moment; pushes to daily to avoid crashing
+            dailyTargets.push(h);
+            console.log(h.keyName + " not Daily or Weekly timeframe");
         }
     });
     
     if(submissions && habits && dateKeys.length >= 2){
-        let streakCount = Array<number>(habits.length).fill(0);
+        let streakCount : number[] = [];
 
         let dailyStreaks = Array<number>(dailyTargets.length).fill(0);
         let weeklyStreaks = Array<number>(weeklyTargets.length).fill(0);
         let weeklyTotals = Array<number>(weeklyTargets.length).fill(0);
 
-        let mondayWeekStart = [0, 1, 2, 3, 4, 5, 6];
         // can we infer that dateKeys[0] is today as the form updates when the date is changed (?)
         console.log("all keys: " + dateKeys)
         let yesterdaysKey = generateDifferentDaysKey(dateKeys[0], 1);
         // let yesterdaysKey = generateDifferentDaysKey("2025/1/13", 1);
         let yesterDay = new Date(yesterdaysKey.replaceAll("/", "-")).getUTCDay();
 
-        // most recent sunday to indicate a end full week/start point for counting backwards
-        let sundayKey = generateDifferentDaysKey(yesterdaysKey, yesterDay);
         
-        // need to track daily streaks that aren't apart of full weeks
+        // since this may be tallied while the week is ongoing, we can't count weekly targets that aren't complete yet
+        // so, generate keys needed to reach first sunday
         let keysBeforeFirstSunday = generateConsecutiveKeys(yesterdaysKey, yesterDay);
         console.log("Keys Before Sunday " + keysBeforeFirstSunday);
-
 
         let stats = calculateStatsForPeriod(habits, submissions, keysBeforeFirstSunday);
 
         console.log(stats);
-        let reqForDailyStreak = keysBeforeFirstSunday.length;
-        let stillCounting = 0;
+        let reqForDailyStreak = keysBeforeFirstSunday.length; 
+        let stillCounting : string[] = []; // array of habit.keyNames that are still ongoing, either weekly or daily
+        let sundayKey = generateDifferentDaysKey(yesterdaysKey, yesterDay); // most recent sunday to indicate a end full week/start point for counting backwards
+        
         habits.forEach((h) => {
-            if(h.timeframe === "Daily" && stats[h.keyName][0] == reqForDailyStreak){
-                console.log(h.keyName + ", dailyStreak")
-                stillCounting++;
+            //if the habit either has an ongoing streak or has a weekly goal, add it to still going
+            if(h.timeframe === "Daily" && stats[h.keyName][0] === reqForDailyStreak){
+                stillCounting.push(h.keyName);
             }
-            else if(h.timeframe === "Weekly"){//only options are "Daily" and "Weekly" in interface at the moment
-                console.log(h.keyName + ", weekly")
-                stillCounting++;
+            else if(h.timeframe === "Weekly"){
+                //always adds weekly goals because the only calculations done so far only accounts for an incomplete week
+                stillCounting.push(h.keyName);
             }
         });
         console.log(stillCounting);
-        // while(stillCounting > 0){
-        //     let oneWeek = generateConsecutiveKeys(sundayKey, 7);
-        //     stillCounting = 0;
-        // }
+        while(stillCounting.length > 0){
+            let oneWeeksKeys = generateConsecutiveKeys(sundayKey, 7);
+            let oneWeekStats = calculateStatsForPeriod(habits, submissions, oneWeeksKeys);
 
+            reqForDailyStreak = reqForDailyStreak + 7;
 
-        //gen 1 week of keys
-        //if last day of keys or less than last day of keys then check
+            habits.forEach((h) => {
+                // 0 = sum for week
+                // 1 = streak length 
+                stats[h.keyName][0] = stats[h.keyName][0] + oneWeekStats[h.keyName][0];
+                if(stillCounting.includes(h.keyName)){
+                    //if it was in stillCounting, increment the streak and see if it still qualifies
+                    stats[h.keyName][1] = stats[h.keyName][1] + oneWeekStats[h.keyName][1];
+                    if (h.timeframe === "Weekly"){
+                        //if after adding the new stats, the value is less than int(req/7) the streak is over
+                        if(stats[h.keyName][1] < Math.trunc(reqForDailyStreak/7)){
+                            stillCounting = stillCounting.filter(ongoingHabit => ongoingHabit !== h.keyName);
+                        }
+                    }
+                    else if (h.timeframe === "Daily"){
+                        if(stats[h.keyName][1] < reqForDailyStreak){
+                            stillCounting = stillCounting.filter(ongoingHabit => ongoingHabit !== h.keyName);
+                        }
+                    }
+                    else{
+                        console.log("Something went wrong... timeframe not daily or weekly");
+                    }
+                }
+            })
+            console.log(stillCounting);
+            // stillCounting = [];
+            sundayKey = generateDifferentDaysKey(oneWeeksKeys[6], 1);//get the key from the day before the last day in array
+        }
 
-        let daysElapsed = 0; //equal to the number of submissions that have been looped through
-    
-        // for(let i = 0; i < dateKeys.length - 1; i++){
-        //     let d1 = new Date(dateKeys[i].replaceAll("/", "-")).getTime();
-        //     let d2 = new Date(dateKeys[i+1].replaceAll("/", "-")).getTime();
-        //     let stillCounting = 0;
-        //     let consecutive = (d1-d2 === 86400000);//because key is a formatted date, d1-d2 should be exactly 86400000 ms apart
-            
-        //     let currentSubmission = submissions[dateKeys[i+1]];//skips first day on first run, which should be present day
-            
-        //     for(let hIndex = 0; hIndex < habits.length; hIndex++){//goes through each habit
-        //         let currentHabit = habits[hIndex];
-        //         if(currentHabit){//sometimes habits might not exist in earlier submissions
-        //             if (currentHabit.dataType == "boolean"){
-        //                 if (currentSubmission[currentHabit.keyName] == true && streakCount[hIndex] == daysElapsed){
-        //                     stillCounting = stillCounting + 1;
-        //                     streakCount[hIndex] = streakCount[hIndex] + 1;
-        //                 }
-        //             }
-        //             else if (currentHabit.dataType == "number"){//will not work for weekly minutes, overriden later
-        //                 if (currentSubmission[currentHabit.keyName] > 0 && streakCount[hIndex] == daysElapsed){
-        //                     stillCounting = stillCounting + 1;
-        //                     streakCount[hIndex] = streakCount[hIndex] + 1;
-        //                 }
-        //             }
-        //         }
-        //     }
-        //     daysElapsed++;
+        habits.forEach((h) => {
+            streakCount.push(stats[h.keyName][1]);
+        });
 
-
-        //     if(stillCounting === 0){
-        //         i = dateKeys.length - 1;//terminate early
-        //     }
-        // }
         return streakCount
     }
     return []

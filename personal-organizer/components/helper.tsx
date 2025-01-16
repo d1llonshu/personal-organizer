@@ -5,7 +5,8 @@ import { Habit } from "@/constants/habit"
 // Important: Assumes it takes in consecutive keys
 // number[] returns at index:
 // 0: sum
-// 1: streak length (starting from first entry)
+// 1: streak length (starting from first entry); 
+//    Note: streak length for weekly tasks will only work if the number of submission keys is 7
 export function calculateStatsForPeriod(habits: Habit[], submissions: Submissions, keys: string[]) : {[key: string] : number[]}{
     let ret : {[key: string] : number[]} = {}
     let totalsCount = Array<number>(habits.length).fill(0);
@@ -20,15 +21,26 @@ export function calculateStatsForPeriod(habits: Habit[], submissions: Submission
                 let val = habitValueAsInt(h.keyName, submissions[key], h.dataType);
                 // increment sum
                 ret[h.keyName][0] = ret[h.keyName][0] + val; 
-                // if positive and hasn't missed any days, increment streak
-                if(val > 0 && ret[h.keyName][1] == reqForStreak){
+                // if positive, hasn't missed any days, and isn't a weekly target increment streak
+                if(val > 0 && ret[h.keyName][1] == reqForStreak && h.timeframe != "Weekly"){
                     ret[h.keyName][1]++;
                 }
             });
         }
         reqForStreak++;
-        console.log(reqForStreak);
     })
+
+    //if provided a one week long set of keys, increment weekly streaks if the weekly sum is greater than goal
+    if(keys.length === 7){
+        habits.forEach((h) => {
+            if (h.timeframe === "Weekly"){
+                if(ret[h.keyName][0] >= Number(h.goal)){
+                    ret[h.keyName][1]++;
+                }
+            }
+        });
+    }
+
     return ret;
 }
 
