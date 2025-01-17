@@ -84,9 +84,9 @@ export const styles = StyleSheet.create({
     },
     homeScreenSubtitle: {
       textAlign: 'center',
-      fontSize: 18,
+      fontSize: 20,
       color: '#E1D9D1',
-      marginRight: 10,
+      marginVertical: 8,
       fontWeight: 'bold',
     },
     homeScreenRow: {
@@ -96,8 +96,15 @@ export const styles = StyleSheet.create({
       textAlign: 'center',
       
     },
+    homeScreenSurface: {
+      backgroundColor: '#212121',
+      marginHorizontal: 8,
+      marginBottom: 8,
+      paddingBottom: 8,
+    }
 
   });
+
 export const progressBarStyles = StyleSheet.create({
   progressBarSubtitle: {
     fontFamily: 'Roboto',
@@ -113,13 +120,14 @@ export const progressBarStyles = StyleSheet.create({
   progressBarStyle: {
     backgroundColor: '#E0E0E0',
     height: 18,
-    borderRadius: 64,
+    borderRadius: 0,
     marginHorizontal: 10,
     marginBottom: 5,
     flex: 0.6,
+    
   },
   progressBarfillStyle: {
-    borderRadius: 64,
+    borderRadius: 0,
   },
 });
 export const dropdownStyles = StyleSheet.create({

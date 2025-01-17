@@ -13,7 +13,7 @@ import printStreaks from '@/components/updateStreaksNew';
 import monthlySummaryNew from '@/components/monthlySummaryNew';
 
 import currentWeekSummary from '@/components/habitProgress';
-// import { ProgressBar, MD3Colors } from 'react-native-paper';
+import { Surface } from 'react-native-paper';
 
 import { sampleSubmissions, sampleHabits } from '@/constants/sampleData';
 
@@ -38,12 +38,10 @@ export default function HomeScreen() {
           {/* {streakPreview(streaks ? streaks : [])}
           {monthlySummary()}  */}
 
-          {
-            streakSection
-          }
-          {
-            currentWeekSection
-          }
+          
+          <Surface style={styles.homeScreenSurface} elevation={1}>{streakSection}</Surface>
+          <Surface style={styles.homeScreenSurface} elevation={1}>{currentWeekSection}</Surface>
+          
           <View key="setSampleData" style = {styles.buttonContainer}>
                     <Pressable onPress={() => {
                         setHabits(sampleHabits);
