@@ -2,11 +2,11 @@ import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
     homescreenTitle: {
-        fontSize: 26,
+        fontSize: 30,
         color: '#E1D9D1',
         marginRight: 10,
         fontWeight: 'bold',
-        marginLeft: 3,
+        marginLeft: 8,
         
     },
     safeAreaContainer: {
@@ -101,7 +101,41 @@ export const styles = StyleSheet.create({
       marginHorizontal: 8,
       marginBottom: 8,
       paddingBottom: 8,
-    }
+    },
+    habitPageSubtitle: {
+      textAlign: 'left',
+      fontSize: 18,
+      color: '#E1D9D1',
+      marginTop: 4,
+      marginBottom: 4,
+      marginLeft: 12,
+      fontWeight: 'bold',
+    },
+    habitPageRegularText: {
+      textAlign: 'left',
+      fontSize: 18,
+      color: '#E1D9D1',
+      marginTop: 4,
+      marginBottom: 4,
+      marginLeft: 0,
+    },
+    dayPageSubtitle: {
+      textAlign: 'left',
+      fontSize: 18,
+      color: '#E1D9D1',
+      marginTop: 4,
+      marginBottom: 4,
+      marginLeft: 12,
+      fontWeight: 'bold',
+    },
+    dayPageRegularText: {
+      textAlign: 'left',
+      fontSize: 18,
+      color: '#E1D9D1',
+      marginTop: 4,
+      marginBottom: 4,
+      marginLeft: 0,
+    },
 
   });
 

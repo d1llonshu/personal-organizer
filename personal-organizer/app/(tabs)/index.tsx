@@ -29,7 +29,7 @@ export default function HomeScreen() {
   useEffect(() => {
       setStreakSection(printStreaks(habits!, submissions!));
       setCurrentWeekSection(currentWeekSummary(habits!, submissions!, todaysKey!));
-  }, [habits, submissions, todaysKey])
+  }, [habits, submissions])
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <ScrollView style={styles.container}>

@@ -24,7 +24,7 @@ export default function currentWeekSummary(habits: Habit[], submissions: Submiss
 
 function showWeeklyProgress(habit: Habit, value: number){
     let barValue = 0;
-    let barColor = "#fb4b4b";
+    let barColor = "#CF6679";
     if (habit.timeframe === "Daily"){
         barValue = value/(Number(habit.goal)*7);
     }
@@ -35,8 +35,11 @@ function showWeeklyProgress(habit: Habit, value: number){
     if(barValue >= 0.5 && barValue < 0.8){
         barColor = "#feff5c";
     }
-    else if (barValue >= 0.8){
+    else if (barValue >= 0.8 && barValue < 1){
         barColor = "#58b947";
+    }
+    else if (barValue >= 1){
+        barColor = "green";
     }
     if (barValue >= 1){
         barValue = 1;
