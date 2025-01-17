@@ -251,3 +251,6 @@ export const dropdownStyles = StyleSheet.create({
       height: 30,
     },
   });
+
+export const buttonColorFalse = "#CF6679";
+export const buttonColorTrue = "#4f7942";

@@ -128,6 +128,7 @@ export default function Form() {
                 <View key={h.keyName+"Button"}>
                   <CustomButton
                     title={h.prettyPrint}
+                    disabled = {false}
                     onPress={() => {handleInputChange(h.keyName, !data?.[h.keyName])
                     }}
                     color={(data?.[h.keyName]? buttonColorTrue : buttonColorFalse) || "#FFA500"}
@@ -169,6 +170,7 @@ export default function Form() {
         <View key="SaveButton">
           <CustomButton               
           title={"Save"}
+          disabled = {false}
           onPress={()=>{
             setData(data);
             console.log(data);
