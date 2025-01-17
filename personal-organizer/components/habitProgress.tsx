@@ -1,4 +1,4 @@
-import { SafeAreaView, View, TextInput, Text, ScrollView, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
 import { ProgressBar, MD3Colors } from 'react-native-paper';
 
 import { progressBarStyles, styles } from '@/constants/stylesheet';

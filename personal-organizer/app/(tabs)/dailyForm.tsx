@@ -1,18 +1,15 @@
 //state management w/ array?
-import { useState, useCallback, useEffect } from 'react';
-import { StyleSheet, View, TextInput, Alert, Button, Text, ScrollView } from 'react-native';
-import { MMKV, useMMKVListener, useMMKVObject, useMMKVString } from 'react-native-mmkv';
+import { useState, useEffect } from 'react';
+import { View, TextInput, Text, ScrollView } from 'react-native';
+import { useMMKVObject  } from 'react-native-mmkv';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Link, usePathname, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 
-import { storage } from "@/constants/storage"
-import { Habit, dataTypes, categories, keyPrettyPrint } from "@/constants/habit"
+import { Habit } from "@/constants/habit"
 // import updateStreaks from '@/components/updateStreaks'
-import { streakData } from '@/constants/streaks';
 import { CustomButton } from "@/components/customButton"
 import { styles } from '@/constants/stylesheet'
 import { FormData, Submissions } from '@/constants/FormData';
-import printStreaks from '@/components/updateStreaksNew';
 
 export default function Form() {
     const router = useRouter();

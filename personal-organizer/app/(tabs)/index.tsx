@@ -1,16 +1,13 @@
-import { SafeAreaView, View, TextInput, Text, ScrollView, Pressable } from 'react-native';
+import { SafeAreaView, View,  Text, ScrollView } from 'react-native';
 import { useEffect, useState } from 'react';
-import { MMKV, useMMKVListener, useMMKVObject, useMMKVString } from 'react-native-mmkv';
+import { MMKV, useMMKVObject } from 'react-native-mmkv';
 
 import { streakData } from '@/constants/streaks';
 import { styles } from '@/constants/stylesheet';
 
-import streakPreview from '@/components/old_files/streakPreview'
-import monthlySummary from '@/components/old_files/monthlySummary';
-import { FormData, Submissions } from '@/constants/FormData';
-import { Habit, dataTypes, categories, keyPrettyPrint } from "@/constants/habit"
+import { Submissions } from '@/constants/FormData';
+import { Habit } from "@/constants/habit"
 import printStreaks from '@/components/updateStreaksNew';
-import monthlySummaryNew from '@/components/monthlySummaryNew';
 
 import currentWeekSummary from '@/components/habitProgress';
 import { Surface } from 'react-native-paper';
@@ -18,7 +15,7 @@ import { Surface } from 'react-native-paper';
 import { sampleSubmissions, sampleHabits } from '@/constants/sampleData';
 
 export default function HomeScreen() {
-  const [streaks, setStreaks] = useMMKVObject<streakData[]>('streaks');
+
   const [habits, setHabits] = useMMKVObject<Habit[]>('activeHabits');
   const [submissions, setSubmissions] = useMMKVObject<Submissions>("submissions");
   const [todaysKey, setTodaysKey] = useMMKVObject<string>("todaysKey");

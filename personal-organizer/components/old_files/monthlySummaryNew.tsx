@@ -1,4 +1,4 @@
-import { StyleSheet, View, Button, Text, ScrollView } from 'react-native';
+import { View,  Text, } from 'react-native';
 
 import { Habit, dataTypes, categories, keyPrettyPrint } from "@/constants/habit"
 import { styles, dropdownStyles } from "@/constants/stylesheet"

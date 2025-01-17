@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, ScrollView, Pressable } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { styles } from '@/constants/stylesheet'
 
 export const CustomButton = ({ onPress, title, color, disabled=false}: { onPress: () => void; title: string, color: string, disabled: boolean}) => (

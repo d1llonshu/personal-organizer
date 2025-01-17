@@ -1,11 +1,10 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
-import { StyleSheet, View, TextInput, Alert, Button, Text, ScrollView, Dimensions, Pressable } from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, TextInput,  Text, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Dropdown, IDropdownRef } from 'react-native-element-dropdown';
-import { MMKV, useMMKVObject} from 'react-native-mmkv';
-import { Link, useRouter, useLocalSearchParams, Stack} from 'expo-router';
+import { useMMKVObject} from 'react-native-mmkv';
+import { useRouter, useLocalSearchParams, Stack} from 'expo-router';
 
-import { Habit, dataTypes, timeframes, categories, keyPrettyPrint } from "@/constants/habit"
+import { Habit } from "@/constants/habit"
 import { styles, buttonColorTrue, buttonColorFalse } from "@/constants/stylesheet"
 import { FormData, Submissions } from '@/constants/FormData';
 import { generateDifferentDaysKey } from '@/components/helper';

@@ -1,13 +1,13 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
-import { StyleSheet, View, TextInput, Alert, Button, Text, ScrollView} from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, Text, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { MMKV, useMMKVObject} from 'react-native-mmkv';
-import { Link, usePathname, useRouter } from 'expo-router';
+import { useMMKVObject} from 'react-native-mmkv';
+import { Link, useRouter } from 'expo-router';
 import { Surface } from 'react-native-paper';
 
 
 // import { Habit, dataTypes, categories, keyPrettyPrint } from "@/constants/habit"
-import { styles, dropdownStyles } from "@/constants/stylesheet";
+import { styles } from "@/constants/stylesheet";
 import { Submissions } from '@/constants/FormData';
 
 export default function daysOverview() {
