@@ -95,7 +95,7 @@ export default function dayPage() {
           }
           if(editable){
             sections.push(
-              <View key="SaveButton">
+              <View key="SaveButton" style = {styles.formSaveButton}>
                 <CustomButton               
                   title={"Save"}
                   disabled = {false}
@@ -144,7 +144,7 @@ export default function dayPage() {
     return(
         
         <SafeAreaView style = {styles.safeAreaContainer}>
-          <ScrollView>
+          <ScrollView style = {styles.formContainer}>
             <Stack.Screen options={{ title: local.day }} />
             {/** TODO:  
              * Add streaks to new form

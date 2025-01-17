@@ -156,6 +156,12 @@ export const styles = StyleSheet.create({
     dayPageContainer:{
       paddingLeft: 10,
       paddingVertical: 1,
+    },
+    formContainer:{
+      padding: 6,
+    },
+    formSaveButton:{
+      padding: 4,
     }
 
   });

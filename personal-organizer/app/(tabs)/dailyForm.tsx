@@ -167,7 +167,7 @@ export default function Form() {
         );
       }
       sections.push(
-        <View key="SaveButton">
+        <View key="SaveButton" style = {styles.formSaveButton}>
           <CustomButton               
             title={"Save"}
             disabled = {false}
@@ -188,7 +188,7 @@ export default function Form() {
   
     return (
       <SafeAreaView style = {styles.safeAreaContainer}>
-        <ScrollView>
+        <ScrollView style={styles.formContainer}>
           {formSections}
         </ScrollView>
       </SafeAreaView>
