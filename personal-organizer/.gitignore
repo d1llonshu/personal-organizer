@@ -10,6 +10,10 @@ npm-debug.*
 *.orig.*
 web-build/
 
+app/old_files/
+constants/old_files/
+components/old_files/
+
 # macOS
 .DS_Store
 
