@@ -3,9 +3,11 @@ import { StyleSheet, View, TextInput, Alert, Button, Text, ScrollView} from 'rea
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MMKV, useMMKVObject} from 'react-native-mmkv';
 import { Link, usePathname, useRouter } from 'expo-router';
+import { Surface } from 'react-native-paper';
+
 
 // import { Habit, dataTypes, categories, keyPrettyPrint } from "@/constants/habit"
-import { styles, dropdownStyles } from "@/constants/stylesheet"
+import { styles, dropdownStyles } from "@/constants/stylesheet";
 import { Submissions } from '@/constants/FormData';
 
 export default function daysOverview() {
@@ -14,19 +16,25 @@ export default function daysOverview() {
     const router = useRouter();
     useEffect(() => {
         let sections: JSX.Element[] = [];
-        let keys = days ? Object.keys(days) : []
+        let keys = days ? Object.keys(days) : [];
+
+        let today = new Date();
+        let todaysKey: string = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + (today.getDate());
+
+        keys = keys.reverse();
+        keys = keys.filter(key => key !== todaysKey);
 
         if (days){
             sections.push(
-                <View key="header">
-                    <Text style={styles.title}>History:</Text>
+                <View key="header" style={styles.dayPageContainer}>
+                    <Text style={styles.dayPageTitle}>History:</Text>
                 </View>
             );
             keys.map((d) => {
                 sections.push(
-                    <View key={d}>
+                    <View key={d} style={styles.dayPageContainer}>
                         <Link href={{pathname:"/day/[day]", params: {day: d}}}>
-                                <Text style={styles.regularText}>{d}</Text>
+                                <Text style={styles.dayPageHyperlink}>{d}</Text>
                         </Link>
                     </View>
                     // <View key={h.keyName}>
@@ -43,24 +51,9 @@ export default function daysOverview() {
     return(
         <SafeAreaView style = {styles.safeAreaContainer}>
             <ScrollView>
-            {/** TODO:  
-             * Add streaks to new form
-             * (?) Rework individual days storage from being the date as a key to putting all days in one JSON 
-             */
-                pageSections
-            }
-                {/* <View key="newHabitButton" style = {styles.buttonContainer}>
-                    <Pressable onPress={() => router.push("/days/newHabitForm")}
-                        style={() => [
-                            {
-                                backgroundColor:  "#4f7942",
-                                padding: 5,
-                                borderRadius: 4,
-                            },
-                        ]}>
-                        <Text  style={styles.buttonTitle}>New Habit</Text>
-                    </Pressable >
-                </View> */}
+                <Surface style={styles.homeScreenSurface} elevation={1}>
+                    {pageSections}
+                </Surface>
             </ScrollView>
       </SafeAreaView>
     )

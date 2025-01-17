@@ -140,6 +140,7 @@ export default function newHabitForm() {
             <View key={"submitButton"}>
               <CustomButton               
                 title={"Submit"}
+                disabled={false}
                 onPress={()=>{
                   if(save()){
                     router.back()

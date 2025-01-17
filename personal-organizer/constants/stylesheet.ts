@@ -128,6 +128,15 @@ export const styles = StyleSheet.create({
       marginLeft: 12,
       fontWeight: 'bold',
     },
+    dayPageTitle: {
+      textAlign: 'left',
+      fontSize: 24,
+      color: '#E1D9D1',
+      marginTop: 4,
+      marginBottom: 4,
+      marginLeft: 0,
+      fontWeight: 'bold',
+    },
     dayPageRegularText: {
       textAlign: 'left',
       fontSize: 18,
@@ -136,6 +145,18 @@ export const styles = StyleSheet.create({
       marginBottom: 4,
       marginLeft: 0,
     },
+    dayPageHyperlink: {
+      textAlign: 'left',
+      fontSize: 18,
+      color: '#E1D9D1',
+      marginTop: 4,
+      marginBottom: 4,
+      textDecorationLine:"underline",
+    },
+    dayPageContainer:{
+      paddingLeft: 10,
+      paddingVertical: 1,
+    }
 
   });
 

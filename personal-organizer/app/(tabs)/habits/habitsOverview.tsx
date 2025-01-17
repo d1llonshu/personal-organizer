@@ -3,6 +3,7 @@ import { StyleSheet, View, TextInput, Alert, Text, ScrollView, Pressable } from 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MMKV, useMMKVObject} from 'react-native-mmkv';
 import { Link, usePathname, useRouter } from 'expo-router';
+import { Surface } from 'react-native-paper';
 
 import { Habit, dataTypes, categories, keyPrettyPrint } from "@/constants/habit"
 import { styles, dropdownStyles } from "@/constants/stylesheet"
@@ -16,15 +17,15 @@ export default function habitsPage() {
 
         if (habits){
             sections.push(
-                <View key="header">
+                <View key="header" style={styles.dayPageContainer}>
                     <Text style={styles.title}>Habits:</Text>
                 </View>
             );
             habits.map((h) => {
                 sections.push(
-                    <View key={h.prettyPrint}>
+                    <View key={h.prettyPrint} style={styles.dayPageContainer}>
                         <Link href={{pathname:"/habits/[habit]", params: {habit: h.keyName}}}>
-                                <Text style={styles.regularText}>{h.prettyPrint}</Text>
+                                <Text style={styles.dayPageHyperlink}>{h.prettyPrint}</Text>
                         </Link>
                     </View>
                     // <View key={h.keyName}>
@@ -41,25 +42,22 @@ export default function habitsPage() {
     return(
         <SafeAreaView style = {styles.safeAreaContainer}>
             <ScrollView>
-            {/** TODO:  
-             * Add streaks to new form
-             * (?) Rework individual days storage from being the date as a key to putting all days in one JSON 
-             * setting goals/targets to reach
-             */
-                pageSections
-            }
-                <View key="newHabitButton" style = {styles.buttonContainer}>
-                    <Pressable onPress={() => router.push("/habits/newHabitForm")}
-                        style={() => [
-                            {
-                                backgroundColor:  "#4f7942",
-                                padding: 5,
-                                borderRadius: 4,
-                            },
-                        ]}>
-                        <Text  style={styles.buttonTitle}>New Habit</Text>
-                    </Pressable >
-                </View>
+                <Surface style={styles.homeScreenSurface} elevation={1}>
+                    {pageSections}
+                    <View key="newHabitButton" style = {styles.buttonContainer}>
+                        <Pressable onPress={() => router.push("/habits/newHabitForm")}
+                            style={() => [
+                                {
+                                    backgroundColor:  "#4f7942",
+                                    padding: 5,
+                                    marginHorizontal: 5,
+                                    borderRadius: 4,
+                                },
+                            ]}>
+                            <Text  style={styles.buttonTitle}>New Habit</Text>
+                        </Pressable >
+                    </View>
+                </Surface>
             </ScrollView>
       </SafeAreaView>
     )

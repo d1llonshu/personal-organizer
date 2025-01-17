@@ -97,15 +97,15 @@ export default function dayPage() {
             sections.push(
               <View key="SaveButton">
                 <CustomButton               
-                title={"Save"}
-                disabled = {false}
-                onPress={()=>{
-                  save();
-                  console.log(data);
-                  router.back()//index
-                }}
-                color = {buttonColorTrue}
-              />
+                  title={"Save"}
+                  disabled = {false}
+                  onPress={()=>{
+                    save();
+                    console.log(data);
+                    router.back();
+                  }}
+                  color = {buttonColorTrue}
+                />
               </View>
             );
           }
