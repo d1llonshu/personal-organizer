@@ -4,9 +4,9 @@ export const styles = StyleSheet.create({
     homescreenTitle: {
         fontSize: 30,
         color: '#E1D9D1',
-        marginRight: 10,
+        marginVertical: 5,
         fontWeight: 'bold',
-        marginLeft: 8,
+        marginLeft: 10,
         
     },
     safeAreaContainer: {

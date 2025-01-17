@@ -169,15 +169,15 @@ export default function Form() {
       sections.push(
         <View key="SaveButton">
           <CustomButton               
-          title={"Save"}
-          disabled = {false}
-          onPress={()=>{
-            setData(data);
-            console.log(data);
-            router.replace({ pathname: "/(tabs)" })//index
-          }}
-          color = {buttonColorTrue}
-        />
+            title={"Save"}
+            disabled = {false}
+            onPress={()=>{
+              setData(data);
+              console.log(data);
+              router.replace({ pathname: "/(tabs)" })//index
+            }}
+            color = {buttonColorTrue}
+          />
         </View>
         
       )
@@ -188,13 +188,8 @@ export default function Form() {
   
     return (
       <SafeAreaView style = {styles.safeAreaContainer}>
-          <ScrollView>
-          {/** TODO:  
-           * Add streaks to new form
-           * (?) Rework individual days storage from being the date as a key to putting all days in one JSON 
-           */
-           formSections
-          }
+        <ScrollView>
+          {formSections}
         </ScrollView>
       </SafeAreaView>
     );

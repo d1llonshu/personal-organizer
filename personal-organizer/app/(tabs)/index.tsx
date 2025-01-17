@@ -35,28 +35,25 @@ export default function HomeScreen() {
       <ScrollView style={styles.container}>
         <View key="body">
           <Text style={styles.homescreenTitle}>Welcome Back!</Text>
-          {/* {streakPreview(streaks ? streaks : [])}
-          {monthlySummary()}  */}
 
-          
-          <Surface style={styles.homeScreenSurface} elevation={1}>{streakSection}</Surface>
           <Surface style={styles.homeScreenSurface} elevation={1}>{currentWeekSection}</Surface>
+          <Surface style={styles.homeScreenSurface} elevation={1}>{streakSection}</Surface>
           
-          <View key="setSampleData" style = {styles.buttonContainer}>
-                    <Pressable onPress={() => {
-                        setHabits(sampleHabits);
-                        setSubmissions(sampleSubmissions);
-                    }}
-                        style={() => [
-                            {
-                                backgroundColor:  "#4f7942",
-                                padding: 5,
-                                borderRadius: 4,
-                            },
-                        ]}>
-                        <Text  style={styles.buttonTitle}>SET TO SAMPLE DATA</Text>
-                    </Pressable >
-                </View>
+          {/* <View key="setSampleData" style = {styles.buttonContainer}>
+            <Pressable onPress={() => {
+                setHabits(sampleHabits);
+                setSubmissions(sampleSubmissions);
+            }}
+                style={() => [
+                    {
+                        backgroundColor:  "#4f7942",
+                        padding: 5,
+                        borderRadius: 4,
+                    },
+                ]}>
+                <Text  style={styles.buttonTitle}>SET TO SAMPLE DATA</Text>
+            </Pressable >
+          </View> */}
         </View>
       </ScrollView>
     </SafeAreaView>

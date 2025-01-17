@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { StyleSheet, View, TextInput, Alert, Button, Text, ScrollView, Dimensions, Pressable } from 'react-native';
 
 import { Habit, dataTypes, timeframes, categories, keyPrettyPrint } from "@/constants/habit"
-import { styles, dropdownStyles } from "@/constants/stylesheet"
+import { styles, progressBarStyles } from "@/constants/stylesheet"
 import { FormData, Submissions } from '@/constants/FormData';
 
 import { calculateStatsForPeriod, generateDifferentDaysKey, generateConsecutiveKeys, habitValueAsInt } from "@/components/helper"
@@ -22,15 +22,17 @@ export default function printStreaks(habits: Habit[], submissions: Submissions){
         for (let i = 0; i < streaks.length; i++){
             if(habits[i].timeframe == "Daily"){
                 sections.push(
-                    <View key={habits[i].keyName+"StreakPrint"}>
-                        <Text style={styles.regularText}>{habits[i].prettyPrint}: {streaks[i]} {(streaks[i] == 1) ? "day" : "days"}</Text>
+                    <View key={habits[i].keyName+"StreakPrint"} style={styles.row}>
+                        <Text style={progressBarStyles.progressBarTitle}>{habits[i].prettyPrint}: </Text>
+                        <Text style={progressBarStyles.progressBarSubtitle}>{streaks[i]} {(streaks[i] == 1) ? "day" : "days"}</Text>
                     </View>
                 )
             }
             if(habits[i].timeframe == "Weekly"){
                 sections.push(
-                    <View key={habits[i].keyName+"StreakPrint"}>
-                        <Text style={styles.regularText}>{habits[i].prettyPrint}: {streaks[i]} {(streaks[i] == 1) ? "week" : "weeks"}</Text>
+                    <View key={habits[i].keyName+"StreakPrint"} style={styles.row}>
+                        <Text style={progressBarStyles.progressBarTitle}>{habits[i].prettyPrint}: </Text>
+                        <Text style={progressBarStyles.progressBarSubtitle}>{streaks[i]} {(streaks[i] == 1) ? "week" : "weeks"}</Text>
                     </View>
                 )
             }

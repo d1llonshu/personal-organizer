@@ -14,11 +14,10 @@ export default function habitsPage() {
     const router = useRouter();
     useEffect(() => {
         let sections: JSX.Element[] = [];
-
         if (habits){
             sections.push(
                 <View key="header" style={styles.dayPageContainer}>
-                    <Text style={styles.title}>Habits:</Text>
+                    <Text style={styles.dayPageTitle}>Habits:</Text>
                 </View>
             );
             habits.map((h) => {
