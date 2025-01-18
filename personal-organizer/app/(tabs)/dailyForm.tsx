@@ -25,6 +25,7 @@ export default function Form() {
     }
     
     const [submissions, setSubmissions] = useMMKVObject<Submissions>("submissions");
+
     
     const [data, setData] = useState<FormData>();
     if(submissions && submissions[submissionKey] && data === undefined){

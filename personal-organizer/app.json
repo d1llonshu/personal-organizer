@@ -14,14 +14,18 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.dillonshu.personalorganizer"
+      "package": "com.dillonshu.personalorganizer",
+      "runtimeVersion": "1.0.0"
     },
     "web": {
       "bundler": "metro",
@@ -38,6 +42,9 @@
       "eas": {
         "projectId": "d094b1e0-5c06-4057-b588-1df90b4826a2"
       }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/d094b1e0-5c06-4057-b588-1df90b4826a2"
     }
   }
 }

@@ -17,15 +17,26 @@ import { sampleSubmissions, sampleHabits } from '@/constants/sampleData';
 export default function HomeScreen() {
 
   const [habits, setHabits] = useMMKVObject<Habit[]>('activeHabits');
+  if(habits === undefined){
+    let temp : Habit[] = [];
+    setHabits(temp);
+  }
   const [submissions, setSubmissions] = useMMKVObject<Submissions>("submissions");
+  if(submissions === undefined){
+    let temp : Submissions = {};
+    setSubmissions(temp);
+  }
   const [todaysKey, setTodaysKey] = useMMKVObject<string>("todaysKey");
   
   const [streakSection, setStreakSection] = useState<JSX.Element[]>([]);
   const [currentWeekSection, setCurrentWeekSection] = useState<JSX.Element[]>([]);
   //go through each submission checking the dates, if it's 1 day apart keep adding the streaks, else stop.
   useEffect(() => {
-      setStreakSection(printStreaks(habits!, submissions!));
-      setCurrentWeekSection(currentWeekSummary(habits!, submissions!, todaysKey!));
+      if(habits && submissions){
+        setStreakSection(printStreaks(habits, submissions));
+        setCurrentWeekSection(currentWeekSummary(habits, submissions, todaysKey!));
+      }
+      
   }, [habits, submissions])
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
