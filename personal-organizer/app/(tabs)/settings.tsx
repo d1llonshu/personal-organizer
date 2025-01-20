@@ -1,4 +1,4 @@
-import { SafeAreaView, View,  Text, ScrollView, Pressable, TextInput } from 'react-native';
+import { SafeAreaView, View,  Text, ScrollView, Pressable, Alert, TextInput } from 'react-native';
 import { MMKV, useMMKVObject } from 'react-native-mmkv';
 
 import { Submissions } from '@/constants/FormData';
@@ -10,7 +10,19 @@ export default function Settings(){
     const [habits, setHabits] = useMMKVObject<Habit[]>('activeHabits');
     const [submissions, setSubmissions] = useMMKVObject<Submissions>("submissions");
     const [habitIDCounter, setHabitIDCounter] = useMMKVObject<number>('habitIDCounter');
-
+    function createTwoButtonAlert() : boolean{
+        let ret = false;
+        Alert.alert('Alert Title', 'My Alert Msg', [
+            {
+              text: 'Cancel',
+              onPress: () => {ret = false},
+              style: 'cancel',
+            },
+            {text: 'OK', onPress: () => {ret = true}},
+          ]);
+        return ret;
+    }
+        
     return(
         <SafeAreaView style={styles.safeAreaContainer}>
             <ScrollView style={styles.container}>
@@ -28,9 +40,19 @@ export default function Settings(){
                 </View>
                 <View key="setSampleData" style = {styles.buttonContainer}>
                     <Pressable onPress={() => {
-                        setHabits(sampleHabits);
-                        setSubmissions(sampleSubmissions);
-                    }}
+                        Alert.alert("Are you sure you want to override data?", "", [
+                            {
+                                text: 'Cancel',
+                                onPress: () => {},
+                                style: 'cancel',
+                            },
+                            {
+                                text: 'OK', onPress: () => {
+                                    setHabits(sampleHabits);
+                                    setSubmissions(sampleSubmissions);}
+                            },
+                        ]);
+                        }}
                         style={() => [
                             {
                                 backgroundColor:  "#4f7942",
@@ -41,21 +63,33 @@ export default function Settings(){
                         <Text  style={styles.buttonTitle}>SET TO SAMPLE DATA</Text>
                     </Pressable>
                     <Pressable onPress={() => {
-                    let temp : Habit[] = [];
-                    setHabits(temp);
-                    let temp2 : Submissions = {};
-                    setSubmissions(temp2);
-                    setHabitIDCounter(0);
-                    }}
+                        Alert.alert("Are you sure you want to CLEAR data?", "", [
+                            {
+                                text: 'Cancel',
+                                onPress: () => {},
+                                style: 'cancel',
+                            },
+                            {
+                                text: 'OK', onPress: () => {
+                                    let temp : Habit[] = [];
+                                    setHabits(temp);
+                                    let temp2 : Submissions = {};
+                                    setSubmissions(temp2);
+                                    setHabitIDCounter(0);}
+                            },
+                        ]);
+                            
+                        }}
                         style={() => [
                             {
-                                backgroundColor:  "#CF6679",
+                                backgroundColor: "#CF6679",
                                 padding: 5,
                                 borderRadius: 4,
                             },
                         ]}>
                         <Text  style={styles.buttonTitle}>CLEAR DATA</Text>
-                    </Pressable >
+                    </Pressable>
+                    
                 </View>
             </ScrollView>
         </SafeAreaView>
