@@ -51,11 +51,11 @@ export default function Form() {
             let defaultData: FormData = {};
             habits.forEach((habit) => {
               if (habit.dataType === 'boolean') {
-                defaultData[habit.keyName] = false;
+                defaultData[habit.habitID] = false;
               } else if (habit.dataType === 'number') {
-                defaultData[habit.keyName] = '0';
+                defaultData[habit.habitID] = '0';
               } else {
-                defaultData[habit.keyName] = 'ERROR THIS SHOULD NOT APPEAR';
+                defaultData[habit.habitID] = 'ERROR THIS SHOULD NOT APPEAR';
               }
             });
 
@@ -100,12 +100,12 @@ export default function Form() {
           console.log(submissions[submissionKey]);
           let updatedFormData: FormData = submissions[submissionKey];
           habits.forEach((habit) => {
-            if(updatedFormData[habit.keyName] === undefined){
+            if(updatedFormData[habit.habitID] === undefined){
               if (habit.dataType === 'boolean') {
-                updatedFormData[habit.keyName] = false;
+                updatedFormData[habit.habitID] = false;
               } 
               else if (habit.dataType === 'number') {
-                updatedFormData[habit.keyName] = '0';
+                updatedFormData[habit.habitID] = '0';
               }
             }
           });
@@ -137,7 +137,7 @@ export default function Form() {
       
     }, [habits])
 
-    const handleInputChange = (key: string, value: any) => {
+    const handleInputChange = (id: string, value: any) => {
       // setData((prevData: FormData) => ({
       //   ...prevData,
       //   [key]: value,
@@ -145,14 +145,14 @@ export default function Form() {
       
       if (data) {
         let temp = data;
-        temp[key] = value;
+        temp[id] = value;
         setData(temp);
         setSubmissions({
           ...submissions,
           [submissionKey]: temp,
         });
       }
-      console.log(key + ": " + value);
+      console.log(id + ": " + value);
       console.log(data);
       console.log(submissions![submissionKey]);
       
@@ -164,13 +164,13 @@ export default function Form() {
           switch (h.dataType) {
             case 'boolean':
               return(
-                <View key={h.keyName+"Button"}>
+                <View key={"Habit"+h.habitID+"Button"}>
                   <CustomButton
                     title={h.prettyPrint}
                     disabled = {false}
-                    onPress={() => {handleInputChange(h.keyName, !data?.[h.keyName])
+                    onPress={() => {handleInputChange(h.habitID, !data?.[h.habitID])
                     }}
-                    color={(data?.[h.keyName]? buttonColorTrue : buttonColorFalse) || "#FFA500"}
+                    color={(data?.[h.habitID]? buttonColorTrue : buttonColorFalse) || "#FFA500"}
                   />
                 </View>
                 
@@ -183,12 +183,12 @@ export default function Form() {
           switch (h.dataType) {
             case 'number':
               return(
-                <View key={h.keyName+"TextInput"}style={styles.row}>
+                <View key={"Habit"+h.habitID+"TextInput"}style={styles.row}>
                   <Text style={styles.textInputTitle}>{h.prettyPrint}:</Text>
                   <TextInput
                     style={styles.textInput}
-                    value={data?.[h.keyName] || ''}
-                    onChangeText={(value) => handleInputChange(h.keyName, value)}
+                    value={data?.[h.habitID] || ''}
+                    onChangeText={(value) => handleInputChange(h.habitID, value)}
                     keyboardType='numeric'
                   />
                 </View>

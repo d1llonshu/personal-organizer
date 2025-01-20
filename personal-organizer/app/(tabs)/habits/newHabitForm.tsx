@@ -20,6 +20,10 @@ export default function newHabitForm() {
     const [timeframe, setTimeframe] = useState<string>();
     const [category, setCategory] = useState<string>();
     const [habitsArray, setHabitsArray] = useMMKVObject<Habit[]>('activeHabits');
+    const [habitIDCounter, setHabitIDCounter] = useMMKVObject<number>('habitIDCounter');
+    if(habitIDCounter === undefined){
+      setHabitIDCounter(0);
+    }
 
 
     const save = () => {
@@ -32,13 +36,14 @@ export default function newHabitForm() {
       if(passesFormValidation(prettyPrint, dataType, goal, category, timeframe, habitsArray ? habitsArray : [])){
         let submission : Habit = {
           prettyPrint: prettyPrint,
-          keyName:keyPrettyPrint(prettyPrint),
+          habitID: String(habitIDCounter? habitIDCounter: 0),
           dataType: dataType ? dataType : "No data type",
           goal: goal ? goal : "No goal",
           timeframe: timeframe ? timeframe : "No timeframe",
           category: category ? category : "No category",
         };
         setHabitsArray([...habitsArray ? habitsArray:[], submission]);
+        setHabitIDCounter((habitIDCounter? habitIDCounter: 0) + 1);
         //clear form
         setPrettyPrint("");
         setDataType(undefined);
@@ -168,11 +173,6 @@ function passesFormValidation(prettyPrint: string, dataType: string, goal: strin
     Alert.alert("Yes/No habits can only be done once per day and cannot be done more than 7 times a week");
     return false;
   }
-  habits.forEach((h) => {
-    if(h.keyName === keyPrettyPrint(prettyPrint) || h.prettyPrint === prettyPrint){
-      Alert.alert("Habit already exists; please choose a different name");
-      return false;
-    }
-  });
+
   return true
 }

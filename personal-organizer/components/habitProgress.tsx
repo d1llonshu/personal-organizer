@@ -17,7 +17,7 @@ export default function currentWeekSummary(habits: Habit[], submissions: Submiss
     );
     let stats = calculateStatsForPeriod(habits, submissions, keys);
     habits.forEach((h) => {
-        sections.push(showWeeklyProgress(h, stats[h.keyName][0]));
+        sections.push(showWeeklyProgress(h, stats[h.habitID][0]));
     })
     return sections
 }
@@ -46,7 +46,7 @@ function showWeeklyProgress(habit: Habit, value: number){
     }
 
     return(
-        <View key={habit.keyName+"WeeklyProgress"}>
+        <View key={"Habit"+habit.habitID+"WeeklyProgress"}>
             <View style={styles.row}>
                 <Text style={progressBarStyles.progressBarTitle}>{habit.prettyPrint}: </Text>
                 <Text style={progressBarStyles.progressBarSubtitle}>{value}/{(habit.timeframe === "Daily")? Number(habit.goal)*7 : habit.goal} {(habit.dataType == "boolean")?"day":"minute"}{(habit.goal==="1")? "":"s"}</Text>

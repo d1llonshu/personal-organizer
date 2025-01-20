@@ -21,7 +21,7 @@ export default function printStreaks(habits: Habit[], submissions: Submissions){
         for (let i = 0; i < streaks.length; i++){
             if(habits[i].timeframe == "Daily"){
                 sections.push(
-                    <View key={habits[i].keyName+"StreakPrint"} style={styles.row}>
+                    <View key={habits[i].habitID+"StreakPrint"} style={styles.row}>
                         <Text style={progressBarStyles.progressBarTitle}>{habits[i].prettyPrint}: </Text>
                         <Text style={progressBarStyles.progressBarSubtitle}>{streaks[i]} {(streaks[i] == 1) ? "day" : "days"}</Text>
                     </View>
@@ -29,7 +29,7 @@ export default function printStreaks(habits: Habit[], submissions: Submissions){
             }
             if(habits[i].timeframe == "Weekly"){
                 sections.push(
-                    <View key={habits[i].keyName+"StreakPrint"} style={styles.row}>
+                    <View key={habits[i].habitID+"StreakPrint"} style={styles.row}>
                         <Text style={progressBarStyles.progressBarTitle}>{habits[i].prettyPrint}: </Text>
                         <Text style={progressBarStyles.progressBarSubtitle}>{streaks[i]} {(streaks[i] == 1) ? "week" : "weeks"}</Text>
                     </View>
@@ -75,12 +75,13 @@ function calculateStreaks(habits: Habit[], submissions: Submissions) : number[] 
         console.log("streak req: " + reqForDailyStreak);
         habits.forEach((h) => {
             //if the habit either has an ongoing streak or has a weekly goal, add it to still going
-            if(h.timeframe === "Daily" && stats[h.keyName][1] === reqForDailyStreak){
-                stillCounting.push(h.keyName);
+            
+            if(h.timeframe === "Daily" && stats[h.habitID][1] === reqForDailyStreak){
+                stillCounting.push(h.habitID);
             }
             else if(h.timeframe === "Weekly"){
                 //always adds weekly goals because the only calculations done so far only accounts for an incomplete week
-                stillCounting.push(h.keyName);
+                stillCounting.push(h.habitID);
             }
         });
         console.log("Still Counting: " + stillCounting);
@@ -95,19 +96,19 @@ function calculateStreaks(habits: Habit[], submissions: Submissions) : number[] 
             habits.forEach((h) => {
                 // 0 = sum for week
                 // 1 = streak length 
-                stats[h.keyName][0] = stats[h.keyName][0] + oneWeekStats[h.keyName][0];
-                if(stillCounting.includes(h.keyName)){
+                stats[h.habitID][0] = stats[h.habitID][0] + oneWeekStats[h.habitID][0];
+                if(stillCounting.includes(h.habitID)){
                     //if it was in stillCounting, increment the streak and see if it still qualifies
-                    stats[h.keyName][1] = stats[h.keyName][1] + oneWeekStats[h.keyName][1];
+                    stats[h.habitID][1] = stats[h.habitID][1] + oneWeekStats[h.habitID][1];
                     if (h.timeframe === "Weekly"){
                         //if after adding the new stats, the value is less than int(req/7) the streak is over
-                        if(stats[h.keyName][1] < Math.trunc(reqForDailyStreak/7)){
-                            stillCounting = stillCounting.filter(ongoingHabit => ongoingHabit !== h.keyName);
+                        if(stats[h.habitID][1] < Math.trunc(reqForDailyStreak/7)){
+                            stillCounting = stillCounting.filter(ongoingHabit => ongoingHabit !== h.habitID);
                         }
                     }
                     else if (h.timeframe === "Daily"){
-                        if(stats[h.keyName][1] < reqForDailyStreak){
-                            stillCounting = stillCounting.filter(ongoingHabit => ongoingHabit !== h.keyName);
+                        if(stats[h.habitID][1] < reqForDailyStreak){
+                            stillCounting = stillCounting.filter(ongoingHabit => ongoingHabit !== h.habitID);
                         }
                     }
                     else{
@@ -122,7 +123,7 @@ function calculateStreaks(habits: Habit[], submissions: Submissions) : number[] 
         }
 
         habits.forEach((h) => {
-            streakCount.push(stats[h.keyName][1]);
+            streakCount.push(stats[h.habitID][1]);
         });
 
         return streakCount

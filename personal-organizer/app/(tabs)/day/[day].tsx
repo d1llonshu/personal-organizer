@@ -27,7 +27,7 @@ export default function dayPage() {
     }
 
     useEffect(() => {
-      const handleInputChange = (key: string, value: any) => {
+      const handleInputChange = (id: string, value: any) => {
         // setData((prevData: FormData) => ({
         //   ...prevData,
         //   [key]: value,
@@ -35,7 +35,7 @@ export default function dayPage() {
         if (data) {
           // console.log(key + ": " + value);
           let temp = data;
-          temp[key] = value;
+          temp[id] = value;
           setData(temp);
           setButtonPressed(!buttonPressed);
         }
@@ -55,12 +55,12 @@ export default function dayPage() {
             let habitButtons = habitsByCategory[category].map((h) => {
               if (h.dataType === 'boolean'){
                   return(
-                    <View key={h.keyName+"Button"}>
+                    <View key={"Habit"+h.habitID+"Button"}>
                       <CustomButton
                         title={h.prettyPrint}
                         disabled = {!editable}
-                        onPress={() => {handleInputChange(h.keyName,!data?.[h.keyName])}}
-                        color={(data?.[h.keyName]? buttonColorTrue : buttonColorFalse) || "#FFA500"}
+                        onPress={() => {handleInputChange(h.habitID,!data?.[h.habitID])}}
+                        color={(data?.[h.habitID]? buttonColorTrue : buttonColorFalse) || "#FFA500"}
                       />
                     </View>
                     
@@ -68,15 +68,15 @@ export default function dayPage() {
               }
             });
             let habitTextInputs = habitsByCategory[category].map((h) => {
-              let test2 = String(data? data[h.keyName]:"");
+              let test2 = String(data? data[h.habitID]:"");
               if (h.dataType === 'number'){
                   return(
-                    <View key={h.keyName+"TextInput"}style={styles.row}>
+                    <View key={"Habit"+h.habitID+"TextInput"}style={styles.row}>
                       <Text style={styles.textInputTitle}>{h.prettyPrint}:</Text>
                       <TextInput
                         style={styles.textInput}
                         value={test2}
-                        onChangeText={(value) => handleInputChange(h.keyName, value)}
+                        onChangeText={(value) => handleInputChange(h.habitID, value)}
                         keyboardType='numeric'
                         editable = {editable}
                       />

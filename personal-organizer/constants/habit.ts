@@ -1,5 +1,5 @@
 export interface Habit {
-   keyName: string;
+   habitID: string; //number from 0 up
    prettyPrint: string;
    dataType: string;
    goal: string;
@@ -9,7 +9,7 @@ export interface Habit {
 
 export const dataTypes = [
     { label: 'complete/not complete', value: 'boolean' },
-    { label: 'minutes', value: 'number' },
+    { label: 'numeric', value: 'number' },
 ];
 export const timeframes = [
     { label: 'Daily', value: 'Daily' },

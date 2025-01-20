@@ -18,7 +18,7 @@ export default function habitsPage() {
 
       if(habits){
         habits.map((h)=> {
-          if(h.keyName == local.habit){
+          if(h.habitID === local.habit){
             setCurrentHabit(h)
           }
         });
