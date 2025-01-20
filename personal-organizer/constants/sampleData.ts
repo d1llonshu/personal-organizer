@@ -88,6 +88,27 @@ export let sampleSubmissions =
         "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
         "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 20,
     }, 
+    "2025-1-16": {
+        "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
+        "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 20,
+    }, 
+    "2025-1-17": {
+        "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
+        "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 20,
+    }, 
+    "2025-1-18": {
+        "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
+        "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 20,
+    }, 
+    "2025-1-19": {
+        "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
+        "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 20,
+    }, 
+    //WEEK 4
+    "2025-1-20": {
+        "weeklyBoolHit": true, "weeklyBoolMiss": true, "dailyBoolHit": true, "dailyBoolMiss": true,
+        "weeklyNumHit": 10, "weeklyNumMiss": 10, "dailyNumHit": 10, "dailyNumMiss": 20,
+    }, 
 }
 
 /*

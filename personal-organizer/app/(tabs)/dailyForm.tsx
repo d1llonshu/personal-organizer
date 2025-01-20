@@ -12,6 +12,7 @@ import { styles } from '@/constants/stylesheet'
 import { FormData, Submissions } from '@/constants/FormData';
 
 export default function Form() {
+    //need to fix issue where you could potentially have undefineds if you clear out the text boxes and close/"save"
     const router = useRouter();
     const buttonColorFalse = "#CF6679";
     const buttonColorTrue = "#4f7942";
@@ -69,10 +70,6 @@ export default function Form() {
           }
         }
       }
-      //if there is not an existing submission for the day
-      else{
-        throw Error("Submissions not found")
-      }
 
       if (habits){
         let categories : string[] = (habits).map((h) => {
@@ -94,7 +91,51 @@ export default function Form() {
         generateForm(habitsByCategory)
       }
       
-    }, [habits, submissions, todaysKey]);
+    }, [submissions, todaysKey]);
+
+    useEffect(()=>{//if a new habit is added, it should have default values instead of undefined, so we need this
+      if(submissions && habits){
+        if(submissions[submissionKey]){
+          console.log("submission found for today: ");
+          console.log(submissions[submissionKey]);
+          let updatedFormData: FormData = submissions[submissionKey];
+          habits.forEach((habit) => {
+            if(updatedFormData[habit.keyName] === undefined){
+              if (habit.dataType === 'boolean') {
+                updatedFormData[habit.keyName] = false;
+              } 
+              else if (habit.dataType === 'number') {
+                updatedFormData[habit.keyName] = '0';
+              }
+            }
+          });
+          setData(updatedFormData);
+          setSubmissions({
+            ...submissions,
+            [submissionKey]: updatedFormData,
+          });
+
+          let categories : string[] = (habits).map((h) => {
+            return h.category
+          });
+          let uniqueCategories = new Set<string>(categories);
+          let habitsByCategory: {[key: string]: Habit[]} = {};
+          uniqueCategories.forEach((c) => {
+              let hArr : Habit[] = [];
+              (habits? habits : []).map((h) => {
+                  if (h.category == c){
+                      hArr.push(h)
+                  }
+              });
+              if(hArr.length > 0){
+                  habitsByCategory[c] = hArr
+              }
+          })
+          generateForm(habitsByCategory)
+        }
+      }
+      
+    }, [habits])
 
     const handleInputChange = (key: string, value: any) => {
       // setData((prevData: FormData) => ({
