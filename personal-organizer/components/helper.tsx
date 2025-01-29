@@ -1,7 +1,7 @@
 import { FormData, Submissions } from '@/constants/FormData';
 import { Habit } from "@/constants/habit"
 
-// Important: Assumes it takes in consecutive keys
+// Important: Assumes it takes in consecutive keys from most recent to least recent
 // number[] returns at index:
 // 0: sum
 // 1: streak length (starting from first entry); 
@@ -17,16 +17,17 @@ export function calculateStatsForPeriod(habits: Habit[], submissions: Submission
         if(submissions[key]){
             habits.forEach((h) => {
                 let val = habitValueAsInt(h.habitID, submissions[key], h.dataType);
+                let correctGoals = getGoalForDate(h, key);
                 // increment sum
                 ret[h.habitID][0] = ret[h.habitID][0] + val; 
                 if(h.dataType == "number"){
-                    if(val >= Number(h.goal) && ret[h.habitID][1] == reqForStreak && h.timeframe != "Weekly"){
+                    if(val >= Number(correctGoals.goal) && ret[h.habitID][1] == reqForStreak && correctGoals.timeframe != "Weekly"){
                         ret[h.habitID][1]++;
                     }
                 }
                 else if (h.dataType == "boolean"){
                     // if positive, hasn't missed any days, and isn't a weekly target increment streak
-                    if(val > 0 && ret[h.habitID][1] == reqForStreak && h.timeframe != "Weekly"){
+                    if(val > 0 && ret[h.habitID][1] == reqForStreak && correctGoals.timeframe != "Weekly"){
                         ret[h.habitID][1]++;
                     }
                 }
@@ -38,11 +39,12 @@ export function calculateStatsForPeriod(habits: Habit[], submissions: Submission
     })
 
     //if provided a one week long set of keys, increment weekly streaks if the weekly sum is greater than goal
+    //checks most recent day of the array for the weekly goal
     if(keys.length === 7){
         habits.forEach((h) => {
-            if (h.timeframe === "Weekly"){
-                console.log(getGoalForDate(h, keys[2]));
-                if(ret[h.habitID][0] >= Number(h.goal)){
+            let correctGoals = getGoalForDate(h, keys[0]);
+            if (correctGoals.timeframe === "Weekly"){
+                if(ret[h.habitID][0] >= Number(correctGoals.goal)){
                     ret[h.habitID][1]++;
                 }
             }
@@ -60,18 +62,19 @@ export function calculateStatsForPeriod(habits: Habit[], submissions: Submission
 // an object with timeframe and goal keys referencing the respective values
 export function getGoalForDate(habit: Habit, date: string) : {timeframe: string, goal:string} {
     let newTime = new Date(date).getTime();
-    let returnVal = {timeframe: habit.timeframe, goal: habit.goal}
-    habit.history.forEach((entry) => {
-        if(entry.endDate !== ""){
+    let returnVal = {timeframe: habit.timeframe, goal: habit.goal};
+    for(let i = 0; i < habit.history.length; i++){
+        if(habit.history[i].endDate !== ""){
             // console.log("provided time: " + newTime + "/date: " + date);
             // console.log("end time: " + new Date(entry.endDate).getTime() + "/date: " + entry.endDate);
             // console.log("start time: " + new Date(entry.startDate).getTime() + "/date: " + entry.startDate);
-            if((newTime <= (new Date(entry.endDate).getTime())) && (newTime >= (new Date(entry.startDate).getTime()))){
+            if((newTime <= (new Date(habit.history[i].endDate).getTime())) && (newTime >= (new Date(habit.history[i].startDate).getTime()))){
                 // console.log("entry found" + JSON.stringify({timeframe: entry.timeframe, goal: entry.goal}));
-                returnVal = {timeframe: entry.timeframe, goal: entry.goal};
+                returnVal = {timeframe: habit.history[i].timeframe, goal: habit.history[i].goal};
+                i = habit.history.length;
             }
         }
-    });
+    }
     return returnVal;
 }
 
