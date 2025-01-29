@@ -129,18 +129,21 @@ export default function habitsPage() {
               let todaysKey = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + (today.getDate());
               let historyCopy = currentHabit.history;
               console.log(currentHabit);
-              historyCopy[currentHabit.history.length - 1] = {
-                startDate: currentHabit.history[currentHabit.history.length - 1].startDate,
-                endDate: generateDifferentDaysKey(todaysKey, 1),
-                goal: currentHabit.history[currentHabit.history.length - 1].goal,
-                timeframe: currentHabit.history[currentHabit.history.length - 1].timeframe,
-              };
-              historyCopy.push({
-                startDate: todaysKey,
-                endDate: "",
-                goal: goal,
-                timeframe: timeframe,
-              });
+              //only want new history entry if goals have changed. if just the name has changed we don't need a new one
+              if(goal != currentHabit.goal || timeframe != currentHabit.timeframe){
+                historyCopy[currentHabit.history.length - 1] = {
+                  startDate: currentHabit.history[currentHabit.history.length - 1].startDate,
+                  endDate: generateDifferentDaysKey(todaysKey, 1),
+                  goal: currentHabit.history[currentHabit.history.length - 1].goal,
+                  timeframe: currentHabit.history[currentHabit.history.length - 1].timeframe,
+                };
+                historyCopy.push({
+                  startDate: todaysKey,
+                  endDate: "",
+                  goal: goal,
+                  timeframe: timeframe,
+                });
+              }
               let habitArrCopy = habits;
               habitArrCopy[Number(currentHabit.habitID)] = {
                 prettyPrint: prettyPrint,
