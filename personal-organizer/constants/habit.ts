@@ -5,8 +5,16 @@ export interface Habit {
    goal: string;
    timeframe: string;
    category: string;
+   history: habitHistory[];
+
 }
 
+export interface habitHistory{
+    goal: string,
+    timeframe: string,
+    startDate: string,
+    endDate: string,
+}
 export const dataTypes = [
     { label: 'complete/not complete', value: 'boolean' },
     { label: 'numeric', value: 'number' },

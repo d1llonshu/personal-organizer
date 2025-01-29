@@ -8,7 +8,8 @@ import { Link, usePathname, useRouter } from 'expo-router';
 import { Habit, dataTypes, timeframes, categories, keyPrettyPrint } from "@/constants/habit"
 import { styles, dropdownStyles } from "@/constants/stylesheet"
 import DropdownComponent from '@/components/dropdownComponent';
-import { CustomButton } from "@/components/customButton"
+import { CustomButton } from "@/components/customButton";
+
 
 export default function newHabitForm() {
     const router = useRouter();
@@ -20,11 +21,14 @@ export default function newHabitForm() {
     const [timeframe, setTimeframe] = useState<string>();
     const [category, setCategory] = useState<string>();
     const [habitsArray, setHabitsArray] = useMMKVObject<Habit[]>('activeHabits');
+    if(habitsArray === undefined){
+        let temp : Habit[] = [];
+        setHabitsArray(temp);
+    }
     const [habitIDCounter, setHabitIDCounter] = useMMKVObject<number>('habitIDCounter');
     if(habitIDCounter === undefined){
-      setHabitIDCounter(0);
+        setHabitIDCounter(0);
     }
-
 
     const save = () => {
       // needs field validation
@@ -34,6 +38,8 @@ export default function newHabitForm() {
         return false;
       }
       if(passesFormValidation(prettyPrint, dataType, goal, category, timeframe, habitsArray ? habitsArray : [])){
+        let today = new Date();
+        let todaysKey = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + (today.getDate());
         let submission : Habit = {
           prettyPrint: prettyPrint,
           habitID: String(habitIDCounter? habitIDCounter: 0),
@@ -41,6 +47,7 @@ export default function newHabitForm() {
           goal: goal ? goal : "No goal",
           timeframe: timeframe ? timeframe : "No timeframe",
           category: category ? category : "No category",
+          history: [{startDate: todaysKey, endDate: "", goal: goal ? goal : "No goal", timeframe: timeframe ? timeframe : "No timeframe"}],
         };
         setHabitsArray([...habitsArray ? habitsArray:[], submission]);
         setHabitIDCounter((habitIDCounter? habitIDCounter: 0) + 1);
@@ -159,7 +166,7 @@ export default function newHabitForm() {
     );
 }
 
-function passesFormValidation(prettyPrint: string, dataType: string, goal: string, category: string, timeframe: string, habits: Habit[]) : Boolean {
+export function passesFormValidation(prettyPrint: string, dataType: string, goal: string, category: string, timeframe: string, habits: Habit[]) : Boolean {
 
   if (Number(goal) <= 0){
     Alert.alert("Goal should be greater than 0!");
