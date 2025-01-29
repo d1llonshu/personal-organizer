@@ -32,7 +32,7 @@ export default function HomeScreen() {
     let temp : Submissions = {};
     setSubmissions(temp);
   }
-  const [todaysKeyIndex, setTodaysKeyIndex] = useMMKVObject<string>("todaysKey");
+  const [todaysKeyIndex, setTodaysKeyIndex] = useMMKVObject<string>("todaysKeyIndex");
   let today = new Date();
   let submissionKey: string = 
     today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + (today.getDate());
@@ -49,7 +49,7 @@ export default function HomeScreen() {
         setCurrentWeekSection(currentWeekSummary(habits, submissions, todaysKeyIndex));
       }
       
-  }, [habits, submissions, todaysKeyIndex])
+  }, [habits, submissions, todaysKeyIndex]);
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <ScrollView style={styles.container}>

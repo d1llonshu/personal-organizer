@@ -118,7 +118,7 @@ export default function habitsPage() {
           if(currentHabit && habits){
             if (prettyPrint == currentHabit.prettyPrint && goal == currentHabit.goal &&  timeframe == currentHabit.timeframe){
               console.log("Nothing changed, not creating new history entry.");
-              return true
+              return true;
             }
 
             console.log('Saving...');
@@ -155,7 +155,7 @@ export default function habitsPage() {
                 timeframe: timeframe,
                 category: currentHabit.category,
                 history: historyCopy,
-              };
+              }
               setHabits(habitArrCopy);
               return true;
             }
@@ -168,11 +168,10 @@ export default function habitsPage() {
         };
 
     useEffect(() => {
-
       if(habits){
         habits.map((h)=> {
           if(h.habitID === local.habit){
-            setCurrentHabit(h)
+            setCurrentHabit(h);
           }
         });
       }
@@ -184,8 +183,8 @@ export default function habitsPage() {
         setGoalText(createGoalText(currentHabit));
         setPrettyPrint(currentHabit.prettyPrint);
         setTimeframe(currentHabit.timeframe);
-        setGoal(currentHabit.goal)
-        let sections : JSX.Element[] = []
+        setGoal(currentHabit.goal);
+        let sections : JSX.Element[] = [];
         if(editButton){
           sections.push(edit);
         }
@@ -197,7 +196,7 @@ export default function habitsPage() {
     }, [currentHabit]);
 
     useEffect(() => {
-      let sections : JSX.Element[] = []
+      let sections : JSX.Element[] = [];
       if(editButton){
         sections.push(edit);
       }
