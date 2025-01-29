@@ -59,7 +59,7 @@ export function calculateStatsForPeriod(habits: Habit[], submissions: Submission
 // habit - habit object
 // date - string with date in valid key format
 // Output:
-// an object with timeframe and goal keys referencing the respective values
+// an object with timeframe and goal keys referencing the respective values. returns current goal/timeframe if no matches found
 export function getGoalForDate(habit: Habit, date: string) : {timeframe: string, goal:string} {
     let newTime = new Date(date).getTime();
     let returnVal = {timeframe: habit.timeframe, goal: habit.goal};
