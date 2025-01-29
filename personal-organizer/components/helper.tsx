@@ -41,6 +41,7 @@ export function calculateStatsForPeriod(habits: Habit[], submissions: Submission
     if(keys.length === 7){
         habits.forEach((h) => {
             if (h.timeframe === "Weekly"){
+                console.log(getGoalForDate(h, keys[2]));
                 if(ret[h.habitID][0] >= Number(h.goal)){
                     ret[h.habitID][1]++;
                 }
@@ -49,6 +50,29 @@ export function calculateStatsForPeriod(habits: Habit[], submissions: Submission
     }
 
     return ret;
+}
+
+//returns goal on a given date, since edits are now possible
+// Inputs:
+// habit - habit object
+// date - string with date in valid key format
+// Output:
+// an object with timeframe and goal keys referencing the respective values
+export function getGoalForDate(habit: Habit, date: string) : {timeframe: string, goal:string} {
+    let newTime = new Date(date).getTime();
+    let returnVal = {timeframe: habit.timeframe, goal: habit.goal}
+    habit.history.forEach((entry) => {
+        if(entry.endDate !== ""){
+            // console.log("provided time: " + newTime + "/date: " + date);
+            // console.log("end time: " + new Date(entry.endDate).getTime() + "/date: " + entry.endDate);
+            // console.log("start time: " + new Date(entry.startDate).getTime() + "/date: " + entry.startDate);
+            if((newTime <= (new Date(entry.endDate).getTime())) && (newTime >= (new Date(entry.startDate).getTime()))){
+                // console.log("entry found" + JSON.stringify({timeframe: entry.timeframe, goal: entry.goal}));
+                returnVal = {timeframe: entry.timeframe, goal: entry.goal};
+            }
+        }
+    });
+    return returnVal;
 }
 
 // Returns habit value as int, such that boolean true = 1 and false = 0. 
