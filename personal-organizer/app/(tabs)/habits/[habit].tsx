@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TextInput, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useMMKVObject } from 'react-native-mmkv';
-import { useLocalSearchParams, Stack, Link } from 'expo-router';
+import { useLocalSearchParams, Stack, useRouter } from 'expo-router';
 import { Surface } from 'react-native-paper';
 import { Dropdown, IDropdownRef } from 'react-native-element-dropdown';
 
@@ -13,6 +13,8 @@ import { passesFormValidation } from './newHabitForm';
 import { generateDifferentDaysKey } from '@/components/helper';
 
 export default function habitsPage() {
+    //currently does not update edits made visually you reload the page from list of habits
+    const router = useRouter();
     const local = useLocalSearchParams<{habit: string}>();
     const [currentHabit, setCurrentHabit] = useState<Habit>();
     const [habits, setHabits] = useMMKVObject<Habit[]>('activeHabits');
@@ -97,7 +99,7 @@ export default function habitsPage() {
         disabled={false}
         onPress={()=>{
           if(save()){
-            setEditButton(!editButton);
+            router.back();
           }
         }}
         color = "#4f7942"
