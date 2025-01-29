@@ -9,8 +9,10 @@ import { Submissions } from '@/constants/FormData';
 import { Habit } from "@/constants/habit";
 import printStreaks from '@/components/updateStreaksNew';
 
-import currentWeekSummary from '@/components/habitProgress';
+import createSummary from '@/components/habitProgress';
 import { Surface } from 'react-native-paper';
+
+import { generateConsecutiveKeys } from "@/components/helper";
 
 
 
@@ -46,7 +48,7 @@ export default function HomeScreen() {
   useEffect(() => {
       if(habits && submissions && todaysKeyIndex){
         setStreakSection(printStreaks(habits, submissions));
-        setCurrentWeekSection(currentWeekSummary(habits, submissions, todaysKeyIndex));
+        setCurrentWeekSection(createSummary(habits, submissions, generateConsecutiveKeys(todaysKeyIndex, new Date(todaysKeyIndex).getUTCDay())));
       }
       
   }, [habits, submissions, todaysKeyIndex]);

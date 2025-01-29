@@ -6,9 +6,8 @@ import { Habit } from '@/constants/habit';
 import { Submissions } from '@/constants/FormData';
 import { calculateStatsForPeriod, getGoalForDate, generateDifferentDaysKey, generateConsecutiveKeys, habitValueAsInt } from "@/components/helper"
 
-export default function currentWeekSummary(habits: Habit[], submissions: Submissions, todaysKey: string) {
+export default function createSummary(habits: Habit[], submissions: Submissions, keys: string[]) {
     let sections: JSX.Element[] = [];
-    let keys = generateConsecutiveKeys(todaysKey, new Date(todaysKey).getUTCDay());
     console.log(keys);
     sections.push(
         <View key={"WeeklyProgressHeader"}>
@@ -27,9 +26,11 @@ function showWeeklyProgress(habit: Habit, value: number, keys: string[]){
     let barColor = "#CF6679";
     let total = 0;
     if (habit.timeframe === "Daily"){
+        //accounts for changes in goals
         keys.forEach((k) => {
             total = total + Number(getGoalForDate(habit, k).goal)
         });
+        total = total + Number(habit.goal)*(7-keys.length);
         barValue = value/total;
     }
     else if (habit.timeframe === "Weekly"){
@@ -54,7 +55,8 @@ function showWeeklyProgress(habit: Habit, value: number, keys: string[]){
         <View key={"Habit"+habit.habitID+"WeeklyProgress"}>
             <View style={styles.row}>
                 <Text style={progressBarStyles.progressBarTitle}>{habit.prettyPrint}: </Text>
-                <Text style={progressBarStyles.progressBarSubtitle}>{value}/{(habit.timeframe === "Daily")? total : habit.goal} {(habit.dataType == "boolean")?"day":"minute"}{(habit.goal==="1")? "":"s"}</Text>
+                <Text style={progressBarStyles.progressBarSubtitle}>{value}/{(habit.timeframe === "Daily")? total : habit.goal}</Text>
+                {/* <Text style={progressBarStyles.progressBarSubtitle}>{value}/{(habit.timeframe === "Daily")? total : habit.goal} {(habit.dataType == "boolean")?"day":"minute"}{(habit.goal==="1")? "":"s"}</Text> */}
             </View>
             <ProgressBar style={progressBarStyles.progressBarStyle} fillStyle={progressBarStyles.progressBarfillStyle}  
                 progress={barValue} color={barColor} />

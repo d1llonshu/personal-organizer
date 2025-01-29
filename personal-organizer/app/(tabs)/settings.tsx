@@ -49,7 +49,9 @@ export default function Settings(){
                             {
                                 text: 'OK', onPress: () => {
                                     setHabits(sampleHabits);
-                                    setSubmissions(sampleSubmissions);}
+                                    setSubmissions(sampleSubmissions);
+                                    setHabitIDCounter(sampleHabits.length);
+                                }
                             },
                         ]);
                         }}
