@@ -5,18 +5,21 @@ import { useMMKVObject } from 'react-native-mmkv';
 import { useLocalSearchParams, Stack, useRouter } from 'expo-router';
 import { Surface } from 'react-native-paper';
 import { Dropdown, IDropdownRef } from 'react-native-element-dropdown';
+import { Calendar } from 'react-native-calendars';
 
 import { Habit, habitHistory, timeframes } from "@/constants/habit";
-import { styles, dropdownStyles } from "@/constants/stylesheet";
+import { styles, dropdownStyles, buttonColorTrue } from "@/constants/stylesheet";
 import { CustomButton } from "@/components/customButton";
 import { passesFormValidation } from './newHabitForm';
-import { generateDifferentDaysKey } from '@/components/helper';
+import { generateDifferentDaysKey, getGoalForDate } from '@/components/helper';
+import { Submissions } from '@/constants/FormData';
 
 export default function habitsPage() {
     //currently does not update edits made visually you reload the page from list of habits
     const router = useRouter();
     const local = useLocalSearchParams<{habit: string}>();
     const [currentHabit, setCurrentHabit] = useState<Habit>();
+    const [submissions, setSubmissions] = useMMKVObject<Submissions>("submissions");
     const [habits, setHabits] = useMMKVObject<Habit[]>('activeHabits');
     const [goalText, setGoalText] = useState<string>("");
     const [editButton, setEditButton] = useState<boolean>(false);
@@ -204,6 +207,10 @@ export default function habitsPage() {
       else{
         sections.push(noEdit);
       }
+      if(currentHabit && submissions){
+        sections.push(createHabitCalendarMarks(currentHabit, submissions))
+      }
+      
       setPageSections(sections);
     }, [editButton, timeframe, prettyPrint, goal]);
 
@@ -212,9 +219,10 @@ export default function habitsPage() {
         
         <SafeAreaView style = {styles.safeAreaContainer}>
           <ScrollView>
-            <Stack.Screen options={{ title: local.habit }} />
+            <Stack.Screen options={{ title: currentHabit?.prettyPrint }} />
               {pageSections}
-            
+              {}
+
             {/* <View key="editButton" style = {styles.buttonContainer}>
               <Link href={{pathname:"/habits/[edit]", params: {edit: local.habit}}}>
                       <Text style={styles.dayPageHyperlink}>{"Edit"}</Text>
@@ -224,7 +232,47 @@ export default function habitsPage() {
       </SafeAreaView>
     )
 }
-
+function createHabitCalendarMarks(habit: Habit, submissions: Submissions){
+  const markedDates: { [key: string]: {disabled: boolean, startingDay: boolean, endingDay: boolean, color: string} } = {};
+  let keys = Object.keys(submissions);
+  if(habit.timeframe == "Daily"){
+    for(let i = 0; i < keys.length; i++){
+      if(Number(submissions[keys[i]][habit.habitID]) >= Number(getGoalForDate(habit, keys[i]).goal)){
+        if((new Date(keys[i-1]).getTime()) - (new Date(keys[i]).getTime()) === -86400000 && markedDates[keys[i-1]].disabled == false){
+          markedDates[keys[i]] = {disabled: false, color: "green", startingDay: false, endingDay: false};
+        }
+        else if(i == 0){
+          markedDates[keys[i]] = {disabled: false, color: "green", startingDay: true, endingDay: false};
+        }
+        else{
+          console.log(markedDates[keys[i-1]] + "should be true");
+          markedDates[keys[i-1]].endingDay = true;
+          markedDates[keys[i]] = {disabled: false, color: "green", startingDay: true, endingDay: false};
+        }
+      }
+      else{
+        if(i != 0){
+          markedDates[keys[i-1]].endingDay = true;
+        }
+        markedDates[keys[i]] = {disabled: true, color: "none", startingDay: false, endingDay: false};
+      }
+    }
+    return(<Calendar 
+      disableAllTouchEventsForDisabledDays
+      enableSwipeMonths
+      disabledByDefault
+      minDate={keys[0]} 
+      markingType={'period'}
+      markedDates={markedDates}
+  
+  />)
+  }
+  else{
+    return(<View></View>)
+  }
+  
+  
+}
 function createGoalText(habit: Habit){
   let text = "";
   if(habit.goal === "1" && habit.dataType === "boolean"){

@@ -7,7 +7,7 @@ import { Surface } from 'react-native-paper';
 import { Calendar } from 'react-native-calendars';
 
 // import { Habit, dataTypes, categories, keyPrettyPrint } from "@/constants/habit"
-import { styles } from "@/constants/stylesheet";
+import { styles, buttonColorTrue } from "@/constants/stylesheet";
 import { Submissions } from '@/constants/FormData';
 
 export default function daysOverview() {
@@ -21,18 +21,32 @@ export default function daysOverview() {
     let todaysKey: string = 
         today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
 
-    keys = keys.reverse();
-    keys = keys.filter(key => key !== todaysKey);
+    
+    // keys = keys.filter(key => key !== todaysKey);
     const router = useRouter();
     const onDayPress = useCallback((day : {dateString:string, day:string, month:number, timestamp:number, year:number}) => {
         // Navigate to the new page with the selected date
         router.push({ pathname: '/(tabs)/day/[day]', params: { day: day.dateString } });
       }, [router]);
     
-    const formExists = {};
-    keys.forEach((key) => {
-        formExists[key] = {disabled: false};
-    })
+    const formExists: { [key: string]: {} } = {};
+    for(let i = 0; i < keys.length; i++){
+        formExists[keys[i]] = {disabled: false, marked: true, dotColor:"green"};
+        // if(i == 0){
+            
+        // }
+        // else{
+        //     console.log((new Date(keys[i-1]).getTime()) - (new Date(keys[i]).getTime()))
+        //     if((new Date(keys[i-1]).getTime()) - (new Date(keys[i]).getTime()) == -86400000){
+        //         formExists[keys[i]] = {disabled: false, marked:};
+        //     }
+        //     else{
+        //         formExists[keys[i-1]] = {disabled: false, endingDay: true, color: 'green'};
+        //         formExists[keys[i]] = {disabled: false, startingDay: true, color: 'green'};
+        //     } 
+        // }
+    }
+    keys = keys.reverse();
     console.log(formExists);
     const calendar = <Calendar 
         disableAllTouchEventsForDisabledDays
@@ -40,6 +54,7 @@ export default function daysOverview() {
         disabledByDefault
         minDate={keys[keys.length-1]} 
         onDayPress={onDayPress}
+        markingType={'period'}
         markedDates={formExists}
  
     />
