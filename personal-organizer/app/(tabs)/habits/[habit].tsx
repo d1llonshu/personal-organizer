@@ -235,28 +235,60 @@ export default function habitsPage() {
 function createHabitCalendarMarks(habit: Habit, submissions: Submissions){
   const markedDates: { [key: string]: {disabled: boolean, startingDay: boolean, endingDay: boolean, color: string} } = {};
   let keys = Object.keys(submissions);
+  let streakArr = [];
+  let longestStreak : {start:string, end:string, length:number} = {
+    start:"", end:"", length: 0
+  };
+  let ongoingStreak : {start:string, end:string, length:number} = {
+    start:"", end:"", length: 0
+  };
+
   if(habit.timeframe == "Daily"){
     for(let i = 0; i < keys.length; i++){
       if(Number(submissions[keys[i]][habit.habitID]) >= Number(getGoalForDate(habit, keys[i]).goal)){
+        //streak continues, sets end to current date in case next entry doesn't meet goal
         if((new Date(keys[i-1]).getTime()) - (new Date(keys[i]).getTime()) === -86400000 && markedDates[keys[i-1]].disabled == false){
           markedDates[keys[i]] = {disabled: false, color: "green", startingDay: false, endingDay: false};
+          ongoingStreak.length = ongoingStreak.length + 1;
+          ongoingStreak.end = keys[i];//sets ongoing end
         }
-        else if(i == 0){
-          markedDates[keys[i]] = {disabled: false, color: "green", startingDay: true, endingDay: false};
-        }
+
+        //starting new streak
         else{
-          console.log(markedDates[keys[i-1]] + "should be true");
-          markedDates[keys[i-1]].endingDay = true;
+          if(ongoingStreak.length > longestStreak.length){
+            longestStreak = ongoingStreak;
+          }
+          //account for streaks of equal length
+          else if(ongoingStreak.length == longestStreak.length && ongoingStreak.length != 0){
+            streakArr.push(ongoingStreak);
+          }
+          ongoingStreak = {start:keys[i], end:"", length: 1};//sets ongoing start
+          if(i != 0){
+            markedDates[keys[i-1]].endingDay = true;
+          }
+
           markedDates[keys[i]] = {disabled: false, color: "green", startingDay: true, endingDay: false};
         }
       }
+      //doesn't start new streak but will end ongoing one
       else{
+        if(ongoingStreak.length > longestStreak.length){
+          longestStreak = ongoingStreak;
+        }
+        //account for streaks of equal length
+        else if(ongoingStreak.length == longestStreak.length && ongoingStreak.length != 0){
+          streakArr.push(ongoingStreak);
+        }
+        ongoingStreak = {start:"", end:"", length: 0};
         if(i != 0){
           markedDates[keys[i-1]].endingDay = true;
         }
         markedDates[keys[i]] = {disabled: true, color: "none", startingDay: false, endingDay: false};
       }
     }
+    streakArr.push(longestStreak);
+    console.log(streakArr);
+    
     return(<Calendar 
       disableAllTouchEventsForDisabledDays
       enableSwipeMonths
@@ -267,7 +299,7 @@ function createHabitCalendarMarks(habit: Habit, submissions: Submissions){
   
   />)
   }
-  else{
+  else{//Weekly not implemented yet
     return(<View></View>)
   }
   

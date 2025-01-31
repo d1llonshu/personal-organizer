@@ -47,7 +47,6 @@ export default function daysOverview() {
         // }
     }
     keys = keys.reverse();
-    console.log(formExists);
     const calendar = <Calendar 
         disableAllTouchEventsForDisabledDays
         enableSwipeMonths
