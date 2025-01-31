@@ -23,6 +23,11 @@ export default function HomeScreen() {
     let temp : Habit[] = [];
     setHabits(temp);
   }
+  // const [inactiveHabits, setInactiveHabits] = useMMKVObject<Habit[]>('inactiveHabits');
+  // if(inactiveHabits === undefined){
+  //   let temp : Habit[] = [];
+  //   setInactiveHabits(temp);
+  // }
 
   const [habitIDCounter, setHabitIDCounter] = useMMKVObject<number>('habitIDCounter');
   if(habitIDCounter === undefined){
@@ -37,7 +42,7 @@ export default function HomeScreen() {
   const [todaysKeyIndex, setTodaysKeyIndex] = useMMKVObject<string>("todaysKeyIndex");
   let today = new Date();
   let submissionKey: string = 
-    today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + (today.getDate());
+    today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
   if(submissionKey !== todaysKeyIndex){
     setTodaysKeyIndex(submissionKey);
   }

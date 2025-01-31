@@ -128,7 +128,8 @@ export default function habitsPage() {
             }
             else if(passesFormValidation(prettyPrint, currentHabit.dataType, goal, currentHabit.category,timeframe, habits? habits:[])){
               let today = new Date();
-              let todaysKey = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + (today.getDate());
+              let todaysKey = 
+              today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
               let historyCopy = currentHabit.history;
               console.log(currentHabit);
               //only want new history entry if goals have changed. if just the name has changed we don't need a new one

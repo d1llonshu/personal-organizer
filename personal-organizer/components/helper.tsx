@@ -113,7 +113,7 @@ export function generateDifferentDaysKey(key:string, daysBeforeProvidedKey:numbe
     let newDate = new Date(newTime);
     // console.log(newDate)
     // console.log(newDate.getUTCDate());
-    return(String(newDate.getUTCFullYear()) + "-" + String(newDate.getUTCMonth()+1) + "-" + String(newDate.getUTCDate()));
+    return(String(newDate.getUTCFullYear()) + "-" + ("0" + (String(newDate.getUTCMonth()+1))).slice(-2) + "-" + ("0" + String(newDate.getUTCDate())).slice(-2));
 }
 
 // starts from key provided then goes back x days

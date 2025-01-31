@@ -129,11 +129,10 @@ export default function dayPage() {
               }
           })
           let today = new Date();
-          let todaysKey: string = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + (today.getDate());
+          let todaysKey: string = 
+            today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
           
           setForm(generateForm(habitsByCategory, (generateDifferentDaysKey(todaysKey, 1) === local.day)));
-          
-          
         }
       }
     
@@ -145,16 +144,15 @@ export default function dayPage() {
         <SafeAreaView style = {styles.safeAreaContainer}>
           <ScrollView style = {styles.formContainer}>
             <Stack.Screen options={{ title: local.day }} />
-            {/** TODO:  
-             * Add streaks to new form
-             * (?) Rework individual days storage from being the date as a key to putting all days in one JSON 
-             */
-              infoSections
-              
-            }
-            {
-              form
-            }
+              <View>
+                  {/* {
+                    infoSections
+                  } */}
+                  {
+                    form
+                  }
+              </View>
+           
         </ScrollView>
       </SafeAreaView>
     )

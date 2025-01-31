@@ -39,7 +39,8 @@ export default function newHabitForm() {
       }
       if(passesFormValidation(prettyPrint, dataType, goal, category, timeframe, habitsArray ? habitsArray : [])){
         let today = new Date();
-        let todaysKey = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + (today.getDate());
+        let todaysKey : string = 
+          today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
         let submission : Habit = {
           prettyPrint: prettyPrint,
           habitID: String(habitIDCounter? habitIDCounter: 0),
