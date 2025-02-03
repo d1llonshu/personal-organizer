@@ -27,7 +27,7 @@ export default function habitsPage() {
     const [prettyPrint, setPrettyPrint] = useState<string>("");
     const [goal, setGoal] = useState<string>("");
     const [timeframe, setTimeframe] = useState<string>("");
-    const noEdit = (
+    let noEdit = (longestStreak: JSX.Element[]) => { return(
     <Surface style={styles.homeScreenSurface} elevation={1}>
       <View style={styles.row}>
         <Text style={styles.habitPageSubtitle}>Category: </Text>
@@ -39,7 +39,7 @@ export default function habitsPage() {
       </View>
       <View style={styles.row}>
         <Text style={styles.habitPageSubtitle}>Longest Streak: </Text>
-        <Text style={styles.habitPageRegularText}>{"Coming soon!"}</Text>
+        {longestStreak}
       </View>
       <View style={styles.row}>
         <Text style={styles.habitPageSubtitle}>History: </Text>
@@ -55,12 +55,12 @@ export default function habitsPage() {
         color = "#4f7942"
       />
       </View>
-    </Surface>);
+    </Surface>)};
 
-    const edit = (
-    <Surface style={styles.homeScreenSurface} elevation={1}>
+    let edit = (
+    <Surface key={"infoSurface"} style={styles.homeScreenSurface} elevation={1}>
       <Text style={styles.title}>Edit:</Text>
-      <View key={"nameInput"}style={styles.row}>
+      <View style={styles.row}>
         <Text style={dropdownStyles.title}>Habit:</Text>
         <TextInput
             style={styles.textInput}
@@ -188,28 +188,45 @@ export default function habitsPage() {
         setPrettyPrint(currentHabit.prettyPrint);
         setTimeframe(currentHabit.timeframe);
         setGoal(currentHabit.goal);
-        let sections : JSX.Element[] = [];
-        if(editButton){
-          sections.push(edit);
-        }
-        else{
-          sections.push(noEdit);
-        }
-        setPageSections(sections);
+        // let sections : JSX.Element[] = [];
+        // if(editButton){
+        //   sections.push(edit);
+        // }
+        // else{
+          
+        //   sections.push(noEdit(" Not Available"));
+        // }
+        // setPageSections(sections);
       }
     }, [currentHabit]);
 
     useEffect(() => {
       let sections : JSX.Element[] = [];
-      if(editButton){
-        sections.push(edit);
-      }
-      else{
-        sections.push(noEdit);
-      }
       if(currentHabit && submissions){
-        sections.push(createHabitCalendarMarks(currentHabit, submissions))
+        let calendar = createHabitCalendarMarks(currentHabit, submissions);
+        
+        let streak : JSX.Element = (<Text style={styles.habitPageRegularText}>{"Not Available"}</Text>);
+        let dates = "";
+        if(calendar.longestStreak.length > 0){
+          streak = <Text style={styles.habitPageRegularText}>{String(calendar.longestStreak[0].length) + ((calendar.longestStreak[0].length == 1)? " day" : " days")}</Text>
+          calendar.longestStreak = calendar.longestStreak.reverse();
+          for(let i = 0; i < calendar.longestStreak.length; i++){
+            dates = dates + "(" + calendar.longestStreak[i].start + " - " + calendar.longestStreak[i].end + ")";
+            if(i != calendar.longestStreak.length -1){
+              dates = dates + "\n";
+            }
+          }
+        }
+        if(editButton){
+          sections.push(edit);
+        }
+        else{
+          sections.push(noEdit([streak, <Text style={styles.habitPageRegularTextWithMargin}>{dates}</Text>]));
+        }
+        sections.push(calendar.calendar);
       }
+      
+
       
       setPageSections(sections);
     }, [editButton, timeframe, prettyPrint, goal]);
@@ -232,7 +249,7 @@ export default function habitsPage() {
       </SafeAreaView>
     )
 }
-function createHabitCalendarMarks(habit: Habit, submissions: Submissions){
+function createHabitCalendarMarks(habit: Habit, submissions: Submissions) : {calendar: JSX.Element, longestStreak: {start: string, end: string, length: number}[]} {
   const markedDates: { [key: string]: {disabled: boolean, startingDay: boolean, endingDay: boolean, color: string} } = {};
   let keys = Object.keys(submissions);
   let streakArr = [];
@@ -287,20 +304,26 @@ function createHabitCalendarMarks(habit: Habit, submissions: Submissions){
       }
     }
     streakArr.push(longestStreak);
+    
     console.log(streakArr);
     
-    return(<Calendar 
-      disableAllTouchEventsForDisabledDays
-      enableSwipeMonths
-      disabledByDefault
-      minDate={keys[0]} 
-      markingType={'period'}
-      markedDates={markedDates}
-  
-  />)
+    return({calendar:
+    <Surface key={"calendarSurface"} style={styles.homeScreenSurface} elevation={1}>
+      <Calendar 
+        disableAllTouchEventsForDisabledDays
+        enableSwipeMonths
+        disabledByDefault
+        minDate={keys[0]} 
+        markingType={'period'}
+        markedDates={markedDates}
+        />
+    </Surface>,
+    longestStreak:streakArr})
   }
   else{//Weekly not implemented yet
-    return(<View></View>)
+    return({calendar:(<View></View>),
+      longestStreak:[],
+    })
   }
   
   

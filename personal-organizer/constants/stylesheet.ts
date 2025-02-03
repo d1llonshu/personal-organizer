@@ -119,6 +119,13 @@ export const styles = StyleSheet.create({
       marginBottom: 4,
       marginLeft: 0,
     },
+    habitPageRegularTextWithMargin: {
+      textAlign: 'left',
+      fontSize: 18,
+      color: '#E1D9D1',
+      marginBottom: 4,
+      paddingLeft: 12,
+    },
     dayPageSubtitle: {
       textAlign: 'left',
       fontSize: 18,
