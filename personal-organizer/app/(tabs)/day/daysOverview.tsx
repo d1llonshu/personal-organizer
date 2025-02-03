@@ -21,7 +21,6 @@ export default function daysOverview() {
     let todaysKey: string = 
         today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
 
-    
     // keys = keys.filter(key => key !== todaysKey);
     const router = useRouter();
     const onDayPress = useCallback((day : {dateString:string, day:string, month:number, timestamp:number, year:number}) => {
@@ -32,19 +31,6 @@ export default function daysOverview() {
     const formExists: { [key: string]: {} } = {};
     for(let i = 0; i < keys.length; i++){
         formExists[keys[i]] = {disabled: false, marked: true, dotColor:"green"};
-        // if(i == 0){
-            
-        // }
-        // else{
-        //     console.log((new Date(keys[i-1]).getTime()) - (new Date(keys[i]).getTime()))
-        //     if((new Date(keys[i-1]).getTime()) - (new Date(keys[i]).getTime()) == -86400000){
-        //         formExists[keys[i]] = {disabled: false, marked:};
-        //     }
-        //     else{
-        //         formExists[keys[i-1]] = {disabled: false, endingDay: true, color: 'green'};
-        //         formExists[keys[i]] = {disabled: false, startingDay: true, color: 'green'};
-        //     } 
-        // }
     }
     keys = keys.reverse();
     const calendar = <Calendar 
@@ -58,37 +44,6 @@ export default function daysOverview() {
  
     />
 
-    // const onDayPress = useCallback((day) => {
-    //     console.log(day);
-    //     router.push({pathname:"/day/[day]", params: {day: day.dateString}});
-    //     }, [router]);
-    // useEffect(() => {
-
-    //     if (days){
-
-    //         sections.push(
-    //             <View key="header" style={styles.dayPageContainer}>
-    //                 <Text style={styles.dayPageTitle}>History:</Text>
-                    
-    //             </View>
-    //         );
-    //         keys.map((d) => {
-    //             sections.push(
-    //                 <View key={d} style={styles.dayPageContainer}>
-    //                     <Link href={{pathname:"/day/[day]", params: {day: d}}}>
-    //                             <Text style={styles.dayPageHyperlink}>{d}</Text>
-    //                     </Link>
-    //                 </View>
-    //                 // <View key={h.keyName}>
-    //                 //     <TouchableOpacity onPress={() => router.push(`/days[habit]?habit=${h.keyName}`)}>
-    //                 //     <Text style={styles.regularText}>{h.prettyPrint}</Text>
-    //                 //     </TouchableOpacity>
-    //                 // </View>
-    //             );
-    //         });
-    //     }
-    //     setPageSections(sections);
-    // }, [days]);
     
     return(
         <SafeAreaView style = {styles.safeAreaContainer}>

@@ -1,9 +1,10 @@
-import { SafeAreaView, View,  Text, ScrollView, Pressable } from 'react-native';
+import { SafeAreaView, View,  Text, ScrollView, Pressable, TouchableHighlight } from 'react-native';
 import { useEffect, useState } from 'react';
 import { MMKV, useMMKVObject } from 'react-native-mmkv';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { streakData } from '@/constants/streaks';
-import { styles } from '@/constants/stylesheet';
+import { styles, backgroundColor, surfaceBackgroundColor } from '@/constants/stylesheet';
 
 import { Submissions } from '@/constants/FormData';
 import { Habit } from "@/constants/habit";
@@ -12,8 +13,8 @@ import printStreaks from '@/components/updateStreaksNew';
 import createSummary from '@/components/habitProgress';
 import { Surface } from 'react-native-paper';
 
-import { generateConsecutiveKeys } from "@/components/helper";
-
+import { generateConsecutiveKeys, generateDifferentDaysKey } from "@/components/helper";
+import { CustomButton } from "@/components/customButton";
 
 
 export default function HomeScreen() {
@@ -46,17 +47,41 @@ export default function HomeScreen() {
   if(submissionKey !== todaysKeyIndex){
     setTodaysKeyIndex(submissionKey);
   }
-  
+   
   const [streakSection, setStreakSection] = useState<JSX.Element[]>([]);
   const [currentWeekSection, setCurrentWeekSection] = useState<JSX.Element[]>([]);
+  const [mult, setMult] = useState<number>(0);
   //go through each submission checking the dates, if it's 1 day apart keep adding the streaks, else stop.
   useEffect(() => {
+      console.log(mult);
       if(habits && submissions && todaysKeyIndex){
         setStreakSection(printStreaks(habits, submissions));
-        setCurrentWeekSection(createSummary(habits, submissions, generateConsecutiveKeys(todaysKeyIndex, new Date(todaysKeyIndex).getUTCDay())));
+        let keys = generateConsecutiveKeys(todaysKeyIndex, new Date(todaysKeyIndex).getUTCDay() + (7*mult));
+        let temp = createSummary(habits, submissions, keys);
+        if(mult == 0){
+          temp[0] = (
+            <View key={"WeeklyProgressHeader"} style={styles.row}>
+                <Ionicons.Button name="caret-back" size={16} color="white" backgroundColor={surfaceBackgroundColor} onPress={()=>{setMult(mult+1);}} />
+              <Text style={styles.homeScreenSubtitle}>Targets for Week of {keys[keys.length-1]}</Text>
+            </View>
+          );
+        }
+          
+        else{
+          temp[0] = (
+            <View key={"WeeklyProgressHeader"} style={styles.row}>
+              <Ionicons.Button name="caret-back" size={16} color="white" backgroundColor={surfaceBackgroundColor} onPress={()=>{setMult(mult+1);}} />
+               
+              <Text style={styles.homeScreenSubtitle}>Targets for Week of {keys[keys.length-1]}</Text>
+              <Ionicons.Button name="caret-forward" size={16} color="white" backgroundColor={surfaceBackgroundColor} onPress={()=>{setMult(mult-1);}} />
+            </View>
+          );
+        }
+        
+        setCurrentWeekSection(temp);
       }
       
-  }, [habits, submissions, todaysKeyIndex]);
+  }, [habits, submissions, todaysKeyIndex, mult]);
   return (
     <SafeAreaView style={styles.safeAreaContainer}>
       <ScrollView style={styles.container}>

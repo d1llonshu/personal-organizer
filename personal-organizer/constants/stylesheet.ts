@@ -169,7 +169,14 @@ export const styles = StyleSheet.create({
     },
     formSaveButton:{
       padding: 4,
-    }
+    },
+    iconButton: {
+      padding: 10,
+      backgroundColor: '#FFA500',
+      borderRadius: 5,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
 
   });
 
@@ -288,3 +295,5 @@ export const dropdownStyles = StyleSheet.create({
 
 export const buttonColorFalse = "#CF6679";
 export const buttonColorTrue = "#4f7942";
+export const backgroundColor = '#121212';
+export const surfaceBackgroundColor = '#212121';

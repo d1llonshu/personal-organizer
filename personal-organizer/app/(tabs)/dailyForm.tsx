@@ -5,10 +5,10 @@ import { useMMKVObject  } from 'react-native-mmkv';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 
-import { Habit } from "@/constants/habit"
+import { Habit } from "@/constants/habit";
 // import updateStreaks from '@/components/updateStreaks'
-import { CustomButton } from "@/components/customButton"
-import { styles } from '@/constants/stylesheet'
+import { CustomButton } from "@/components/customButton";
+import { styles } from '@/constants/stylesheet';
 import { FormData, Submissions } from '@/constants/FormData';
 
 export default function Form() {
