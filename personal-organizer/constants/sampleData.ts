@@ -143,7 +143,10 @@ export let sampleSubmissions =
         "1": 10, "0": 10, "5": 15, "4": 20,
     }, 
 }
-
+/*
+ * 0 = weeklyNumMiss, 1 = weeklyNumHit, 2 = weeklyBoolHit, 3 = weeklyBoolMiss
+ * 4 = dailyNumMiss, 5 = dailyNumHit, 6 = dailyBoolHit, 7 = dailyBoolMiss
+ */
 
 
 /*

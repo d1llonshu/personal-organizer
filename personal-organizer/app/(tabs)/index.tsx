@@ -56,13 +56,17 @@ export default function HomeScreen() {
       console.log(mult);
       if(habits && submissions && todaysKeyIndex){
         setStreakSection(printStreaks(habits, submissions));
-        let keys = generateConsecutiveKeys(todaysKeyIndex, new Date(todaysKeyIndex).getUTCDay() + (7*mult));
+        let sundayKey = generateDifferentDaysKey(todaysKeyIndex, new Date(todaysKeyIndex).getUTCDay() + (7*(mult-1)));
+        console.log(sundayKey);
+        let keys = generateConsecutiveKeys(sundayKey, 7);
         let temp = createSummary(habits, submissions, keys);
         if(mult == 0){
+          keys = generateConsecutiveKeys(todaysKeyIndex, new Date(todaysKeyIndex).getUTCDay());
+          temp = createSummary(habits, submissions, generateConsecutiveKeys(todaysKeyIndex, new Date(todaysKeyIndex).getUTCDay()));
           temp[0] = (
             <View key={"WeeklyProgressHeader"} style={styles.row}>
                 <Ionicons.Button name="caret-back" size={16} color="white" backgroundColor={surfaceBackgroundColor} onPress={()=>{setMult(mult+1);}} />
-              <Text style={styles.homeScreenSubtitle}>Targets for Week of {keys[keys.length-1]}</Text>
+              <Text style={styles.homeScreenSubtitle}>Week of {keys[keys.length-1]}</Text>
             </View>
           );
         }
@@ -72,7 +76,7 @@ export default function HomeScreen() {
             <View key={"WeeklyProgressHeader"} style={styles.row}>
               <Ionicons.Button name="caret-back" size={16} color="white" backgroundColor={surfaceBackgroundColor} onPress={()=>{setMult(mult+1);}} />
                
-              <Text style={styles.homeScreenSubtitle}>Targets for Week of {keys[keys.length-1]}</Text>
+              <Text style={styles.homeScreenSubtitle}>Week of {keys[keys.length-1]}</Text>
               <Ionicons.Button name="caret-forward" size={16} color="white" backgroundColor={surfaceBackgroundColor} onPress={()=>{setMult(mult-1);}} />
             </View>
           );
