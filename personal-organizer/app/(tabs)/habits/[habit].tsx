@@ -41,9 +41,9 @@ export default function habitsPage() {
         <Text style={styles.habitPageSubtitle}>Longest Streak: </Text>
         {longestStreak}
       </View>
-      <View style={styles.row}>
-        <Text style={styles.habitPageSubtitle}>History: </Text>
-        <Text style={styles.habitPageRegularText}>{JSON.stringify(currentHabit?.history)}</Text>
+      <View>
+        <Text style={styles.habitPageSubtitle}>Goal History: </Text>
+        {displayHistory(currentHabit?currentHabit.history:[])}
       </View>
       <View key={"editButton"}>
       <CustomButton               
@@ -59,9 +59,9 @@ export default function habitsPage() {
 
     let edit = (
     <Surface key={"infoSurface"} style={styles.homeScreenSurface} elevation={1}>
-      <Text style={styles.title}>Edit:</Text>
+      <Text style={styles.habitPageSubtitle}>Edit:</Text>
       <View style={styles.row}>
-        <Text style={dropdownStyles.title}>Habit:</Text>
+        <Text style={dropdownStyles.titleWithEvenLessMargin}>Habit:</Text>
         <TextInput
             style={styles.textInput}
             placeholder='Biking'
@@ -70,7 +70,7 @@ export default function habitsPage() {
             onChangeText={setPrettyPrint}
         />
       </View>
-      <View style={styles.row}>
+      <View style={dropdownStyles.dropdownRow}>
         <Text style={dropdownStyles.title}>Goal:</Text>
         <TextInput
             style={styles.textInput}
@@ -211,7 +211,7 @@ export default function habitsPage() {
           streak = <Text style={styles.habitPageRegularText}>{String(calendar.longestStreak[0].length) + ((calendar.longestStreak[0].length == 1)? " day" : " days")}</Text>
           calendar.longestStreak = calendar.longestStreak.reverse();
           for(let i = 0; i < calendar.longestStreak.length; i++){
-            dates = dates + "(" + calendar.longestStreak[i].start + " - " + calendar.longestStreak[i].end + ")";
+            dates = dates + "(" + prettyPrintDate(calendar.longestStreak[i].start) + " - " + prettyPrintDate(calendar.longestStreak[i].end) + ")";
             if(i != calendar.longestStreak.length -1){
               dates = dates + "\n";
             }
@@ -222,8 +222,9 @@ export default function habitsPage() {
         }
         else{
           sections.push(noEdit([streak, <Text style={styles.habitPageRegularTextWithMargin}>{dates}</Text>]));
+          sections.push(calendar.calendar);
         }
-        sections.push(calendar.calendar);
+        
       }
       
 
@@ -338,4 +339,37 @@ function createGoalText(habit: Habit){
     text = habit.goal + " " + ((habit.dataType === "boolean")? "times":"minutes") + " " + ((habit.timeframe == "Daily")? "per day" : "per week");
   }
   return text;
+}
+function displayHistory(history: habitHistory[]){
+  
+  let sections : JSX.Element[] = [];
+  
+  for(let i = 0; i < history.length; i++){
+    prettyPrintDate(history[i].startDate);
+    sections.push(<View key={"habitHistory"+i}>
+      <Text style={styles.habitPageRegularTextWithMargin}>{history[i].goal}, {history[i].timeframe} {"("}{prettyPrintDate(history[i].startDate)} - {(history[i].endDate === "")?"Present":prettyPrintDate(history[i].endDate)}{")"}</Text>
+    </View>);
+  }
+  return sections
+}
+
+function prettyPrintDate(date:string){
+  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  let prettyPrint = shortMonths[Number(date.slice(5, 7))-1] + ". " + Number(date.slice(8, 10));
+  if(date.slice(9, 10) === "1"){
+    prettyPrint = prettyPrint + "st";
+  }
+  else if(date.slice(9, 10) === "2"){
+    prettyPrint = prettyPrint + "nd";
+  }
+  else if(date.slice(9, 10) === "3"){
+    prettyPrint = prettyPrint + "rd";
+  }
+  else{
+    prettyPrint = prettyPrint + "th";
+  }
+  prettyPrint = prettyPrint + ", " + date.slice(0, 4);
+  
+  return prettyPrint;
 }

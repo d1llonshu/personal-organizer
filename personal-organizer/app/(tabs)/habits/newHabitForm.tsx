@@ -72,7 +72,7 @@ export default function newHabitForm() {
             <ScrollView>
             
             <View key={"nameInput"}style={styles.row}>
-              <Text style={dropdownStyles.title}>Habit:</Text>
+              <Text style={dropdownStyles.titleWithLessMargin}>Habit:</Text>
               <TextInput
                   style={styles.textInput}
                   placeholder='Biking'

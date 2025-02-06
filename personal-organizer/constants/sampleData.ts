@@ -1,11 +1,11 @@
 export let sampleHabits = 
 [
 {"category": "Fitness", "dataType": "number", "goal": "200", "habitID": "0", "prettyPrint": "weeklyNumMiss", "timeframe": "Weekly", "history": [{"startDate": "2024-12-29", "endDate":"", "goal":"200", "timeframe":"Weekly"}]}, 
-{"category": "Fitness", "dataType": "number", "goal": "15", "habitID": "1", "prettyPrint": "weeklyNumHit", "timeframe": "Weekly", "history": [{"startDate": "2024-12-29", "endDate":"2025-1-26", "goal":"10", "timeframe":"Weekly"}, {"startDate": "2025-1-27", "endDate":"", "goal":"15", "timeframe":"Weekly"}]},
+{"category": "Fitness", "dataType": "number", "goal": "15", "habitID": "1", "prettyPrint": "weeklyNumHit", "timeframe": "Weekly", "history": [{"startDate": "2024-12-29", "endDate":"2025-01-26", "goal":"10", "timeframe":"Weekly"}, {"startDate": "2025-01-27", "endDate":"", "goal":"15", "timeframe":"Weekly"}]},
 {"category": "Personal Care", "dataType": "boolean", "goal": "4", "habitID": "2", "prettyPrint": "weeklyBoolHit", "timeframe": "Weekly", "history": [{"startDate": "2024-12-29", "endDate":"", "goal":"4", "timeframe":"Weekly"}]},
 {"category": "Personal Care", "dataType": "boolean", "goal": "7", "habitID": "3", "prettyPrint": "weeklyBoolMiss", "timeframe": "Weekly", "history": [{"startDate": "2024-12-29", "endDate":"", "goal":"7", "timeframe":"Weekly"}]},
 {"category": "Productivity", "dataType": "number", "goal": "20", "habitID": "4", "prettyPrint": "dailyNumMiss", "timeframe": "Daily", "history": [{"startDate": "2024-12-29", "endDate":"", "goal":"20", "timeframe":"Daily"}]}, 
-{"category": "Productivity", "dataType": "number", "goal": "15", "habitID": "5", "prettyPrint": "dailyNumHit", "timeframe": "Daily", "history": [{"startDate": "2024-12-29", "endDate":"2025-1-26", "goal":"5", "timeframe":"Daily"}, {"startDate": "2025-1-27", "endDate":"", "goal":"15", "timeframe":"Daily"}]},
+{"category": "Productivity", "dataType": "number", "goal": "15", "habitID": "5", "prettyPrint": "dailyNumHit", "timeframe": "Daily", "history": [{"startDate": "2024-12-29", "endDate":"2025-01-26", "goal":"5", "timeframe":"Daily"}, {"startDate": "2025-01-27", "endDate":"", "goal":"15", "timeframe":"Daily"}]},
 {"category": "Hobby", "dataType": "boolean", "goal": "1", "habitID": "6", "prettyPrint": "dailyBoolHit", "timeframe": "Daily", "history": [{"startDate": "2024-12-29", "endDate":"", "goal":"1", "timeframe":"Daily"}]},
 {"category": "Hobby", "dataType": "boolean", "goal": "1", "habitID": "7", "prettyPrint": "dailyBoolMiss", "timeframe": "Daily", "history": [{"startDate": "2024-12-29", "endDate":"", "goal":"1", "timeframe":"Daily"}]}
 ];

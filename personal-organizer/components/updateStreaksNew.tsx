@@ -21,7 +21,6 @@ export default function printOngoingStreaks(habits: Habit[], submissions: Submis
         for (let i = 0; i < streaks.length; i++){
             if(streaks[i] != 0){ 
                 if(habits[i].timeframe == "Daily"){
-
                     sections.push(
                         <View key={habits[i].habitID+"StreakPrint"} style={styles.row}>
                             <Text style={progressBarStyles.progressBarTitle}>{habits[i].prettyPrint}: </Text>
