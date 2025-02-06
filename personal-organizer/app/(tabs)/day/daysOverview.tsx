@@ -7,7 +7,7 @@ import { Surface } from 'react-native-paper';
 import { Calendar } from 'react-native-calendars';
 
 // import { Habit, dataTypes, categories, keyPrettyPrint } from "@/constants/habit"
-import { styles, buttonColorTrue } from "@/constants/stylesheet";
+import { styles, buttonColorTrue, surfaceBackgroundColor, textColor, calendarTheme } from "@/constants/stylesheet";
 import { Submissions } from '@/constants/FormData';
 
 export default function daysOverview() {
@@ -37,10 +37,11 @@ export default function daysOverview() {
         disableAllTouchEventsForDisabledDays
         enableSwipeMonths
         disabledByDefault
-        minDate={keys[keys.length-1]} 
+        minDate={keys[keys.length-1]}
         onDayPress={onDayPress}
         markingType={'period'}
         markedDates={formExists}
+        theme={calendarTheme}
  
     />
 

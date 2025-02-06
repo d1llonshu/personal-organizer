@@ -299,7 +299,35 @@ export const dropdownStyles = StyleSheet.create({
     },
   });
 
+
 export const buttonColorFalse = "#CF6679";
 export const buttonColorTrue = "#4f7942";
 export const backgroundColor = '#121212';
 export const surfaceBackgroundColor = '#212121';
+export const textColor = '#E1D9D1';
+
+export const calendarTheme = {
+  calendarBackground: surfaceBackgroundColor,
+  textSectionTitleColor: textColor,
+  // textSectionTitleDisabledColor: 'pink',
+  dayTextColor: textColor,
+  todayTextColor: textColor,
+  selectedDayTextColor: textColor,
+  monthTextColor: textColor,
+  indicatorColor: textColor,
+  selectedDayBackgroundColor: '#333248',
+  arrowColor: textColor,
+  textDisabledColor: 'gray',
+  stylesheet: {
+    calendar: {
+      header: {
+        week: {
+          marginTop: 30,
+          marginHorizontal: 12,
+          flexDirection: 'row',
+          justifyContent: 'space-between'
+        }
+      }
+    }
+  }
+}

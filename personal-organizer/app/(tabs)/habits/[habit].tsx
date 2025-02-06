@@ -8,7 +8,7 @@ import { Dropdown, IDropdownRef } from 'react-native-element-dropdown';
 import { Calendar } from 'react-native-calendars';
 
 import { Habit, habitHistory, timeframes } from "@/constants/habit";
-import { styles, dropdownStyles, buttonColorTrue } from "@/constants/stylesheet";
+import { styles, dropdownStyles, buttonColorTrue, calendarTheme } from "@/constants/stylesheet";
 import { CustomButton } from "@/components/customButton";
 import { passesFormValidation } from './newHabitForm';
 import { generateDifferentDaysKey, getGoalForDate } from '@/components/helper';
@@ -265,7 +265,7 @@ function createHabitCalendarMarks(habit: Habit, submissions: Submissions) : {cal
       if(Number(submissions[keys[i]][habit.habitID]) >= Number(getGoalForDate(habit, keys[i]).goal)){
         //streak continues, sets end to current date in case next entry doesn't meet goal
         if((new Date(keys[i-1]).getTime()) - (new Date(keys[i]).getTime()) === -86400000 && markedDates[keys[i-1]].disabled == false){
-          markedDates[keys[i]] = {disabled: false, color: "green", startingDay: false, endingDay: false};
+          markedDates[keys[i]] = {disabled: false, color: buttonColorTrue, startingDay: false, endingDay: false};
           ongoingStreak.length = ongoingStreak.length + 1;
           ongoingStreak.end = keys[i];//sets ongoing end
         }
@@ -284,7 +284,7 @@ function createHabitCalendarMarks(habit: Habit, submissions: Submissions) : {cal
             markedDates[keys[i-1]].endingDay = true;
           }
 
-          markedDates[keys[i]] = {disabled: false, color: "green", startingDay: true, endingDay: false};
+          markedDates[keys[i]] = {disabled: false, color: buttonColorTrue, startingDay: true, endingDay: false};
         }
       }
       //doesn't start new streak but will end ongoing one
@@ -316,6 +316,7 @@ function createHabitCalendarMarks(habit: Habit, submissions: Submissions) : {cal
         minDate={keys[0]} 
         markingType={'period'}
         markedDates={markedDates}
+        theme={calendarTheme}
         />
     </Surface>,
     longestStreak:streakArr})
