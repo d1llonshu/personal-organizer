@@ -177,6 +177,12 @@ export const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    centeredRow: {
+      alignItems: 'center',
+      flex: 1,
+      justifyContent: 'center',
+      flexDirection: 'row',
+    }
 
   });
 

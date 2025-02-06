@@ -64,19 +64,19 @@ export default function HomeScreen() {
           keys = generateConsecutiveKeys(todaysKeyIndex, new Date(todaysKeyIndex).getUTCDay());
           temp = createSummary(habits, submissions, generateConsecutiveKeys(todaysKeyIndex, new Date(todaysKeyIndex).getUTCDay()));
           temp[0] = (
-            <View key={"WeeklyProgressHeader"} style={styles.row}>
+            <View key={"WeeklyProgressHeader"} style={styles.centeredRow}>
                 <Ionicons.Button name="caret-back" size={16} color="white" backgroundColor={surfaceBackgroundColor} onPress={()=>{setMult(mult+1);}} />
-              <Text style={styles.homeScreenSubtitle}>Week of {keys[keys.length-1]}</Text>
+                <Text style={styles.homeScreenSubtitle}>Week of {keys[keys.length-1]} </Text>
+                <Ionicons.Button name="caret-forward" size={16} color="white" backgroundColor={surfaceBackgroundColor} onPress={()=>{}} />
             </View>
           );
         }
           
         else{
           temp[0] = (
-            <View key={"WeeklyProgressHeader"} style={styles.row}>
+            <View key={"WeeklyProgressHeader"} style={styles.centeredRow}>
               <Ionicons.Button name="caret-back" size={16} color="white" backgroundColor={surfaceBackgroundColor} onPress={()=>{setMult(mult+1);}} />
-               
-              <Text style={styles.homeScreenSubtitle}>Week of {keys[keys.length-1]}</Text>
+              <Text style={styles.homeScreenSubtitle}>Week of {keys[keys.length-1]} </Text>
               <Ionicons.Button name="caret-forward" size={16} color="white" backgroundColor={surfaceBackgroundColor} onPress={()=>{setMult(mult-1);}} />
             </View>
           );
