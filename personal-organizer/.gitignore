@@ -13,7 +13,6 @@ web-build/
 app/old_files/
 constants/old_files/
 components/old_files/
-app/(tabs)/test.tsx
 
 # macOS
 .DS_Store

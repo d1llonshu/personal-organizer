@@ -1,6 +1,7 @@
 //state management w/ array?
 import { useState, useEffect } from 'react';
 import { View, TextInput, Text, ScrollView } from 'react-native';
+import { Surface } from 'react-native-paper';
 import { useMMKVObject  } from 'react-native-mmkv';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -228,7 +229,9 @@ export default function Form() {
     return (
       <SafeAreaView style = {styles.safeAreaContainer}>
         <ScrollView style={styles.formContainer}>
-          {formSections}
+          <Surface style={styles.homeScreenSurface} elevation={1}>
+            {formSections}
+          </Surface>
         </ScrollView>
       </SafeAreaView>
     );
