@@ -8,7 +8,7 @@ import { styles, backgroundColor, surfaceBackgroundColor } from '@/constants/sty
 
 import { Submissions } from '@/constants/FormData';
 import { Habit } from "@/constants/habit";
-import printStreaks from '@/components/updateStreaksNew';
+import printOngoingStreaks from '@/components/updateStreaksNew';
 
 import createSummary from '@/components/habitProgress';
 import { Surface } from 'react-native-paper';
@@ -55,7 +55,7 @@ export default function HomeScreen() {
   useEffect(() => {
       console.log(mult);
       if(habits && submissions && todaysKeyIndex){
-        setStreakSection(printStreaks(habits, submissions));
+        setStreakSection(printOngoingStreaks(habits, submissions));
         let sundayKey = generateDifferentDaysKey(todaysKeyIndex, new Date(todaysKeyIndex).getUTCDay() + (7*(mult-1)));
         console.log(sundayKey);
         let keys = generateConsecutiveKeys(sundayKey, 7);

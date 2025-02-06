@@ -7,33 +7,36 @@ import { FormData, Submissions } from '@/constants/FormData';
 import { calculateStatsForPeriod, generateDifferentDaysKey, generateConsecutiveKeys, habitValueAsInt } from "@/components/helper"
 
 
-export default function printStreaks(habits: Habit[], submissions: Submissions){
+export default function printOngoingStreaks(habits: Habit[], submissions: Submissions){
     let sections: JSX.Element[] = [];
 
     if(habits&&submissions){
         sections.push(
             <View key="StreakHomePageHeader">
-                <Text style={styles.homeScreenSubtitle}>Streaks</Text>
+                <Text style={styles.homeScreenSubtitle}>Current Streaks</Text>
             </View>
         )
         let streaks = calculateStreaks(habits, submissions);
         
         for (let i = 0; i < streaks.length; i++){
-            if(habits[i].timeframe == "Daily"){
-                sections.push(
-                    <View key={habits[i].habitID+"StreakPrint"} style={styles.row}>
-                        <Text style={progressBarStyles.progressBarTitle}>{habits[i].prettyPrint}: </Text>
-                        <Text style={progressBarStyles.progressBarSubtitle}>{streaks[i]} {(streaks[i] == 1) ? "day" : "days"}</Text>
-                    </View>
-                )
-            }
-            if(habits[i].timeframe == "Weekly"){
-                sections.push(
-                    <View key={habits[i].habitID+"StreakPrint"} style={styles.row}>
-                        <Text style={progressBarStyles.progressBarTitle}>{habits[i].prettyPrint}: </Text>
-                        <Text style={progressBarStyles.progressBarSubtitle}>{streaks[i]} {(streaks[i] == 1) ? "week" : "weeks"}</Text>
-                    </View>
-                )
+            if(streaks[i] != 0){ 
+                if(habits[i].timeframe == "Daily"){
+
+                    sections.push(
+                        <View key={habits[i].habitID+"StreakPrint"} style={styles.row}>
+                            <Text style={progressBarStyles.progressBarTitle}>{habits[i].prettyPrint}: </Text>
+                            <Text style={progressBarStyles.progressBarSubtitle}>{streaks[i]} {(streaks[i] == 1) ? "day" : "days"}</Text>
+                        </View>
+                    )
+                }
+                if(habits[i].timeframe == "Weekly"){
+                    sections.push(
+                        <View key={habits[i].habitID+"StreakPrint"} style={styles.row}>
+                            <Text style={progressBarStyles.progressBarTitle}>{habits[i].prettyPrint}: </Text>
+                            <Text style={progressBarStyles.progressBarSubtitle}>{streaks[i]} {(streaks[i] == 1) ? "week" : "weeks"}</Text>
+                        </View>
+                    )
+                }
             }
         }
         return sections
