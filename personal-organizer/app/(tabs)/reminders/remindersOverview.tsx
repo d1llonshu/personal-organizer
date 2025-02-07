@@ -8,27 +8,35 @@ import { styles, backgroundColor, surfaceBackgroundColor } from '@/constants/sty
 
 import { Submissions } from '@/constants/FormData';
 import { Habit } from "@/constants/habit";
+import { Reminder } from "@/constants/reminder";
 import printOngoingStreaks from '@/components/updateStreaksNew';
 
 import createSummary from '@/components/habitProgress';
 import { Surface } from 'react-native-paper';
 import * as Notifications from 'expo-notifications';
+import { Link, useRouter } from 'expo-router';
 
 export default function RemindersPage() {
+    const router = useRouter();
+    const [scheduledNotifications, setScheduledNotifications] = useState<JSX.Element[]>([]);
     const [dailyReminder, setDailyReminder] = useMMKVObject<boolean>('dailyReminder');
-        if(dailyReminder == undefined){
-            setDailyReminder(false);
-        }
-        const temp = new Date(Date.now() + 60 * 60 * 1000);
-        temp.setMinutes(0);
-        temp.setSeconds(0);
-        Notifications.setNotificationHandler({
-            handleNotification: async () => ({
-              shouldShowAlert: true,
-              shouldPlaySound: false,
-              shouldSetBadge: false,
-            }),
-          });
+    if(dailyReminder == undefined){
+        setDailyReminder(false);
+    }
+    const [reminderArray, setReminderArray] = useMMKVObject<Reminder[]>('reminderArray');
+    if(reminderArray == undefined){
+        setReminderArray([]);
+    }
+    const temp = new Date(Date.now() + 60 * 60 * 1000);
+    temp.setMinutes(0);
+    temp.setSeconds(0);
+    Notifications.setNotificationHandler({
+        handleNotification: async () => ({
+            shouldShowAlert: true,
+            shouldPlaySound: false,
+            shouldSetBadge: false,
+        }),
+        });
      async function requestPermissionsAsync() {
             return await Notifications.requestPermissionsAsync({
               ios: {
@@ -38,18 +46,43 @@ export default function RemindersPage() {
               },
             });
           }
-    async function showScheduled(){
-        await Notifications.getAllScheduledNotificationsAsync().then(response => {
-            console.log(response);});
+    async function checkScheduled(){
+        let scheduled = await Notifications.getAllScheduledNotificationsAsync().then(response => {
+            console.log(response);
+            return JSON.stringify(response)});
+        let newReminderArray : Reminder[] = [];
+        let now = new Date();
+        if(reminderArray){
+            for(let i = 0; i < reminderArray.length; i++){
+                let temp = new Date(reminderArray[i].triggerTime)
+                if(temp.getTime() > now.getTime() && reminderArray[i].repeats == false){
+                    newReminderArray.push(reminderArray[i]);
+                }
+                else if(reminderArray[i].repeats == true){
+                    newReminderArray.push(reminderArray[i]);
+                }
+            } 
+        }
+        console.log(newReminderArray);
         
+        setScheduledNotifications([<Text style={styles.regularSubtitle}>{scheduled}</Text>])
+        return test;
     }
-
+    useEffect(()=>{
+        checkScheduled();
+    }, [])
+    useEffect(()=>{
+        checkScheduled();
+    }, [reminderArray])
+ 
+    // showScheduled();
     return (
         <SafeAreaView style={styles.safeAreaContainer}>
           <ScrollView style={styles.container}>
             <View key="body">
                 <Surface style={styles.homeScreenSurface} elevation={1}>
                 <View key={"notificationTest"}>
+                    <Text style={styles.regularSubtitle}> {scheduledNotifications}</Text>
                     <Text style={styles.regularSubtitle}>Reminders/Notifications: </Text>
                     <Pressable onPress={() => {
                             console.log("req");
@@ -75,14 +108,13 @@ export default function RemindersPage() {
                                         seconds: 60 * 60 * 24,
                                         repeats: true,
                                     },
-                                    identifier: "Reminder"
+                                    identifier: "Checklist Reminder"
                                 });
                                 setDailyReminder(true);
                             }
                             else{
                                 setDailyReminder(false);
-                                showScheduled();
-                                Notifications.cancelScheduledNotificationAsync("Reminder");
+                                Notifications.cancelScheduledNotificationAsync("Checklist Reminder");
                             }
                             
                             }}
@@ -95,6 +127,19 @@ export default function RemindersPage() {
                             ]}>
                             <Text  style={styles.buttonTitle}>{dailyReminder?"Disable Daily Reminder":"Enable Daily Reminder"}</Text>
                         </Pressable>
+                    </View>
+                    <View key="newHabitButton" style = {styles.buttonContainer}>
+                        <Pressable onPress={() => router.push("/reminders/newReminderForm")}
+                            style={() => [
+                                {
+                                    backgroundColor:  "#4f7942",
+                                    padding: 5,
+                                    marginHorizontal: 5,
+                                    borderRadius: 4,
+                                },
+                            ]}>
+                            <Text  style={styles.buttonTitle}>New Reminder</Text>
+                        </Pressable >
                     </View>
                 </Surface>
             </View>

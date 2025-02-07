@@ -211,6 +211,54 @@ export const progressBarStyles = StyleSheet.create({
     borderRadius: 0,
   },
 });
+export const reminderStyles = StyleSheet.create({ 
+  reminderFormSubtitle: {
+    flex: 0.25,
+    textAlign: 'right',
+    fontSize: 18,
+    color: '#E1D9D1',
+    marginTop: 4,
+    marginBottom: 4,
+    marginLeft: 12,
+    fontWeight: 'bold',
+  },
+  reminderFormSubtitleMoreMargin: {
+    flex: 0.25,
+    textAlign: 'right',
+    fontSize: 18,
+    color: '#E1D9D1',
+    marginTop: 4,
+    marginBottom: 4,
+    marginLeft: 28,
+    fontWeight: 'bold',
+  },
+  reminderFormRegularText: {
+    flex: 0.6,
+    textAlign: 'left',
+    fontSize: 16,
+    color: '#E1D9D1',
+    marginTop: 4,
+    marginBottom: 4,
+    marginLeft: 14,
+  },
+  reminderRow:{
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+  },
+  textInput: {
+    flex: 0.7,
+    marginVertical: 6,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#E1D9D1',
+    color: '#E1D9D1',
+    borderRadius: 5,
+    paddingVertical: 5,
+    marginRight: 2,
+    marginLeft: 6,
+    height: 30,
+  },
+});
 export const dropdownStyles = StyleSheet.create({
     dropdown: {
       marginBottom: 5,
