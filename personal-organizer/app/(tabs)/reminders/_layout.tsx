@@ -12,6 +12,7 @@ export default function RemindersLayout() {
     <Stack>
         <Stack.Screen name="remindersOverview" options={{ headerShown: false }} />
         <Stack.Screen name="newReminderForm" options={{ headerTitle: "New Reminder" }}/>
+        <Stack.Screen name="[reminder]" options={{  }}/>
     </Stack>
   );
 }
