@@ -30,17 +30,12 @@ export default function newReminderForm() {
     }
     //const [keyName, setkeyName] = useState<string>('exampleHabit');
     const [reminderTitle, setReminderTitle] = useState<string>('');
-    const [reminderText, setReminderText] = useState<string>('');
     let today = new Date();
     let todayString: string = 
         today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
     const [triggerDate, setTriggerDate] = useState<string>(todayString);
-    const [triggerTime, setTriggerTime] = useState<string>('');
-    const [repeats, setRepeats] = useState<string>('');
     const [date, setDate] = useState(new Date());
-    const [timePickerDate, setTimePickerDate] = useState(new Date());
     const [open, setOpen] = useState<boolean>(false);
-    const [timePickerOpen, setTimePickerOpen] = useState<boolean>(false);
     const [weekday, setWeekday] = useState<string>('');
     const [hour, setHour] = useState<string>('');
     const [minute, setMinute] = useState<string>('');
@@ -101,6 +96,7 @@ export default function newReminderForm() {
                 android_ripple={{color : 'white'}}
                 onPress={()=>{
                     setOpen(true);
+                    console.log("opening");
                 }}
                 style={() => [
                     {
@@ -228,11 +224,12 @@ export default function newReminderForm() {
         if(passesFormValidation(timeUntil, reminderTitle, repeat, Number(month), Number(weekday), Number(dayOfMonth), Number(hour), Number(minute))){
             let reminder : Reminder = {
                 notificationID: "Custom Reminder " + reminderIDCount,
+                title: reminderTitle,
                 creationTime: created,
                 triggerTime: date,
                 timeUntilTrigger: timeUntil,
                 repeats: repeat,
-                repeatDetails: {month: Number(month), dayOfMonth: Number(month), weekday:Number(weekday), hour:Number(hour), minute:Number(minute)},
+                repeatDetails: {month: Number(month), dayOfMonth: Number(month), weekday:Number(weekday), hour:((AMorPM === "AM")?Number(hour):(Number(hour)+12)), minute:Number(minute)},
             }
             let notifTrigger = {}
             if(repeat === "Once"){
@@ -243,33 +240,35 @@ export default function newReminderForm() {
             }
             else if (repeat === "Daily"){
                 notifTrigger = {
-                    hour: Number(hour),
-                    minute: (AMorPM === "AM")?Number(minute):(Number(minute)+12),
+                    hour: (AMorPM === "AM")?Number(hour):(Number(hour)+12),
+                    minute: Number(minute),
                     repeats: true,
                 }
             }
             else if(repeat === "Weekly"){
                 notifTrigger = {
                     weekday: Number(weekday),
-                    hour: Number(hour),
-                    minute: (AMorPM === "AM")?Number(minute):(Number(minute)+12),
+                    hour: (AMorPM === "AM")?Number(hour):(Number(hour)+12),
+                    minute: Number(minute),
                     repeats: true,
                 }
             }
             else if(repeat === "Monthly"){
                 notifTrigger = {
                     day: Number(dayOfMonth),
-                    hour: Number(hour),
-                    minute: (AMorPM === "AM")?Number(minute):(Number(minute)+12),
+                    hour: (AMorPM === "AM")?Number(hour):(Number(hour)+12),
+                    minute: Number(minute),
                     repeats: true,
+                    type: "monthly",
                 }
+                console.log(notifTrigger);
             }
             else{
                 notifTrigger = {
                     month: Number(month),
                     day: Number(dayOfMonth),
-                    hour: Number(hour),
-                    minute: (AMorPM === "AM")?Number(minute):(Number(minute)+12),
+                    hour: (AMorPM === "AM")?Number(hour):(Number(hour)+12),
+                    minute: Number(minute),
                     repeats: true,
                 }
             }
@@ -314,7 +313,7 @@ export default function newReminderForm() {
             temp.push(timeOfDaySection);
         }
         setSections(temp);
-    }, [repeat, hour, minute, dayOfMonth])
+    }, [repeat, hour, minute, dayOfMonth, open, date])
 
     return (
         <SafeAreaView style={styles.safeAreaContainer}>
@@ -373,26 +372,32 @@ function passesFormValidation(timeUntil: number, reminderID: string, repeatType:
     const acceptableMonths = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
     const acceptableWeekDays = [1, 2, 3, 4, 5, 6, 7];
     if(repeatType === ""){
+        Alert.alert("All fields are required!");
         return false;
     }
     if(repeatType === "Once" && timeUntil <= 0){
+        Alert.alert("Reminder has to be set to a time in the future!");
         return false;
     }
     if(hour > 12 || hour < 0 || minute > 59 || minute < 0){
+        Alert.alert("Reminder has to be set to a valid time!");
         return false;
     }
     if(repeatType === "Yearly" || repeatType == "Monthly"){
         if(dayOfMonth < 0 || dayOfMonth > 31){
+            Alert.alert("Reminder has to be set to a valid date!");
             return false;
         }
         if(repeatType === "Yearly"){
             if(acceptableMonths.includes(month) === false){
+                Alert.alert("Reminder has to be set to a valid date!");
                 return false;
             }
         }
     }
     if(repeatType === "Weekly"){
         if(acceptableWeekDays.includes(dayOfWeek) === false){
+            Alert.alert("Reminder has to be set to a valid day of week!");
             return false;
         }
     }
