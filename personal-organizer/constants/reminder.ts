@@ -3,6 +3,6 @@ export interface Reminder {
    creationTime: Date;
    triggerTime: Date;
    timeUntilTrigger: number;
-   repeats: boolean;
-   repeatDetails: {weekday: number, hour: number, second: number};
+   repeats: string;
+   repeatDetails: {month: number, dayOfMonth: number, weekday: number, hour: number, minute: number};
 }

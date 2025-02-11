@@ -1,4 +1,4 @@
-import { SafeAreaView, View,  Text, ScrollView, Pressable, TouchableHighlight } from 'react-native';
+import { SafeAreaView, View,  Text, ScrollView, Pressable, Alert, TouchableHighlight } from 'react-native';
 import { useEffect, useState } from 'react';
 import { MMKV, useMMKVObject } from 'react-native-mmkv';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -26,6 +26,10 @@ export default function RemindersPage() {
     const [reminderArray, setReminderArray] = useMMKVObject<Reminder[]>('reminderArray');
     if(reminderArray == undefined){
         setReminderArray([]);
+    }
+    const [reminderIDCount, setReminderIDCount] = useMMKVObject<number>('reminderIDCount');
+    if(reminderIDCount == undefined){
+        setReminderIDCount(0);
     }
     const temp = new Date(Date.now() + 60 * 60 * 1000);
     temp.setMinutes(0);
@@ -55,10 +59,10 @@ export default function RemindersPage() {
         if(reminderArray){
             for(let i = 0; i < reminderArray.length; i++){
                 let temp = new Date(reminderArray[i].triggerTime)
-                if(temp.getTime() > now.getTime() && reminderArray[i].repeats == false){
+                if(temp.getTime() > now.getTime() && reminderArray[i].repeats == "Once"){
                     newReminderArray.push(reminderArray[i]);
                 }
-                else if(reminderArray[i].repeats == true){
+                else if(reminderArray[i].repeats != "Once"){
                     newReminderArray.push(reminderArray[i]);
                 }
             } 
@@ -84,7 +88,7 @@ export default function RemindersPage() {
                 <View key={"notificationTest"}>
                     <Text style={styles.regularSubtitle}> {scheduledNotifications}</Text>
                     <Text style={styles.regularSubtitle}>Reminders/Notifications: </Text>
-                    <Pressable onPress={() => {
+                        <Pressable onPress={() => {
                             console.log("req");
                             requestPermissionsAsync();
                             }}
@@ -140,6 +144,37 @@ export default function RemindersPage() {
                             ]}>
                             <Text  style={styles.buttonTitle}>New Reminder</Text>
                         </Pressable >
+                    </View>
+                    <View key="deleteRemindersButton" style = {styles.buttonContainer}>
+                        <Pressable onPress={() => {
+                            Alert.alert("Delete all reminders?", "", [
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => {},
+                                    style: 'cancel',
+                                },
+                                {
+                                    text: 'OK', onPress: () => {
+                                        Notifications.cancelScheduledNotificationAsync("Checklist Reminder");
+                                        for(let i = 0; i < (reminderIDCount?reminderIDCount:0); i++){
+                                            Notifications.cancelScheduledNotificationAsync("Checklist Reminder " + i);
+                                        }
+                                        setReminderIDCount(0);
+                                    }
+                                },
+                            ]);
+                            
+                            }}
+                            style={() => [
+                                {
+                                    backgroundColor:  "#CF6679",
+                                    padding: 5,
+                                    marginHorizontal: 5,
+                                    borderRadius: 4,
+                                },
+                            ]}>
+                            <Text  style={styles.buttonTitle}>Delete Reminders</Text>
+                        </Pressable>
                     </View>
                 </Surface>
             </View>
