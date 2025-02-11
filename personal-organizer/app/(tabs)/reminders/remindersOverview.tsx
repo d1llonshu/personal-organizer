@@ -135,7 +135,7 @@ export default function RemindersPage() {
                                     },
                                     trigger: {
                                         seconds: 60 * 60 * 24,
-                                        repeats: true,
+                                        repeats: false,
                                     },
                                     identifier: "Checklist Reminder"
                                 });
