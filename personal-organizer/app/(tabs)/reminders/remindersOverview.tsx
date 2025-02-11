@@ -155,9 +155,9 @@ export default function RemindersPage() {
                                 },
                                 {
                                     text: 'OK', onPress: () => {
-                                        Notifications.cancelScheduledNotificationAsync("Checklist Reminder");
+                                        // Notifications.cancelScheduledNotificationAsync("Checklist Reminder");
                                         for(let i = 0; i < (reminderIDCount?reminderIDCount:0); i++){
-                                            Notifications.cancelScheduledNotificationAsync("Checklist Reminder " + i);
+                                            Notifications.cancelScheduledNotificationAsync("Custom Reminder " + i);
                                         }
                                         setReminderIDCount(0);
                                     }
