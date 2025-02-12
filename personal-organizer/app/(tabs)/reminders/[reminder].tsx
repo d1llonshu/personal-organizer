@@ -6,6 +6,7 @@ import { MMKV, useMMKVObject } from 'react-native-mmkv';
 
 import { Reminder } from "@/constants/reminder";
 import { styles, buttonColorTrue, buttonColorFalse } from "@/constants/stylesheet"
+import { Surface } from 'react-native-paper';
 
 export default function reminderInfoPage() {
     const router = useRouter();
@@ -32,8 +33,8 @@ export default function reminderInfoPage() {
     useEffect(()=>{
         let newSections : JSX.Element[] = [];
         newSections.push(
-            <View key={"delete"}>
-                <Text style={styles.regularSubtitle}>{currentReminder?.title}</Text>
+            <View key={"info"} style={styles.row}>
+                <Text style={styles.habitPageSubtitle}>{currentReminder?.title}</Text>
             </View>
         );
         setSections(newSections);
@@ -42,10 +43,10 @@ export default function reminderInfoPage() {
     return(
             <SafeAreaView style = {styles.safeAreaContainer}>
               <ScrollView>
-                <Stack.Screen options={{ title: local.reminder }} />
-                  <View>
-                    {sections}
-                  </View>
+                <Stack.Screen options={{ title: currentReminder?.title }} />
+                    <Surface style={styles.homeScreenSurface} elevation={1}>
+                        {sections}
+                    </Surface>
             </ScrollView>
           </SafeAreaView>
         )

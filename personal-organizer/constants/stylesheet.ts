@@ -189,7 +189,11 @@ export const styles = StyleSheet.create({
       justifyContent: 'center',
       flexDirection: 'row',
     },
-
+    changeWeekButton:{
+      // marginTop: -2,
+      // marginLeft: -6,
+      marginRight: -2,
+    }
 
   });
 
@@ -334,6 +338,12 @@ export const reminderStyles = StyleSheet.create({
     color: '#E1D9D1',
     flex: 1,
     marginRight: 6,
+  },
+  cancelButton:{
+    alignContent: "center",
+    marginTop: -2,
+    marginLeft: -6,
+    marginRight: -8,
   }
 });
 export const dropdownStyles = StyleSheet.create({

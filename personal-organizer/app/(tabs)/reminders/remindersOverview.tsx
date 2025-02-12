@@ -21,6 +21,7 @@ export default function RemindersPage() {
     const [scheduledNotifications, setScheduledNotifications] = useState<JSX.Element[]>([]);
     const [dailyReminder, setDailyReminder] = useMMKVObject<boolean>('dailyReminder');
     const [sections, setSections] = useState<JSX.Element[]>([]);
+    const [rerender, setRerender] = useState<boolean>();
     if(dailyReminder == undefined){
         setDailyReminder(false);
     }
@@ -42,7 +43,11 @@ export default function RemindersPage() {
             shouldSetBadge: false,
         }),
         });
-    
+    function deleteReminder(notificationID: string){
+        console.log("Deleting " + notificationID);
+        setRerender(!rerender);
+        Notifications.cancelScheduledNotificationAsync(notificationID);
+    }
     async function checkScheduled(){
         let activeReminders : string[] = [];
         let scheduled = await Notifications.getAllScheduledNotificationsAsync().then(response => {
@@ -71,6 +76,7 @@ export default function RemindersPage() {
                                     <Text style={reminderStyles.reminderOverviewHyperlink}>{reminderArray[i].title}</Text>
                             </Link>
                             <Text style={reminderStyles.overviewInfo}>{getKeyReminderInfo(reminderArray[i])}</Text>
+                            <Ionicons.Button style={reminderStyles.cancelButton} name="ban-sharp" size={14} color="red" backgroundColor={surfaceBackgroundColor} onPress={()=>{deleteReminder(reminderArray[i].notificationID)}} />
                         </View>
                     );
                 }
@@ -95,7 +101,7 @@ export default function RemindersPage() {
     }, [])
     useEffect(()=>{
         checkScheduled();
-    }, [reminderArray])
+    }, [reminderArray, rerender])
  
     // showScheduled();
     return (
@@ -182,7 +188,8 @@ function getKeyReminderInfo(r: Reminder) : string{
             returnString = r.repeats;
         }
         returnString = returnString + " at " + ((r.repeatDetails.hour > 12)?r.repeatDetails.hour-12:r.repeatDetails.hour)
-                        + ":" + r.repeatDetails.minute + " " + ((r.repeatDetails.hour >= 12)?"PM":"AM");
+                        + ":" + ((r.repeatDetails.minute < 10)?"0":"") + r.repeatDetails.minute + " " 
+                        + ((r.repeatDetails.hour >= 12)?"PM":"AM");
         
         return returnString;
     }
@@ -190,7 +197,8 @@ function getKeyReminderInfo(r: Reminder) : string{
         const date = r.triggerTime;
         returnString = "Triggers on " + date.getMonth() + "/" + date.getDate() + "/" + date.getFullYear();
         returnString = returnString + " at " + ((date.getHours() > 12)?date.getHours()-12:date.getHours()) + ":" 
-                        + date.getMinutes() + ((date.getHours() >= 12)?"PM":"AM");
+                        + ((r.repeatDetails.minute < 10)?"0":"")+ date.getMinutes() 
+                        + ((date.getHours() >= 12)?"PM":"AM");
         
         return returnString;
     }
