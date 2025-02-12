@@ -164,6 +164,12 @@ export const styles = StyleSheet.create({
       paddingLeft: 10,
       paddingVertical: 1,
     },
+    reminderPageContainer:{
+      paddingLeft: 10,
+      paddingVertical: 1,
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+    },
     formContainer:{
       padding: 6,
     },
@@ -182,7 +188,8 @@ export const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       flexDirection: 'row',
-    }
+    },
+
 
   });
 
@@ -310,6 +317,23 @@ export const reminderStyles = StyleSheet.create({
     marginTop: 4,
     marginBottom: 4,
     fontWeight: 'bold',
+  },
+  reminderOverviewHyperlink: {
+    textAlign: 'left',
+    fontSize: 18,
+    color: '#E1D9D1',
+    marginTop: 4,
+    marginBottom: 4,
+    marginLeft: 6,
+    textDecorationLine:"underline",
+    flex: 0.3,
+  },
+  overviewInfo:{
+    textAlign: 'right',
+    fontSize: 18,
+    color: '#E1D9D1',
+    flex: 1,
+    marginRight: 6,
   }
 });
 export const dropdownStyles = StyleSheet.create({

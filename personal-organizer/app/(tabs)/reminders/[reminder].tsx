@@ -41,12 +41,11 @@ export default function reminderInfoPage() {
 
     return(
             <SafeAreaView style = {styles.safeAreaContainer}>
-              <ScrollView style = {styles.formContainer}>
+              <ScrollView>
                 <Stack.Screen options={{ title: local.reminder }} />
                   <View>
                     {sections}
                   </View>
-               
             </ScrollView>
           </SafeAreaView>
         )

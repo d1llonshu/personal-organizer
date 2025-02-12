@@ -4,7 +4,7 @@ import { MMKV, useMMKVObject } from 'react-native-mmkv';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { streakData } from '@/constants/streaks';
-import { styles, backgroundColor, surfaceBackgroundColor } from '@/constants/stylesheet';
+import { styles, backgroundColor, surfaceBackgroundColor, reminderStyles } from '@/constants/stylesheet';
 
 import { Submissions } from '@/constants/FormData';
 import { Habit } from "@/constants/habit";
@@ -58,15 +58,19 @@ export default function RemindersPage() {
         let newReminderArray : Reminder[] = [];
         let newSections : JSX.Element[] = [];
         if(reminderArray){
+            newSections.push(
+            <View key={"Title"} style={styles.reminderPageContainer}>
+                <Text style={styles.dayPageTitle}>Active Reminders</Text>
+            </View>);
             for(let i = 0; i < reminderArray.length; i++){
                 if(activeReminders.includes(reminderArray[i].notificationID)){
                     console.log(reminderArray[i].notificationID);
                     newSections.push(
-                        <View key={reminderArray[i].notificationID} style={styles.row}>
+                        <View key={reminderArray[i].notificationID} style={styles.reminderPageContainer}>
                             <Link href={{pathname:"/reminders/[reminder]", params: {reminder: reminderArray[i].notificationID}}}>
-                                    <Text style={styles.dayPageHyperlink}>{reminderArray[i].title}</Text>
+                                    <Text style={reminderStyles.reminderOverviewHyperlink}>{reminderArray[i].title}</Text>
                             </Link>
-                            <Text style={styles.regularSubtitle}>{getKeyReminderInfo(reminderArray[i])}</Text>
+                            <Text style={reminderStyles.overviewInfo}>{getKeyReminderInfo(reminderArray[i])}</Text>
                         </View>
                     );
                 }
@@ -83,7 +87,7 @@ export default function RemindersPage() {
         console.log(newReminderArray);
         setSections(newSections);
         // setScheduledNotifications([<Text style={styles.regularSubtitle}>{scheduled}</Text>])
-        return test;
+        return scheduled;
     }
     
     useEffect(()=>{
@@ -96,60 +100,55 @@ export default function RemindersPage() {
     // showScheduled();
     return (
         <SafeAreaView style={styles.safeAreaContainer}>
-          <ScrollView style={styles.container}>
-            <View key="body">
-                <Surface style={styles.homeScreenSurface} elevation={1}>
-                    <View key={"remindersList"}>
-                        <Text style={styles.title}>Active Reminders</Text>
-                        {sections}
-                    </View>
-                    <View key="newHabitButton" style = {styles.buttonContainer}>
-                        <Pressable onPress={() => router.push("/reminders/newReminderForm")}
-                            style={() => [
-                                {
-                                    backgroundColor:  "#4f7942",
-                                    padding: 5,
-                                    marginHorizontal: 5,
-                                    borderRadius: 4,
-                                },
-                            ]}>
-                            <Text  style={styles.buttonTitle}>New Reminder</Text>
-                        </Pressable >
-                    </View>
-                    <View key="deleteRemindersButton" style = {styles.buttonContainer}>
-                        <Pressable onPress={() => {
-                            Alert.alert("Delete all reminders?", "", [
-                                {
-                                    text: 'Cancel',
-                                    onPress: () => {},
-                                    style: 'cancel',
-                                },
-                                {
-                                    text: 'OK', onPress: () => {
-                                        // Notifications.cancelScheduledNotificationAsync("Checklist Reminder");
-                                        for(let i = 0; i < (reminderIDCount?reminderIDCount:0); i++){
-                                            Notifications.cancelScheduledNotificationAsync("Custom Reminder " + i);
-                                        }
-                                        setReminderArray([]);
-                                        setReminderIDCount(0);
+          <ScrollView>
+            <Surface style={styles.homeScreenSurface} elevation={1}>
+                {sections}
+                <View key="newReminderButton" style = {styles.buttonContainer}>
+                    <Pressable onPress={() => router.push("/reminders/newReminderForm")}
+                        style={() => [
+                            {
+                                backgroundColor:  "#4f7942",
+                                padding: 5,
+                                marginHorizontal: 5,
+                                borderRadius: 4,
+                            },
+                        ]}>
+                        <Text  style={styles.buttonTitle}>New Reminder</Text>
+                    </Pressable >
+                </View>
+                <View key="deleteRemindersButton" style = {styles.buttonContainer}>
+                    <Pressable onPress={() => {
+                        Alert.alert("Delete all reminders?", "", [
+                            {
+                                text: 'Cancel',
+                                onPress: () => {},
+                                style: 'cancel',
+                            },
+                            {
+                                text: 'OK', onPress: () => {
+                                    // Notifications.cancelScheduledNotificationAsync("Checklist Reminder");
+                                    for(let i = 0; i < (reminderIDCount?reminderIDCount:0); i++){
+                                        Notifications.cancelScheduledNotificationAsync("Custom Reminder " + i);
                                     }
-                                },
-                            ]);
-                            
-                            }}
-                            style={() => [
-                                {
-                                    backgroundColor:  "#CF6679",
-                                    padding: 5,
-                                    marginHorizontal: 5,
-                                    borderRadius: 4,
-                                },
-                            ]}>
-                            <Text  style={styles.buttonTitle}>Delete Reminders</Text>
-                        </Pressable>
-                    </View>
-                </Surface>
-            </View>
+                                    setReminderArray([]);
+                                    setReminderIDCount(0);
+                                }
+                            },
+                        ]);
+                        
+                        }}
+                        style={() => [
+                            {
+                                backgroundColor:  "#CF6679",
+                                padding: 5,
+                                marginHorizontal: 5,
+                                borderRadius: 4,
+                            },
+                        ]}>
+                        <Text  style={styles.buttonTitle}>Delete Reminders</Text>
+                    </Pressable>
+                </View>
+            </Surface>
           </ScrollView>
         </SafeAreaView>
       );
