@@ -44,7 +44,7 @@ if (getRNMinorVersion() >= 75) {
   }
 }
 
-rootProject.name = 'personal-organizer'
+rootProject.name = 'Personal Organizer'
 
 dependencyResolutionManagement {
   versionCatalogs {

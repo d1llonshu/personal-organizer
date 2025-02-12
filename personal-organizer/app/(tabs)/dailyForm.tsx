@@ -1,35 +1,38 @@
 //state management w/ array?
-import { useState, useCallback, useEffect } from 'react';
-import { StyleSheet, View, TextInput, Alert, Button, Text, ScrollView } from 'react-native';
-import { MMKV, useMMKVListener, useMMKVObject, useMMKVString } from 'react-native-mmkv';
+import { useState, useEffect } from 'react';
+import { View, TextInput, Text, ScrollView } from 'react-native';
+import { Surface } from 'react-native-paper';
+import { useMMKVObject  } from 'react-native-mmkv';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Link, usePathname, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 
-import { storage } from "@/constants/storage"
-import { Habit, dataTypes, timeClassifications, categories, keyPrettyPrint } from "@/constants/habit"
+import { Habit } from "@/constants/habit";
 // import updateStreaks from '@/components/updateStreaks'
-import { streakData } from '@/constants/streaks';
-import { CustomButton } from "@/components/customButton"
-import { styles } from '@/constants/stylesheet'
+import { CustomButton } from "@/components/customButton";
+import { styles } from '@/constants/stylesheet';
 import { FormData, Submissions } from '@/constants/FormData';
-import printStreaks from '@/components/updateStreaksNew';
 
 export default function Form() {
+    //need to fix issue where you could potentially have undefineds if you clear out the text boxes and close/"save"
     const router = useRouter();
     const buttonColorFalse = "#CF6679";
     const buttonColorTrue = "#4f7942";
     let today = new Date();
     let submissionKey: string = 
-      today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + (today.getDate());
+      today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
 
-    const [todaysKey, setTodaysKey] = useMMKVObject<String>("todaysKey");
+    const [todaysKey, setTodaysKey] = useMMKVObject<string>("todaysKey");
     if(submissionKey !== todaysKey){
       setTodaysKey(submissionKey);
     }
     
     const [submissions, setSubmissions] = useMMKVObject<Submissions>("submissions");
+
     
     const [data, setData] = useState<FormData>();
+    if(submissions && submissions[submissionKey] && data === undefined){
+      setData(submissions[submissionKey]);
+    }
     const [habits, setHabits] = useMMKVObject<Habit[]>('activeHabits');
     
     const [formSections, setFormSections] = useState<JSX.Element[]>([]);
@@ -49,13 +52,14 @@ export default function Form() {
             let defaultData: FormData = {};
             habits.forEach((habit) => {
               if (habit.dataType === 'boolean') {
-                defaultData[habit.keyName] = false;
+                defaultData[habit.habitID] = false;
               } else if (habit.dataType === 'number') {
-                defaultData[habit.keyName] = '0';
+                defaultData[habit.habitID] = '0';
               } else {
-                defaultData[habit.keyName] = 'ERROR THIS SHOULD NOT APPEAR';
+                defaultData[habit.habitID] = 'ERROR THIS SHOULD NOT APPEAR';
               }
             });
+
             setData(defaultData);
             setSubmissions({
               ...submissions,
@@ -66,10 +70,6 @@ export default function Form() {
             throw Error("Habits not found");
           }
         }
-      }
-      //if there is not an existing submission for the day
-      else{
-        throw Error("Submissions not found")
       }
 
       if (habits){
@@ -92,9 +92,53 @@ export default function Form() {
         generateForm(habitsByCategory)
       }
       
-    }, [habits, submissions, todaysKey]);
-  
-    const handleInputChange = (key: string, value: any) => {
+    }, [submissions, todaysKey]);
+
+    useEffect(()=>{//if a new habit is added, it should have default values instead of undefined, so we need this
+      if(submissions && habits){
+        if(submissions[submissionKey]){
+          console.log("submission found for today: ");
+          console.log(submissions[submissionKey]);
+          let updatedFormData: FormData = submissions[submissionKey];
+          habits.forEach((habit) => {
+            if(updatedFormData[habit.habitID] === undefined){
+              if (habit.dataType === 'boolean') {
+                updatedFormData[habit.habitID] = false;
+              } 
+              else if (habit.dataType === 'number') {
+                updatedFormData[habit.habitID] = '0';
+              }
+            }
+          });
+          setData(updatedFormData);
+          setSubmissions({
+            ...submissions,
+            [submissionKey]: updatedFormData,
+          });
+
+          let categories : string[] = (habits).map((h) => {
+            return h.category
+          });
+          let uniqueCategories = new Set<string>(categories);
+          let habitsByCategory: {[key: string]: Habit[]} = {};
+          uniqueCategories.forEach((c) => {
+              let hArr : Habit[] = [];
+              (habits? habits : []).map((h) => {
+                  if (h.category == c){
+                      hArr.push(h)
+                  }
+              });
+              if(hArr.length > 0){
+                  habitsByCategory[c] = hArr
+              }
+          })
+          generateForm(habitsByCategory)
+        }
+      }
+      
+    }, [habits])
+
+    const handleInputChange = (id: string, value: any) => {
       // setData((prevData: FormData) => ({
       //   ...prevData,
       //   [key]: value,
@@ -102,14 +146,14 @@ export default function Form() {
       
       if (data) {
         let temp = data;
-        temp[key] = value;
+        temp[id] = value;
         setData(temp);
         setSubmissions({
           ...submissions,
           [submissionKey]: temp,
         });
       }
-      console.log(key + ": " + value);
+      console.log(id + ": " + value);
       console.log(data);
       console.log(submissions![submissionKey]);
       
@@ -121,12 +165,13 @@ export default function Form() {
           switch (h.dataType) {
             case 'boolean':
               return(
-                <View key={h.keyName+"Button"}>
+                <View key={"Habit"+h.habitID+"Button"}>
                   <CustomButton
                     title={h.prettyPrint}
-                    onPress={() => {handleInputChange(h.keyName, !data?.[h.keyName])
+                    disabled = {false}
+                    onPress={() => {handleInputChange(h.habitID, !data?.[h.habitID])
                     }}
-                    color={(data?.[h.keyName]? buttonColorTrue : buttonColorFalse) || "#FFA500"}
+                    color={(data?.[h.habitID]? buttonColorTrue : buttonColorFalse) || "#FFA500"}
                   />
                 </View>
                 
@@ -139,12 +184,12 @@ export default function Form() {
           switch (h.dataType) {
             case 'number':
               return(
-                <View key={h.keyName+"TextInput"}style={styles.row}>
+                <View key={"Habit"+h.habitID+"TextInput"}style={styles.row}>
                   <Text style={styles.textInputTitle}>{h.prettyPrint}:</Text>
                   <TextInput
                     style={styles.textInput}
-                    value={data?.[h.keyName] || ''}
-                    onChangeText={(value) => handleInputChange(h.keyName, value)}
+                    value={data?.[h.habitID] || ''}
+                    onChangeText={(value) => handleInputChange(h.habitID, value)}
                     keyboardType='numeric'
                   />
                 </View>
@@ -162,16 +207,17 @@ export default function Form() {
         );
       }
       sections.push(
-        <View key="SaveButton">
+        <View key="SaveButton" style = {styles.formSaveButton}>
           <CustomButton               
-          title={"Save"}
-          onPress={()=>{
-            setData(data);
-            console.log(data);
-            router.replace({ pathname: "/(tabs)" })//index
-          }}
-          color = {buttonColorTrue}
-        />
+            title={"Save"}
+            disabled = {false}
+            onPress={()=>{
+              setData(data);
+              console.log(data);
+              router.replace({ pathname: "/(tabs)" })//index
+            }}
+            color = {buttonColorTrue}
+          />
         </View>
         
       )
@@ -182,13 +228,10 @@ export default function Form() {
   
     return (
       <SafeAreaView style = {styles.safeAreaContainer}>
-          <ScrollView>
-          {/** TODO:  
-           * Add streaks to new form
-           * (?) Rework individual days storage from being the date as a key to putting all days in one JSON 
-           */
-           formSections
-          }
+        <ScrollView style={styles.formContainer}>
+          <Surface style={styles.homeScreenSurface} elevation={1}>
+            {formSections}
+          </Surface>
         </ScrollView>
       </SafeAreaView>
     );

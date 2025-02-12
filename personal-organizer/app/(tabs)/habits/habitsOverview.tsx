@@ -1,12 +1,12 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
-import { StyleSheet, View, TextInput, Alert, Button, Text, ScrollView, Dimensions, Pressable, TouchableOpacity } from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, Text, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Dropdown, IDropdownRef } from 'react-native-element-dropdown';
-import { MMKV, useMMKVObject} from 'react-native-mmkv';
-import { Link, usePathname, useRouter } from 'expo-router';
+import { useMMKVObject} from 'react-native-mmkv';
+import { Link, useRouter } from 'expo-router';
+import { Surface } from 'react-native-paper';
 
-import { Habit, dataTypes, timeClassifications, categories, keyPrettyPrint } from "@/constants/habit"
-import { styles, dropdownStyles } from "@/constants/stylesheet"
+import { Habit } from "@/constants/habit"
+import { styles } from "@/constants/stylesheet"
 
 export default function habitsPage() {
     const [habits, setHabits] = useMMKVObject<Habit[]>('activeHabits');
@@ -14,18 +14,17 @@ export default function habitsPage() {
     const router = useRouter();
     useEffect(() => {
         let sections: JSX.Element[] = [];
-
         if (habits){
             sections.push(
-                <View key="header">
-                    <Text style={styles.title}>Habits:</Text>
+                <View key="header" style={styles.dayPageContainer}>
+                    <Text style={styles.dayPageTitle}>Habits:</Text>
                 </View>
             );
             habits.map((h) => {
                 sections.push(
-                    <View key={h.prettyPrint}>
-                        <Link href={{pathname:"/habits/[habit]", params: {habit: h.keyName}}}>
-                                <Text style={styles.regularText}>{h.prettyPrint}</Text>
+                    <View key={h.prettyPrint} style={styles.dayPageContainer}>
+                        <Link href={{pathname:"/habits/[habit]", params: {habit: h.habitID}}}>
+                                <Text style={styles.dayPageHyperlink}>{h.prettyPrint}</Text>
                         </Link>
                     </View>
                     // <View key={h.keyName}>
@@ -42,25 +41,22 @@ export default function habitsPage() {
     return(
         <SafeAreaView style = {styles.safeAreaContainer}>
             <ScrollView>
-            {/** TODO:  
-             * Add streaks to new form
-             * (?) Rework individual days storage from being the date as a key to putting all days in one JSON 
-             * setting goals/targets to reach
-             */
-                pageSections
-            }
-                <View key="newHabitButton" style = {styles.buttonContainer}>
-                    <Pressable onPress={() => router.push("/habits/newHabitForm")}
-                        style={() => [
-                            {
-                                backgroundColor:  "#4f7942",
-                                padding: 5,
-                                borderRadius: 4,
-                            },
-                        ]}>
-                        <Text  style={styles.buttonTitle}>New Habit</Text>
-                    </Pressable >
-                </View>
+                <Surface style={styles.homeScreenSurface} elevation={1}>
+                    {pageSections}
+                    <View key="newHabitButton" style = {styles.buttonContainer}>
+                        <Pressable onPress={() => router.push("/habits/newHabitForm")}
+                            style={() => [
+                                {
+                                    backgroundColor:  "#4f7942",
+                                    padding: 5,
+                                    marginHorizontal: 5,
+                                    borderRadius: 4,
+                                },
+                            ]}>
+                            <Text  style={styles.buttonTitle}>New Habit</Text>
+                        </Pressable >
+                    </View>
+                </Surface>
             </ScrollView>
       </SafeAreaView>
     )
