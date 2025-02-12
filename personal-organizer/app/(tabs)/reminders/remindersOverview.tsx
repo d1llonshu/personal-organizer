@@ -88,7 +88,7 @@ export default function RemindersPage() {
                                     <Text style={reminderStyles.reminderOverviewHyperlink}>{reminderArray[i].title}</Text>
                             </Link>
                             <Text style={reminderStyles.overviewInfo}>{getKeyReminderInfo(reminderArray[i])}</Text>
-                            <Ionicons.Button style={reminderStyles.cancelButton} name="ban-sharp" size={14} color="red" backgroundColor={surfaceBackgroundColor} onPress={()=>{deleteReminder(reminderArray[i].notificationID, reminderArray[i].title)}} />
+                            <Ionicons.Button style={reminderStyles.cancelButton} name="ban-sharp" size={14} color="#CF6679" backgroundColor={surfaceBackgroundColor} onPress={()=>{deleteReminder(reminderArray[i].notificationID, reminderArray[i].title)}} />
                         </View>
                     );
                 }
@@ -174,7 +174,8 @@ export default function RemindersPage() {
 function getKeyReminderInfo(r: Reminder) : string{
     let returnString = "";
     const weekdayStrings = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    if(r.repeats !== "Once"){
+    const weekdayStringsAbr = ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"];
+    if(r.repeats !== "Once"){ 
         if(r.repeats === "Yearly"){
             returnString = returnString + "Yearly on " + (r.repeatDetails.month+1) + "/" + r.repeatDetails.dayOfMonth;
         }
