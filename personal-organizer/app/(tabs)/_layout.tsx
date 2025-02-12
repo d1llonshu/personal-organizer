@@ -55,7 +55,7 @@ export default function TabLayout() {
         options={{
           title: 'Reminders',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'list' : 'list-outline'} color={color} />
+            <TabBarIcon name={focused ? 'notifications-circle' : 'notifications-circle-outline'} color={color} />
           ),
         }}
       />

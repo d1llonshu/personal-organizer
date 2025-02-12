@@ -86,7 +86,7 @@ export default function newReminderForm() {
     
     const datePickerOneTime =  
         (<View key={"datePickerOneTime"} style={styles.row}>
-        <Text style={reminderStyles.reminderFormSubtitleMoreMargin}>Time:</Text>
+        <Text style={reminderStyles.reminderFormSubtitleOneTime}>Time:</Text>
         <Text style={reminderStyles.reminderFormRegularText}>{date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2)} {((date.getHours() + 24) % 12 || 12) + ":" + ("0" + date.getMinutes()).slice(-2) + ((date.getHours()<=12)?" AM":" PM")}</Text>
         {/* <DatePicker date={date} onDateChange={setDate} 
         dividerColor='#E1D9D1'
@@ -124,7 +124,7 @@ export default function newReminderForm() {
         </View>);
     const weekdaySection = (
         <View key={"weekdaySection"} style={styles.row}>
-            <Text style={reminderStyles.reminderFormSubtitle}>Day of Week:</Text>
+            <Text style={reminderStyles.reminderFormSubtitleLessMargin}>Weekday:</Text>
             <Dropdown
                 style={reminderStyles.dropdown}
                 placeholderStyle={dropdownStyles.placeholderStyle}
@@ -145,7 +145,7 @@ export default function newReminderForm() {
     );
     const monthSection = (
         <View key={"monthSection"} style={styles.row}>
-            <Text style={reminderStyles.reminderFormSubtitle}>Month:</Text>
+            <Text style={reminderStyles.reminderFormSubtitleLessMargin}>Month:</Text>
             <Dropdown
                 style={reminderStyles.dropdown}
                 placeholderStyle={dropdownStyles.placeholderStyle}
@@ -166,10 +166,10 @@ export default function newReminderForm() {
     );
     const dayOfMonthSection = (
         <View key={"dayOfMonthSection"} style={styles.row}>
-            <Text style={reminderStyles.reminderFormSubtitle}>Day of Month:</Text>
+            <Text style={reminderStyles.reminderFormSubtitleDayOfMonth}>Date:</Text>
             <TextInput
                 style={reminderStyles.timeInput}
-                placeholder='15'
+                placeholder=' 15'
                 placeholderTextColor="gray"
                 keyboardType='numeric'
                 value={dayOfMonth}    
@@ -179,10 +179,10 @@ export default function newReminderForm() {
     );
     const timeOfDaySection = (
         <View key={"timeOfDaySection"} style={styles.row}>
-            <Text style={reminderStyles.reminderFormSubtitle}>Time: </Text>
+            <Text style={reminderStyles.reminderFormSubtitleMoreMargin}>Time: </Text>
             <TextInput
                 style={reminderStyles.timeInput}
-                placeholder='Hour'
+                placeholder=' Hour'
                 placeholderTextColor="gray" 
                 keyboardType='numeric'
                 value={hour}    
@@ -191,7 +191,7 @@ export default function newReminderForm() {
             <Text style={reminderStyles.colon}>:</Text>
             <TextInput
                 style={reminderStyles.timeInput}
-                placeholder='Minute'
+                placeholder=' Minute'
                 placeholderTextColor="gray" 
                 keyboardType='numeric'
                 value={minute}    
@@ -329,14 +329,14 @@ export default function newReminderForm() {
                         <Text style={reminderStyles.reminderFormSubtitle}>Message: </Text>
                         <TextInput
                             style={reminderStyles.textInput}
-                            placeholder='Pick up laundry'
+                            placeholder=' Pick up laundry'
                             placeholderTextColor="gray" 
                             value={reminderTitle}    
                             onChangeText={setReminderTitle}
                         />
                     </View>
                     <View key={"repeatDropdown"} style={styles.row}>
-                        <Text style={reminderStyles.reminderFormSubtitle}>Repeats:</Text>
+                        <Text style={reminderStyles.reminderFormSubtitleLessMargin}>Repeats:</Text>
                         <Dropdown
                             style={reminderStyles.dropdown}
                             placeholderStyle={dropdownStyles.placeholderStyle}

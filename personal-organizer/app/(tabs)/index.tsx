@@ -4,7 +4,7 @@ import { MMKV, useMMKVObject } from 'react-native-mmkv';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { streakData } from '@/constants/streaks';
-import { styles, backgroundColor, surfaceBackgroundColor } from '@/constants/stylesheet';
+import { styles, backgroundColor, surfaceBackgroundColor, textColor } from '@/constants/stylesheet';
 
 import { Submissions } from '@/constants/FormData';
 import { Habit } from "@/constants/habit";
@@ -65,9 +65,9 @@ export default function HomeScreen() {
           temp = createSummary(habits, submissions, generateConsecutiveKeys(todaysKeyIndex, new Date(todaysKeyIndex).getUTCDay()));
           temp[0] = (
             <View key={"WeeklyProgressHeader"} style={styles.centeredRow}>
-                <Ionicons.Button name="caret-back" size={16} color="white" backgroundColor={surfaceBackgroundColor} onPress={()=>{setMult(mult+1);}} />
+                <Ionicons.Button style={styles.prevWeekButton} name="caret-back" size={16} color={textColor} backgroundColor={surfaceBackgroundColor} onPress={()=>{setMult(mult+1);}} />
                 <Text style={styles.homeScreenSubtitle}>Week of {keys[keys.length-1]} </Text>
-                <Ionicons.Button name="caret-forward" size={16} color="white" backgroundColor={surfaceBackgroundColor} onPress={()=>{}} />
+                <Ionicons.Button name="caret-forward" size={16} color={textColor} backgroundColor={surfaceBackgroundColor} onPress={()=>{}} />
             </View>
           );
         }
