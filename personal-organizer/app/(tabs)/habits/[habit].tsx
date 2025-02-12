@@ -28,21 +28,21 @@ export default function habitsPage() {
     const [goal, setGoal] = useState<string>("");
     const [timeframe, setTimeframe] = useState<string>("");
     let noEdit = (longestStreak: JSX.Element[]) => { return(
-    <Surface style={styles.homeScreenSurface} elevation={1}>
-      <View style={styles.row}>
+    <Surface key={"noEditSurface"}  style={styles.homeScreenSurface} elevation={1}>
+      <View key={"category"} style={styles.row}>
         <Text style={styles.habitPageSubtitle}>Category: </Text>
         <Text style={styles.habitPageRegularText}>{currentHabit?.category}</Text>
       </View>
-      <View style={styles.row}>
+      <View key={"goal"} style={styles.row}>
         <Text style={styles.habitPageSubtitle}>Goal: </Text>
         <Text style={styles.habitPageRegularText}>{goalText}</Text>
       </View>
-      <View style={styles.row}>
+      <View key={"longest streak"} style={styles.row}>
         <Text style={styles.habitPageSubtitle}>Longest Streak: </Text>
         {longestStreak}
       </View>
       <View>
-        <Text style={styles.habitPageSubtitle}>Goal History: </Text>
+        <Text key={"history"} style={styles.habitPageSubtitle}>Goal History: </Text>
         {displayHistory(currentHabit?currentHabit.history:[])}
       </View>
       <View key={"editButton"}>
@@ -58,7 +58,7 @@ export default function habitsPage() {
     </Surface>)};
 
     let edit = (
-    <Surface key={"infoSurface"} style={styles.homeScreenSurface} elevation={1}>
+    <Surface key={"editInfoSurface"} style={styles.homeScreenSurface} elevation={1}>
       <Text style={styles.habitPageSubtitle}>Edit:</Text>
       <View style={styles.row}>
         <Text style={dropdownStyles.titleWithEvenLessMargin}>Habit:</Text>
