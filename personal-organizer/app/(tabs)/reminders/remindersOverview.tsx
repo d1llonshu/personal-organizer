@@ -134,7 +134,7 @@ export default function RemindersPage() {
                         <Text  style={styles.buttonTitle}>New Reminder</Text>
                     </Pressable >
                 </View>
-                <View key="deleteRemindersButton" style = {styles.buttonContainer}>
+                {/* <View key="deleteRemindersButton" style = {styles.buttonContainer}>
                     <Pressable onPress={() => {
                         Alert.alert("Delete all reminders?", "", [
                             {
@@ -165,7 +165,7 @@ export default function RemindersPage() {
                         ]}>
                         <Text  style={styles.buttonTitle}>Delete Reminders</Text>
                     </Pressable>
-                </View>
+                </View> */}
             </Surface>
           </ScrollView>
         </SafeAreaView>
