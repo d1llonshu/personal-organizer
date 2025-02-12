@@ -62,6 +62,7 @@ export default function RemindersPage() {
         scheduled.forEach((r) => {
             activeReminders.push(r.identifier);
         })
+        console.log(reminderArray);
         let newReminderArray : Reminder[] = [];
         let newSections : JSX.Element[] = [];
         let now = new Date();

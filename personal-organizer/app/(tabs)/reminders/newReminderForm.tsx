@@ -53,7 +53,7 @@ export default function newReminderForm() {
         { label: 'Once (Does not repeat)', value: 'Once' },
         { label: 'Daily', value: 'Daily' },
         { label: 'Weekly', value: 'Weekly' },
-        { label: 'Monthly', value: 'Monthly' },
+        // { label: 'Monthly', value: 'Monthly' }, 
         { label: 'Yearly', value: 'Yearly' },
     ]
     const weekdays = [
@@ -222,6 +222,13 @@ export default function newReminderForm() {
         let created = new Date();
         let timeUntil = (date.getTime() - created.getTime())/1000;//time until in seconds
         if(passesFormValidation(timeUntil, reminderTitle, repeat, Number(month), Number(weekday), Number(dayOfMonth), Number(hour), Number(minute))){
+            let correctHour = Number(hour);
+            if(Number(hour) === 12 && AMorPM === "AM"){
+                correctHour = 0;
+            }
+            else if(AMorPM === "PM" && Number(hour) !== 12){
+                correctHour = correctHour + 12;
+            }
             let reminder : Reminder = {
                 notificationID: "Custom Reminder " + reminderIDCount,
                 title: reminderTitle,
@@ -229,7 +236,7 @@ export default function newReminderForm() {
                 triggerTime: date,
                 timeUntilTrigger: timeUntil,
                 repeats: repeat,
-                repeatDetails: {month: Number(month), dayOfMonth: Number(month), weekday:Number(weekday), hour:((AMorPM === "AM")?Number(hour):(Number(hour)+12)), minute:Number(minute)},
+                repeatDetails: {month: Number(month), dayOfMonth: Number(month), weekday:Number(weekday), hour:(correctHour), minute:Number(minute)},
             }
             let notifTrigger = {}
             if(repeat === "Once"){
@@ -240,7 +247,7 @@ export default function newReminderForm() {
             }
             else if (repeat === "Daily"){
                 notifTrigger = {
-                    hour: (AMorPM === "AM")?Number(hour):(Number(hour)+12),
+                    hour: correctHour,
                     minute: Number(minute),
                     repeats: true,
                 }
@@ -248,7 +255,7 @@ export default function newReminderForm() {
             else if(repeat === "Weekly"){
                 notifTrigger = {
                     weekday: Number(weekday),
-                    hour: (AMorPM === "AM")?Number(hour):(Number(hour)+12),
+                    hour: correctHour,
                     minute: Number(minute),
                     repeats: true,
                 }
@@ -256,10 +263,9 @@ export default function newReminderForm() {
             else if(repeat === "Monthly"){
                 notifTrigger = {
                     day: Number(dayOfMonth),
-                    hour: (AMorPM === "AM")?Number(hour):(Number(hour)+12),
+                    hour: correctHour,
                     minute: Number(minute),
                     repeats: true,
-                    type: "monthly",
                 }
                 console.log(notifTrigger);
             }
@@ -267,7 +273,7 @@ export default function newReminderForm() {
                 notifTrigger = {
                     month: Number(month),
                     day: Number(dayOfMonth),
-                    hour: (AMorPM === "AM")?Number(hour):(Number(hour)+12),
+                    hour: correctHour,
                     minute: Number(minute),
                     repeats: true,
                 }
