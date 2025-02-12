@@ -43,10 +43,22 @@ export default function RemindersPage() {
             shouldSetBadge: false,
         }),
         });
-    function deleteReminder(notificationID: string){
-        console.log("Deleting " + notificationID);
-        setRerender(!rerender);
-        Notifications.cancelScheduledNotificationAsync(notificationID);
+    function deleteReminder(notificationID: string, notificationTitle: string){
+        Alert.alert("Delete this reminder?", notificationTitle, [
+            {
+                text: 'Cancel',
+                onPress: () => {},
+                style: 'cancel',
+            },
+            {
+                text: 'OK', onPress: () => {
+                    console.log("Deleting " + notificationID);
+                    Notifications.cancelScheduledNotificationAsync(notificationID);
+                    setRerender(!rerender);
+                }
+            },
+        ]);
+
     }
     async function checkScheduled(){
         let activeReminders : string[] = [];
@@ -76,7 +88,7 @@ export default function RemindersPage() {
                                     <Text style={reminderStyles.reminderOverviewHyperlink}>{reminderArray[i].title}</Text>
                             </Link>
                             <Text style={reminderStyles.overviewInfo}>{getKeyReminderInfo(reminderArray[i])}</Text>
-                            <Ionicons.Button style={reminderStyles.cancelButton} name="ban-sharp" size={14} color="red" backgroundColor={surfaceBackgroundColor} onPress={()=>{deleteReminder(reminderArray[i].notificationID)}} />
+                            <Ionicons.Button style={reminderStyles.cancelButton} name="ban-sharp" size={14} color="red" backgroundColor={surfaceBackgroundColor} onPress={()=>{deleteReminder(reminderArray[i].notificationID, reminderArray[i].title)}} />
                         </View>
                     );
                 }
