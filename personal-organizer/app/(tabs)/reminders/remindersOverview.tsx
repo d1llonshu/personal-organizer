@@ -42,15 +42,7 @@ export default function RemindersPage() {
             shouldSetBadge: false,
         }),
         });
-     async function requestPermissionsAsync() {
-            return await Notifications.requestPermissionsAsync({
-              ios: {
-                allowAlert: true,
-                allowBadge: true,
-                allowSound: true,
-              },
-            });
-          }
+    
     async function checkScheduled(){
         let activeReminders : string[] = [];
         let scheduled = await Notifications.getAllScheduledNotificationsAsync().then(response => {
@@ -65,7 +57,6 @@ export default function RemindersPage() {
         console.log(reminderArray);
         let newReminderArray : Reminder[] = [];
         let newSections : JSX.Element[] = [];
-        let now = new Date();
         if(reminderArray){
             for(let i = 0; i < reminderArray.length; i++){
                 if(activeReminders.includes(reminderArray[i].notificationID)){
@@ -108,55 +99,9 @@ export default function RemindersPage() {
           <ScrollView style={styles.container}>
             <View key="body">
                 <Surface style={styles.homeScreenSurface} elevation={1}>
-                <View key={"remindersList"}>
-                    <Text style={styles.title}>Active Reminders</Text>
-                    {sections}
-                </View>
-                <View key={"notificationTest"}>
-                    <Text style={styles.regularSubtitle}>Reminders/Notifications: </Text>
-                        <Pressable onPress={() => {
-                            console.log("req");
-                            requestPermissionsAsync();
-                            }}
-                            style={() => [
-                                {
-                                    backgroundColor:  "#4f7942",
-                                    padding: 5,
-                                    borderRadius: 4,
-                                },
-                            ]}>
-                            <Text  style={styles.buttonTitle}>Request Perms</Text>
-                        </Pressable>
-                        <Pressable onPress={() => {
-                            console.log("Reminders: " + !dailyReminder);
-                            if(dailyReminder == false){//if reminder is disabled
-                                Notifications.scheduleNotificationAsync({
-                                    content: {
-                                        title: 'Check items off your checklist!',
-                                    },
-                                    trigger: {
-                                        seconds: 60 * 60 * 24,
-                                        repeats: false,
-                                    },
-                                    identifier: "Checklist Reminder"
-                                });
-                                setDailyReminder(true);
-                            }
-                            else{
-                                setDailyReminder(false);
-                                Notifications.cancelScheduledNotificationAsync("Checklist Reminder");
-                            }
-                            
-                            }}
-                            style={() => [
-                                {
-                                    backgroundColor:dailyReminder? "#CF6679":"#4f7942",
-                                    padding: 5,
-                                    borderRadius: 4,
-                                },
-                            ]}>
-                            <Text  style={styles.buttonTitle}>{dailyReminder?"Disable Daily Reminder":"Enable Daily Reminder"}</Text>
-                        </Pressable>
+                    <View key={"remindersList"}>
+                        <Text style={styles.title}>Active Reminders</Text>
+                        {sections}
                     </View>
                     <View key="newHabitButton" style = {styles.buttonContainer}>
                         <Pressable onPress={() => router.push("/reminders/newReminderForm")}

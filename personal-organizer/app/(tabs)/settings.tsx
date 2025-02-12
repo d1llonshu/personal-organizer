@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { SafeAreaView, View,  Text, ScrollView, Pressable, Alert, TextInput } from 'react-native';
 import { MMKV, useMMKVObject } from 'react-native-mmkv';
+import * as Notifications from 'expo-notifications';
 
 import { Submissions } from '@/constants/FormData';
 import { Habit } from "@/constants/habit";
@@ -24,7 +25,15 @@ export default function Settings(){
           ]);
         return ret;
     }
-   
+    async function requestPermissionsAsync() {
+            return await Notifications.requestPermissionsAsync({
+                ios: {
+                allowAlert: true,
+                allowBadge: true,
+                allowSound: true,
+                },
+            });
+    }
 
     return(
         <SafeAreaView style={styles.safeAreaContainer}>
@@ -94,7 +103,19 @@ export default function Settings(){
                         ]}>
                         <Text  style={styles.buttonTitle}>CLEAR DATA</Text>
                     </Pressable>
-                    
+                    <Pressable onPress={() => {
+                        console.log("req");
+                            requestPermissionsAsync();
+                        }}
+                        style={() => [
+                            {
+                                backgroundColor:  "#4f7942",
+                                padding: 5,
+                                borderRadius: 4,
+                            },
+                        ]}>
+                        <Text  style={styles.buttonTitle}>Request Perms</Text>
+                    </Pressable>
                 </View>
                 
             </ScrollView>
