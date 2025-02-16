@@ -14,8 +14,6 @@ app/old_files/
 constants/old_files/
 components/old_files/
 
-/android
-
 # macOS
 .DS_Store
 

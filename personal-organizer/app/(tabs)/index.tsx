@@ -53,21 +53,20 @@ export default function HomeScreen() {
   const [mult, setMult] = useState<number>(0);
   //go through each submission checking the dates, if it's 1 day apart keep adding the streaks, else stop.
   useEffect(() => {
-      console.log(mult);
       if(habits && submissions && todaysKeyIndex){
         setStreakSection(printOngoingStreaks(habits, submissions));
-        let sundayKey = generateDifferentDaysKey(todaysKeyIndex, new Date(todaysKeyIndex).getUTCDay() + (7*(mult-1)));
-        console.log(sundayKey);
+        //get the key for upcoming sunday
+        const daysUntilSunday = [0, -6, -5, -4, -3, -2, -1];//negative because generateDiffDaysKey assumes going backwards
+        let sundayKey = generateDifferentDaysKey(todaysKeyIndex, daysUntilSunday[new Date(todaysKeyIndex).getUTCDay()] + (7*(mult)));//applies multiplier for previous weeks
+        //generate one weeks keys
         let keys = generateConsecutiveKeys(sundayKey, 7);
         let temp = createSummary(habits, submissions, keys);
         if(mult == 0){
-          keys = generateConsecutiveKeys(todaysKeyIndex, new Date(todaysKeyIndex).getUTCDay());
-          temp = createSummary(habits, submissions, generateConsecutiveKeys(todaysKeyIndex, new Date(todaysKeyIndex).getUTCDay()));
           temp[0] = (
             <View key={"WeeklyProgressHeader"} style={styles.centeredRow}>
                 <Ionicons.Button style={styles.prevWeekButton} name="caret-back" size={16} color={textColor} backgroundColor={surfaceBackgroundColor} onPress={()=>{setMult(mult+1);}} />
                 <Text style={styles.homeScreenSubtitle}>Week of {keys[keys.length-1]} </Text>
-                <Ionicons.Button name="caret-forward" size={16} color={textColor} backgroundColor={surfaceBackgroundColor} onPress={()=>{}} />
+                <Ionicons.Button name="caret-forward" size={16} color={surfaceBackgroundColor} backgroundColor={surfaceBackgroundColor} onPress={()=>{}} />
             </View>
           );
         }
@@ -75,7 +74,7 @@ export default function HomeScreen() {
         else{
           temp[0] = (
             <View key={"WeeklyProgressHeader"} style={styles.centeredRow}>
-              <Ionicons.Button name="caret-back" size={16} color="white" backgroundColor={surfaceBackgroundColor} onPress={()=>{setMult(mult+1);}} />
+              <Ionicons.Button name="caret-back" style={styles.prevWeekButton} size={16} color="white" backgroundColor={surfaceBackgroundColor} onPress={()=>{setMult(mult+1);}} />
               <Text style={styles.homeScreenSubtitle}>Week of {keys[keys.length-1]} </Text>
               <Ionicons.Button name="caret-forward" size={16} color="white" backgroundColor={surfaceBackgroundColor} onPress={()=>{setMult(mult-1);}} />
             </View>
