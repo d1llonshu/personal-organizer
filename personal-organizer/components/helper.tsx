@@ -31,8 +31,7 @@ export function calculateStatsForPeriod(habits: Habit[], submissions: Submission
                         ret[h.habitID][1]++;
                     }
                 }
-                
-                
+
             });
         }
         reqForStreak++;
@@ -54,6 +53,51 @@ export function calculateStatsForPeriod(habits: Habit[], submissions: Submission
     return ret;
 }
 
+// Exact same as above but for one habit, not array
+export function calculateStatsForPeriodSpecific(h: Habit, submissions: Submissions, keys: string[]) : number[]{
+    let ret : number[] = Array<number>(2).fill(0);
+
+    let reqForStreak = 0;
+    keys.forEach((key)=>{
+        //if the submission exists
+        if(submissions[key]){
+            let val = habitValueAsInt(h.habitID, submissions[key], h.dataType);
+            let correctGoals = getGoalForDate(h, key);
+            // increment sum
+            ret[0] = ret[0] + val; 
+            if(h.dataType == "number"){
+                console.log("ret1: " + String(ret[1]));
+                console.log("req: " + String(reqForStreak));
+                
+                if(val >= Number(correctGoals.goal) && ret[1] == reqForStreak && correctGoals.timeframe != "Weekly"){
+                    ret[1]++;
+                }
+            }
+            else if (h.dataType == "boolean"){
+                // if positive, hasn't missed any days, and isn't a weekly target increment streak
+                if(val > 0 && ret[1] == reqForStreak && correctGoals.timeframe != "Weekly"){
+                    ret[1]++;
+                }
+            }   
+            
+        }
+        reqForStreak++;
+    })
+
+    //if provided a one week long set of keys, increment weekly streaks if the weekly sum is greater than goal
+    //checks most recent day of the array for the weekly goal
+    if(keys.length === 7){
+        let correctGoals = getGoalForDate(h, keys[0]);
+        if (correctGoals.timeframe === "Weekly"){
+            if(ret[0] >= Number(correctGoals.goal)){
+                ret[1]++;
+            }
+        }
+    }
+
+    return ret;
+}
+
 //returns goal on a given date, since edits are now possible
 // Inputs:
 // habit - habit object
@@ -65,17 +109,19 @@ export function getGoalForDate(habit: Habit, date: string) : {timeframe: string,
     let returnVal = {timeframe: habit.timeframe, goal: habit.goal};
     for(let i = 0; i < habit.history.length; i++){
         if(habit.history[i].endDate !== ""){
+            
             // console.log("provided time: " + newTime + "/date: " + date);
-            // console.log("end time: " + new Date(entry.endDate).getTime() + "/date: " + entry.endDate);
-            // console.log("start time: " + new Date(entry.startDate).getTime() + "/date: " + entry.startDate);
+            // console.log("end time: " + new Date(habit.history[i].endDate).getTime() + "/date: " + habit.history[i].endDate);
+            // console.log("start time: " + new Date(habit.history[i].startDate).getTime() + "/date: " + habit.history[i].startDate);
             if((newTime <= (new Date(habit.history[i].endDate).getTime())) && (newTime >= (new Date(habit.history[i].startDate).getTime()))){
-                // console.log("entry found" + JSON.stringify({timeframe: entry.timeframe, goal: entry.goal}));
+                // console.log("entry found" + JSON.stringify({timeframe: habit.history[i].timeframe, goal: habit.history[i].goal}));
                 returnVal = {timeframe: habit.history[i].timeframe, goal: habit.history[i].goal};
-                i = habit.history.length;
+                // i = habit.history.length;
+                return returnVal
             }
         }
     }
-    return returnVal;
+    return {timeframe: habit.history[habit.history.length-1].timeframe, goal: habit.history[habit.history.length-1].goal};
 }
 
 // Returns habit value as int, such that boolean true = 1 and false = 0. 
