@@ -13,7 +13,7 @@ import { Habit, habitHistory, timeframes } from "@/constants/habit";
 import { styles, dropdownStyles, buttonColorTrue, calendarTheme } from "@/constants/stylesheet";
 import { CustomButton } from "@/components/customButton";
 import { passesFormValidation } from './newHabitForm';
-import { generateDifferentDaysKey, getGoalForDate } from '@/components/helper';
+import { calculateStatsForPeriodSpecific, generateConsecutiveKeys, generateDifferentDaysKey, getGoalForDate } from '@/components/helper';
 import { Submissions } from '@/constants/FormData';
 
 export default function habitsPage() {
@@ -344,7 +344,6 @@ function createGoalText(habit: Habit){
   return text;
 }
 function displayHistory(history: habitHistory[]){
-  
   let sections : JSX.Element[] = [];
   
   for(let i = 0; i < history.length; i++){
@@ -377,30 +376,99 @@ function prettyPrintDate(date:string){
   return prettyPrint;
 }
 
+//only support for weekly/daily
+function generateChartData(habit: Habit, history: habitHistory[], submissions: Submissions){
+    let today = new Date();
+    let todaysKey: string = 
+        today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
+    let allKeys : string[] = generateConsecutiveKeys(todaysKey,today.getUTCDay()+49)//8 weeks, including current week
+    let organizedKeys : string[][] = [];
+    let data : {[key: string] : {total: number, goal: number}} = {};
+    
+    organizedKeys.push(allKeys.slice(0, today.getUTCDay()));
+    let mult = 1;
+    while (mult <= 7){
+      let week = allKeys.slice(today.getUTCDay()+7*(mult-1), today.getUTCDay()+7*(mult))
+      let g = getGoalForDate(habit, week[week.length-1])
+
+      if (g.timeframe == "Weekly") {
+        data[week[0]] = {total: calculateStatsForPeriodSpecific(habit, submissions, week)[0], goal: Number(g.goal)}
+      }
+      else{
+        data[week[0]] = {total: calculateStatsForPeriodSpecific(habit, submissions, week)[0], goal: Number(g.goal)*7}
+      }
+      
+      mult++;
+    }
+    
+    
+    // var keys2 = generateConsecutiveKeys(keys[keys.length-1],8).slice(1)
+    for (const [key, value] of Object.entries(data)) {
+        console.log(`Key: ${key}, Value: ${value}`);
+    }
+    return data
+}
+
 function generateChart(habit: Habit, history: habitHistory[], submissions: Submissions){
+  let data = generateChartData(habit, history, submissions)  
+  const results = []
+  const goals = []
+  for (const [k, v] of Object.entries(data)) {
+      results.push({value:v.total, label:k})
+      goals.push({value:v.goal, label:k})
+  }
+  results.reverse();
+  goals.reverse();
   const lineData = [{value: 0},{value: 10},{value: 8},{value: 58},{value: 56},{value: 78},{value: 74},{value: 98}];
     const lineData2 = [{value: 0},{value: 20},{value: 18},{value: 40},{value: 36},{value: 60},{value: 54},{value: 85}];
     return (
         <View>
             <LineChart
             areaChart
-            curved
-            data={lineData}
-            data2={lineData2}
-            height={250}
+            data={results}
+            data2={goals}
+            height={200}
+            isAnimated
             showVerticalLines
-            spacing={44}
+            spacing={44} 
             initialSpacing={0}
             color1="skyblue"
             color2="orange"
             textColor1="green"
-            hideDataPoints
-            dataPointsColor1="blue"
-            dataPointsColor2="red"
+            dataPointsColor1="white"
+            dataPointsColor2="white"
             startFillColor1="skyblue"
             startFillColor2="orange"
             startOpacity={0.8}
             endOpacity={0.3}
+            pointerConfig={{
+              pointerStripUptoDataPoint: true,
+              pointerStripColor: 'lightgray',
+              pointerStripWidth: 2,
+              strokeDashArray: [2, 5],
+              pointerColor: 'lightgray',
+              radius: 4,
+              pointerLabelWidth: 100,
+              pointerLabelHeight: 120,
+              pointerLabelComponent: (items: any) => {
+                return (
+                  <View
+                    style={{
+                      height: 120,
+                      width: 100,
+                      backgroundColor: '#282C3E',
+                      borderRadius: 4,
+                      justifyContent:'center',
+                      paddingLeft:16,
+                    }}>
+                    <Text style={{color: 'lightgray',fontSize:12}}>{2018}</Text>
+                    <Text style={{color: 'white', fontWeight:'bold'}}>{items[0].value}</Text>
+                    <Text style={{color: 'lightgray',fontSize:12,marginTop:12}}>{2019}</Text>
+                    <Text style={{color: 'white', fontWeight:'bold'}}>{items[1].value}</Text>
+                  </View>
+                );
+              },
+            }}
             />
         </View>
     );

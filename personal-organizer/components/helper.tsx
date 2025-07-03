@@ -66,8 +66,8 @@ export function calculateStatsForPeriodSpecific(h: Habit, submissions: Submissio
             // increment sum
             ret[0] = ret[0] + val; 
             if(h.dataType == "number"){
-                console.log("ret1: " + String(ret[1]));
-                console.log("req: " + String(reqForStreak));
+                // console.log("ret1: " + String(ret[1]));
+                // console.log("req: " + String(reqForStreak));
                 
                 if(val >= Number(correctGoals.goal) && ret[1] == reqForStreak && correctGoals.timeframe != "Weekly"){
                     ret[1]++;
