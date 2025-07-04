@@ -392,10 +392,10 @@ function generateChartData(habit: Habit, history: habitHistory[], submissions: S
       let g = getGoalForDate(habit, week[week.length-1])
 
       if (g.timeframe == "Weekly") {
-        data[week[0]] = {total: calculateStatsForPeriodSpecific(habit, submissions, week)[0], goal: Number(g.goal)}
+        data[week[0].substring(week[0].length-5, week[0].length)] = {total: calculateStatsForPeriodSpecific(habit, submissions, week)[0], goal: Number(g.goal)}
       }
       else{
-        data[week[0]] = {total: calculateStatsForPeriodSpecific(habit, submissions, week)[0], goal: Number(g.goal)*7}
+        data[week[0].substring(week[0].length-5, week[0].length)] = {total: calculateStatsForPeriodSpecific(habit, submissions, week)[0], goal: Number(g.goal)*7}
       }
       
       mult++;
@@ -419,8 +419,6 @@ function generateChart(habit: Habit, history: habitHistory[], submissions: Submi
   }
   results.reverse();
   goals.reverse();
-  const lineData = [{value: 0},{value: 10},{value: 8},{value: 58},{value: 56},{value: 78},{value: 74},{value: 98}];
-    const lineData2 = [{value: 0},{value: 20},{value: 18},{value: 40},{value: 36},{value: 60},{value: 54},{value: 85}];
     return (
         <View>
             <LineChart
@@ -429,23 +427,24 @@ function generateChart(habit: Habit, history: habitHistory[], submissions: Submi
             data2={goals}
             height={200}
             isAnimated
-            showVerticalLines
+            
             spacing={44} 
-            initialSpacing={0}
+            initialSpacing={40}
             color1="skyblue"
             color2="orange"
             textColor1="green"
-            dataPointsColor1="white"
-            dataPointsColor2="white"
+            dataPointsColor1="#E1D9D1"
+            dataPointsColor2="#E1D9D1"
             startFillColor1="skyblue"
             startFillColor2="orange"
+            xAxisLabelTextStyle={{ marginLeft: -22, color: '#E1D9D1' }}
+            yAxisTextStyle={{ color: '#E1D9D1' }}
             startOpacity={0.8}
             endOpacity={0.3}
             pointerConfig={{
               pointerStripUptoDataPoint: true,
               pointerStripColor: 'lightgray',
               pointerStripWidth: 2,
-              strokeDashArray: [2, 5],
               pointerColor: 'lightgray',
               radius: 4,
               pointerLabelWidth: 100,
@@ -461,9 +460,9 @@ function generateChart(habit: Habit, history: habitHistory[], submissions: Submi
                       justifyContent:'center',
                       paddingLeft:16,
                     }}>
-                    <Text style={{color: 'lightgray',fontSize:12}}>{2018}</Text>
+                    <Text style={{color: 'lightgray',fontSize:12}}>{"Weekly Total"}</Text>
                     <Text style={{color: 'white', fontWeight:'bold'}}>{items[0].value}</Text>
-                    <Text style={{color: 'lightgray',fontSize:12,marginTop:12}}>{2019}</Text>
+                    <Text style={{color: 'lightgray',fontSize:12,marginTop:12}}>{"Target"}</Text>
                     <Text style={{color: 'white', fontWeight:'bold'}}>{items[1].value}</Text>
                   </View>
                 );
