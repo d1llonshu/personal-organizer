@@ -73,7 +73,7 @@ export default function HomeScreen() {
           
         else{
           temp[0] = (
-            <View key={"WeeklyProgressHeader"} style={styles.centeredRow}>
+            <View key={"WeeklyProgressHeader2"} style={styles.centeredRow}>
               <Ionicons.Button name="caret-back" style={styles.prevWeekButton} size={16} color="white" backgroundColor={surfaceBackgroundColor} onPress={()=>{setMult(mult+1);}} />
               <Text style={styles.homeScreenSubtitle}>Week of {keys[keys.length-1]} </Text>
               <Ionicons.Button name="caret-forward" size={16} color="white" backgroundColor={surfaceBackgroundColor} onPress={()=>{setMult(mult-1);}} />

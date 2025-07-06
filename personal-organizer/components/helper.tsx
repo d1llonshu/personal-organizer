@@ -175,3 +175,19 @@ export function generateConsecutiveKeys(key:string, days:number){
 
     return arr
 }
+
+export function weeksSinceCreated(habit: Habit){
+    let created = new Date(habit.history[0].startDate);
+    const today = new Date();
+    let key: string = 
+        today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
+    const newToday = new Date(key)
+    // Calculate the difference in milliseconds
+    const diffInMs = newToday.getTime() - created.getTime();
+
+    // Convert milliseconds to weeks
+    const msInAWeek = 1000 * 60 * 60 * 24 * 7;
+    const weeksElapsed = Math.ceil(diffInMs / msInAWeek);//its considered a week even if its incomplete
+
+    return weeksElapsed;
+}

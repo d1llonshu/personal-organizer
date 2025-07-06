@@ -53,8 +53,9 @@ function showWeeklyProgress(habit: Habit, value: number, keys: string[], router:
     }
 
     return(
-        <TouchableOpacity onPress={() => router.push(`/habits/${habit.habitID}`)}>
-            <View key={"Habit"+habit.habitID+"WeeklyProgress"}>
+        
+        <View key={"Habit"+habit.habitID+"WeeklyProgress"}>
+            <TouchableOpacity onPress={() => router.push(`/habits/${habit.habitID}`)}>
                 <View style={styles.row}>
                     <Text style={progressBarStyles.progressBarTitle}>{habit.prettyPrint}: </Text>
                     <Text style={progressBarStyles.progressBarSubtitle}>{value}/{(habit.timeframe === "Daily")? total : habit.goal}</Text>
@@ -63,8 +64,9 @@ function showWeeklyProgress(habit: Habit, value: number, keys: string[], router:
                 </View>
                 <ProgressBar style={progressBarStyles.progressBarStyle} fillStyle={progressBarStyles.progressBarfillStyle}  
                     progress={barValue} color={barColor} />
-            </View>
-        </TouchableOpacity>
+            </TouchableOpacity>
+        </View>
+        
     );
 }
 

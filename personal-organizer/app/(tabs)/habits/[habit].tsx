@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TextInput, Alert, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TextInput, Alert, TouchableOpacity, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useMMKVObject } from 'react-native-mmkv';
 import { useLocalSearchParams, Stack, useRouter } from 'expo-router';
@@ -14,7 +14,7 @@ import { Habit, habitHistory, timeframes } from "@/constants/habit";
 import { styles, dropdownStyles, buttonColorTrue, calendarTheme } from "@/constants/stylesheet";
 import { CustomButton } from "@/components/customButton";
 import { passesFormValidation } from './newHabitForm';
-import { calculateStatsForPeriodSpecific, generateConsecutiveKeys, generateDifferentDaysKey, getGoalForDate } from '@/components/helper';
+import { calculateStatsForPeriodSpecific, generateConsecutiveKeys, generateDifferentDaysKey, getGoalForDate, weeksSinceCreated } from '@/components/helper';
 import { Submissions } from '@/constants/FormData';
 
 export default function habitsPage() {
@@ -202,6 +202,7 @@ export default function habitsPage() {
         setPrettyPrint(currentHabit.prettyPrint);
         setTimeframe(currentHabit.timeframe);
         setGoal(currentHabit.goal);
+        setChartWeeks(Math.min(weeksSinceCreated(currentHabit), 7))
         // let sections : JSX.Element[] = [];
         // if(editButton){
         //   sections.push(edit);
@@ -246,8 +247,8 @@ export default function habitsPage() {
     }, [editButton, timeframe, prettyPrint, goal]);
 
     return(
-        <SafeAreaView style = {styles.safeAreaContainer}>
-          <Stack.Screen
+        <SafeAreaView style = {styles.safeAreaContainer} key={"SafeAreaView"}>
+          <Stack.Screen key="Header/Nav"
                   options={{
                     headerLeft: () => (
                       <TouchableOpacity onPress={() => handleBack()} style={{ marginRight: 15 }}>
@@ -265,7 +266,7 @@ export default function habitsPage() {
                     headerTintColor: '#E1D9D1', // Applies to icons and other header elements
                   }}
                 />
-          <ScrollView>
+          <ScrollView key="ScrollView">
             <Stack.Screen options={{ title: currentHabit?.prettyPrint }} />
               {pageSections}
               {}
@@ -474,37 +475,38 @@ function generateChart(habit: Habit, history: habitHistory[], submissions: Submi
       justResults.push(v.total);
       justGoals.push(v.goal);
   }
+  console.log((Dimensions.get('window').width-92)/(numberOfWeeks+2));
   results.reverse();
   goals.reverse();
   const yLabels = generateChartYLabels(sectionCount, justResults, justGoals);
-  const { xAxisLabelFontSize, xAxisLabelMarginTop, spacing, xAxisLabelRotation } = getChartLayoutSettings(numberOfWeeks);
+  const { xAxisLabelFontSize, xAxisLabelMarginTop, spacing, initialSpacing, xAxisMarginLeft, xAxisLabelRotation } 
+  = getChartLayoutSettings(numberOfWeeks);
     return (
-        <View>
+        <View key={"chart"}>
           <Surface key={"chartSurface"} style={styles.homeScreenSurface} elevation={1}>
               <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', 
                 marginBottom: 2, marginTop: 4, color:"#E1D9D1" }}>
                 Progress Tracker
               </Text>
             <LineChart
-            // areaChart
             data2={results}
             data={goals}
-            // data={[
-            //   { data: results, color: '#888' }, // Goal Line - gray
-            //   { data: goals, color: '#4A90E2', areaChartColor: 'rgba(74, 144, 226, 0.3)' } // Result Line - blue with fill
-            // ]}
+
             height={200}
+            width={Dimensions.get('window').width-76}
+            adjustToWidth={true}
             isAnimated
-            spacing={44} 
-            initialSpacing={38}
             color2="#4A90E2"
             color1="#888"
-            
+            initialSpacing={(Dimensions.get('window').width-100)/(numberOfWeeks+3)}
+            spacing={(Dimensions.get('window').width-100)/(numberOfWeeks)}
+            // endSpacing={10}
             dataPointsColor2="#E1D9D1"
             dataPointsColor1="#E1D9D1"
-            startFillColor2="skyblue"
+            startFillColor2="skyblue" 
             startFillColor1="lightgray"
-            xAxisLabelTextStyle={{ marginLeft: -22, color: '#E1D9D1' }}
+  
+            xAxisLabelTextStyle={{ color: '#E1D9D1'}}
             yAxisTextStyle={{ color: '#E1D9D1' }}
             xAxisColor={"#E1D9D1"}
             yAxisColor={"#E1D9D1"}
@@ -551,12 +553,13 @@ function generateChart(habit: Habit, history: habitHistory[], submissions: Submi
     );
 }
 
-import { Dimensions } from 'react-native';
 
 type ChartLayoutSettings = {
   xAxisLabelFontSize: number;
   xAxisLabelMarginTop: number;
   spacing: number;
+  initialSpacing: number;
+  xAxisMarginLeft: number;
   xAxisLabelRotation: number;
 };
 
@@ -582,11 +585,17 @@ function getChartLayoutSettings(weeksDisplayed: number): ChartLayoutSettings {
 
   // Rotate labels if spacing is too tight
   const xAxisLabelRotation = spacing < 30 ? 45 : 0;
+  const initialSpacing = Math.max(spacing * 0.7, 10);
+
+  // X-axis left margin: pad more for wider Y-axis labels or when chart is dense
+  const xAxisMarginLeft = Math.max(20, 40 - (weeksDisplayed * 0.5));
 
   return {
     xAxisLabelFontSize: fontSize,
     xAxisLabelMarginTop: marginTop,
     spacing,
+    initialSpacing,
+    xAxisMarginLeft,
     xAxisLabelRotation,
   };
 }
