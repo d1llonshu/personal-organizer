@@ -221,12 +221,14 @@ export default function habitsPage() {
         }
         if(editButton){
           sections.push(edit);
+          sections.push(generateChart(currentHabit, currentHabit.history, submissions))
         }
         else{
           sections.push(noEdit([streak, <Text style={styles.habitPageRegularTextWithMargin}>{dates}</Text>]));
+          sections.push(generateChart(currentHabit, currentHabit.history, submissions))
           sections.push(calendar.calendar);
         }
-        sections.push(generateChart(currentHabit, currentHabit.history, submissions))
+        
         
       }
       
@@ -421,24 +423,39 @@ function generateChart(habit: Habit, history: habitHistory[], submissions: Submi
   goals.reverse();
     return (
         <View>
+          <Surface key={"chartSurface"} style={styles.homeScreenSurface} elevation={1}>
+              <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', 
+                marginBottom: 2, marginTop: 8, color:"#E1D9D1" }}>
+                Summary
+              </Text>
             <LineChart
-            areaChart
-            data={results}
-            data2={goals}
+            // areaChart
+            data2={results}
+            data={goals}
+            // data={[
+            //   { data: results, color: '#888' }, // Goal Line - gray
+            //   { data: goals, color: '#4A90E2', areaChartColor: 'rgba(74, 144, 226, 0.3)' } // Result Line - blue with fill
+            // ]}
             height={200}
             isAnimated
-            
             spacing={44} 
-            initialSpacing={40}
-            color1="skyblue"
-            color2="orange"
-            textColor1="green"
-            dataPointsColor1="#E1D9D1"
+            initialSpacing={38}
+            color2="#4A90E2"
+            color1="#888"
+            
             dataPointsColor2="#E1D9D1"
-            startFillColor1="skyblue"
-            startFillColor2="orange"
+            dataPointsColor1="#E1D9D1"
+            startFillColor2="skyblue"
+            startFillColor1="lightgray"
             xAxisLabelTextStyle={{ marginLeft: -22, color: '#E1D9D1' }}
             yAxisTextStyle={{ color: '#E1D9D1' }}
+            xAxisColor={"#E1D9D1"}
+            yAxisColor={"#E1D9D1"}
+            noOfSections={4}
+            hideRules={false}
+            rulesType="solid" // Change from dotted to solid
+            rulesColor="#E1D9D1"
+            rulesThickness={1}
             startOpacity={0.8}
             endOpacity={0.3}
             pointerConfig={{
@@ -469,6 +486,7 @@ function generateChart(habit: Habit, history: habitHistory[], submissions: Submi
               },
             }}
             />
+          </Surface>
         </View>
     );
 }

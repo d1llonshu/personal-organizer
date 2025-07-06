@@ -193,7 +193,14 @@ export const styles = StyleSheet.create({
       // marginTop: -2,
       // marginLeft: -6,
       marginRight: 2,
-    }
+    },
+    chartSurface: {
+      backgroundColor: '#212121',
+      marginHorizontal: 8,
+      marginTop: 8,
+      marginBottom: 8,
+      paddingBottom: 8,
+    },
 
   });
 
