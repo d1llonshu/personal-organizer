@@ -254,7 +254,7 @@ export default function habitsPage() {
           <Stack.Screen
                   options={{
                     headerLeft: () => (
-                      <TouchableOpacity onPress={() => router.replace('/')} style={{ marginRight: 15 }}>
+                      <TouchableOpacity onPress={() => handleBack()} style={{ marginRight: 15 }}>
                         <Ionicons name="arrow-back" size={24} color="#E1D9D1" />
                       </TouchableOpacity>
                     ),
