@@ -23,7 +23,7 @@ export default function habitsPage() {
             habits.map((h) => {
                 sections.push(
                     <View key={h.prettyPrint} style={styles.dayPageContainer}>
-                        <Link href={{pathname:"/habits/[habit]", params: {habit: h.habitID}}}>
+                        <Link href={{pathname:"/habits/[habit]", params: {habit: h.habitID, from:"listView"}}}>
                                 <Text style={styles.dayPageHyperlink}>{h.prettyPrint}</Text>
                         </Link>
                     </View>

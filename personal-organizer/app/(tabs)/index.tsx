@@ -2,7 +2,7 @@ import { SafeAreaView, View,  Text, ScrollView, Pressable, TouchableHighlight } 
 import { useEffect, useState } from 'react';
 import { MMKV, useMMKVObject } from 'react-native-mmkv';
 import Ionicons from '@expo/vector-icons/Ionicons';
-
+import { useRouter } from 'expo-router';
 import { streakData } from '@/constants/streaks';
 import { styles, backgroundColor, surfaceBackgroundColor, textColor } from '@/constants/stylesheet';
 
@@ -18,7 +18,7 @@ import { CustomButton } from "@/components/customButton";
 
 
 export default function HomeScreen() {
-
+  let router = useRouter();
   const [habits, setHabits] = useMMKVObject<Habit[]>('activeHabits');
   if(habits === undefined){
     let temp : Habit[] = [];
@@ -60,7 +60,7 @@ export default function HomeScreen() {
         let sundayKey = generateDifferentDaysKey(todaysKeyIndex, daysUntilSunday[new Date(todaysKeyIndex).getUTCDay()] + (7*(mult)));//applies multiplier for previous weeks
         //generate one weeks keys
         let keys = generateConsecutiveKeys(sundayKey, 7);
-        let temp = createSummary(habits, submissions, keys);
+        let temp = createSummary(habits, submissions, keys, router);
         if(mult == 0){
           temp[0] = (
             <View key={"WeeklyProgressHeader"} style={styles.centeredRow}>

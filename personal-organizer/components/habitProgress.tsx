@@ -1,12 +1,12 @@
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { ProgressBar, MD3Colors } from 'react-native-paper';
-
+import { useRouter } from 'expo-router';
 import { progressBarStyles, styles } from '@/constants/stylesheet';
 import { Habit } from '@/constants/habit';
 import { Submissions } from '@/constants/FormData';
 import { calculateStatsForPeriod, getGoalForDate, generateDifferentDaysKey, generateConsecutiveKeys, habitValueAsInt } from "@/components/helper"
 
-export default function createSummary(habits: Habit[], submissions: Submissions, keys: string[]) {
+export default function createSummary(habits: Habit[], submissions: Submissions, keys: string[], router: any) {
     let sections: JSX.Element[] = [];
     console.log(keys);
     sections.push(
@@ -16,15 +16,16 @@ export default function createSummary(habits: Habit[], submissions: Submissions,
     );
     let stats = calculateStatsForPeriod(habits, submissions, keys);
     habits.forEach((h) => {
-        sections.push(showWeeklyProgress(h, stats[h.habitID][0], keys));
+        sections.push(showWeeklyProgress(h, stats[h.habitID][0], keys, router));
     })
     return sections
 }
 
-function showWeeklyProgress(habit: Habit, value: number, keys: string[]){
+function showWeeklyProgress(habit: Habit, value: number, keys: string[], router: any){
     let barValue = 0;
     let barColor = "#CF6679";
     let total = 0;
+    
     if (habit.timeframe === "Daily"){
         //accounts for changes in goals
         keys.forEach((k) => {
@@ -52,16 +53,18 @@ function showWeeklyProgress(habit: Habit, value: number, keys: string[]){
     }
 
     return(
-        <View key={"Habit"+habit.habitID+"WeeklyProgress"}>
-            <View style={styles.row}>
-                <Text style={progressBarStyles.progressBarTitle}>{habit.prettyPrint}: </Text>
-                <Text style={progressBarStyles.progressBarSubtitle}>{value}/{(habit.timeframe === "Daily")? total : habit.goal}</Text>
-                {/* <Text style={progressBarStyles.progressBarSubtitle}>{value}/{(habit.timeframe === "Daily")? total : habit.goal} {(habit.dataType == "boolean")?"day":"minute"}{(habit.goal==="1")? "":"s"}</Text> */}
+        <TouchableOpacity onPress={() => router.push(`/habits/${habit.habitID}`)}>
+            <View key={"Habit"+habit.habitID+"WeeklyProgress"}>
+                <View style={styles.row}>
+                    <Text style={progressBarStyles.progressBarTitle}>{habit.prettyPrint}: </Text>
+                    <Text style={progressBarStyles.progressBarSubtitle}>{value}/{(habit.timeframe === "Daily")? total : habit.goal}</Text>
+
+                    {/* <Text style={progressBarStyles.progressBarSubtitle}>{value}/{(habit.timeframe === "Daily")? total : habit.goal} {(habit.dataType == "boolean")?"day":"minute"}{(habit.goal==="1")? "":"s"}</Text> */}
+                </View>
+                <ProgressBar style={progressBarStyles.progressBarStyle} fillStyle={progressBarStyles.progressBarfillStyle}  
+                    progress={barValue} color={barColor} />
             </View>
-            <ProgressBar style={progressBarStyles.progressBarStyle} fillStyle={progressBarStyles.progressBarfillStyle}  
-                progress={barValue} color={barColor} />
-            
-        </View>
+        </TouchableOpacity>
     );
 }
 

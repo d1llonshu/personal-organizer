@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { View, Text, ScrollView, TextInput, Alert } from 'react-native';
+import { View, Text, ScrollView, TextInput, Alert, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useMMKVObject } from 'react-native-mmkv';
 import { useLocalSearchParams, Stack, useRouter } from 'expo-router';
 import { Surface } from 'react-native-paper';
 import { Dropdown, IDropdownRef } from 'react-native-element-dropdown';
 import { Calendar } from 'react-native-calendars';
+import { Ionicons } from '@expo/vector-icons';
 
 import { LineChart } from "react-native-gifted-charts"
 
@@ -29,12 +30,22 @@ export default function habitsPage() {
     const [prettyPrint, setPrettyPrint] = useState<string>("");
     const [goal, setGoal] = useState<string>("");
     const [timeframe, setTimeframe] = useState<string>("");
+    const { from } = useLocalSearchParams();
+    const handleBack = () => {
+      console.log(local);
+      if (from === 'listView') {
+          router.replace('/habits/habitsOverview'); // Default back behavior
+        } else {
+          router.replace('/'); // Go back to Home
+        }
+    };
+
     let noEdit = (longestStreak: JSX.Element[]) => { return(
     <Surface key={"noEditSurface"}  style={styles.homeScreenSurface} elevation={1}>
       <View key={"category"} style={styles.row}>
         <Text style={styles.habitPageSubtitle}>Category: </Text>
         <Text style={styles.habitPageRegularText}>{currentHabit?.category}</Text>
-      </View>
+      </View> 
       <View key={"goal"} style={styles.row}>
         <Text style={styles.habitPageSubtitle}>Goal: </Text>
         <Text style={styles.habitPageRegularText}>{goalText}</Text>
@@ -239,8 +250,25 @@ export default function habitsPage() {
 
 
     return(
-        
         <SafeAreaView style = {styles.safeAreaContainer}>
+          <Stack.Screen
+                  options={{
+                    headerLeft: () => (
+                      <TouchableOpacity onPress={() => router.replace('/')} style={{ marginRight: 15 }}>
+                        <Ionicons name="arrow-back" size={24} color="#E1D9D1" />
+                      </TouchableOpacity>
+                    ),
+                    headerStyle: {
+                      backgroundColor: '#121212', // Dark background
+                    },
+                    headerTitleStyle: {
+                      fontSize: 20,
+                      fontWeight: 'bold',
+                      color: '#E1D9D1', // Your preferred text color
+                    },
+                    headerTintColor: '#E1D9D1', // Applies to icons and other header elements
+                  }}
+                />
           <ScrollView>
             <Stack.Screen options={{ title: currentHabit?.prettyPrint }} />
               {pageSections}

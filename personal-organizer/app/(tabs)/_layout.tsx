@@ -1,9 +1,12 @@
 import { Tabs, Stack } from 'expo-router';
 import React from 'react';
+import { Pressable } from 'react-native';
+import { router } from 'expo-router';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+
  
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -47,6 +50,15 @@ export default function TabLayout() {
           title: 'Habits',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'list' : 'list-outline'} color={color} />
+          ),
+          tabBarButton: (props) => (
+            <Pressable
+              {...props}
+              onPress={() => {
+                console.log("test")
+                router.replace('/habits/habitsOverview'); // Force reset to habits list page
+              }}
+            />
           ),
         }}
       />
