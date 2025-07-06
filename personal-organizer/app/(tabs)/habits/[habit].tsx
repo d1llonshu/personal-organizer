@@ -30,6 +30,7 @@ export default function habitsPage() {
     const [prettyPrint, setPrettyPrint] = useState<string>("");
     const [goal, setGoal] = useState<string>("");
     const [timeframe, setTimeframe] = useState<string>("");
+    const [chartWeeks, setChartWeeks] = useState<number>(7);
     const { from } = useLocalSearchParams();
     const handleBack = () => {
       console.log(local);
@@ -232,22 +233,17 @@ export default function habitsPage() {
         }
         if(editButton){
           sections.push(edit);
-          sections.push(generateChart(currentHabit, currentHabit.history, submissions))
+          sections.push(generateChart(currentHabit, currentHabit.history, submissions, chartWeeks))
         }
         else{
           sections.push(noEdit([streak, <Text style={styles.habitPageRegularTextWithMargin}>{dates}</Text>]));
-          sections.push(generateChart(currentHabit, currentHabit.history, submissions))
+          sections.push(generateChart(currentHabit, currentHabit.history, submissions, chartWeeks))
           sections.push(calendar.calendar);
         }
-        
-        
       }
-      
 
-      
       setPageSections(sections);
     }, [editButton, timeframe, prettyPrint, goal]);
-
 
     return(
         <SafeAreaView style = {styles.safeAreaContainer}>
@@ -259,12 +255,12 @@ export default function habitsPage() {
                       </TouchableOpacity>
                     ),
                     headerStyle: {
-                      backgroundColor: '#121212', // Dark background
+                      backgroundColor: '#121212', 
                     },
                     headerTitleStyle: {
                       fontSize: 20,
                       fontWeight: 'bold',
-                      color: '#E1D9D1', // Your preferred text color
+                      color: '#E1D9D1', 
                     },
                     headerTintColor: '#E1D9D1', // Applies to icons and other header elements
                   }}
@@ -407,17 +403,18 @@ function prettyPrintDate(date:string){
 }
 
 //only support for weekly/daily
-function generateChartData(habit: Habit, history: habitHistory[], submissions: Submissions){
+function generateChartData(habit: Habit, history: habitHistory[], submissions: Submissions, weeks: number){
     let today = new Date();
     let todaysKey: string = 
         today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
-    let allKeys : string[] = generateConsecutiveKeys(todaysKey,today.getUTCDay()+49)//8 weeks, including current week
+let trueWeeks: number = today.getUTCDay() === 0 ? weeks : weeks - 1;
+    let allKeys : string[] = generateConsecutiveKeys(todaysKey,today.getUTCDay()+(trueWeeks)*7)//8 weeks, including current week
     let organizedKeys : string[][] = [];
     let data : {[key: string] : {total: number, goal: number}} = {};
     
     organizedKeys.push(allKeys.slice(0, today.getUTCDay()));
     let mult = 1;
-    while (mult <= 7){
+    while (mult <= (trueWeeks)){
       let week = allKeys.slice(today.getUTCDay()+7*(mult-1), today.getUTCDay()+7*(mult))
       let g = getGoalForDate(habit, week[week.length-1])
 
@@ -431,7 +428,6 @@ function generateChartData(habit: Habit, history: habitHistory[], submissions: S
       mult++;
     }
     
-    
     // var keys2 = generateConsecutiveKeys(keys[keys.length-1],8).slice(1)
     for (const [key, value] of Object.entries(data)) {
         console.log(`Key: ${key}, Value: ${value}`);
@@ -439,22 +435,55 @@ function generateChartData(habit: Habit, history: habitHistory[], submissions: S
     return data
 }
 
-function generateChart(habit: Habit, history: habitHistory[], submissions: Submissions){
-  let data = generateChartData(habit, history, submissions)  
-  const results = []
-  const goals = []
+function generateChartYLabels (sections: number, data: number[], goal: number[]){
+  if (data.length === 0 || sections <= 0) return [];
+  
+  const maxValue = Math.max(Math.max(...goal),Math.max(...data));
+
+  // Step 1: Round up to a "nice" maximum (ending in 0, 5, or even)
+  let roundedMax = Math.ceil(maxValue);
+
+  // If it's not a multiple of 5, round it up to the next multiple of 5
+  if (roundedMax % 5 !== 0) {
+    roundedMax += 5 - (roundedMax % 5);
+  }
+
+  // Step 2: Calculate interval size
+  const interval = roundedMax / sections;
+
+  // Step 3: Generate labels
+  const labels: string[] = [];
+  for (let i = 0; i <= sections; i++) {
+    labels.push(String(Math.round(i * interval)));
+  }
+
+  return labels;
+}
+
+function generateChart(habit: Habit, history: habitHistory[], submissions: Submissions, numberOfWeeks: number){
+
+  let data = generateChartData(habit, history, submissions, numberOfWeeks);
+  let sectionCount = 5;
+  const results = [];
+  const goals = [];
+  const justResults = [];
+  const justGoals = [];
   for (const [k, v] of Object.entries(data)) {
-      results.push({value:v.total, label:k})
-      goals.push({value:v.goal, label:k})
+      results.push({value:v.total, label:k});
+      goals.push({value:v.goal, label:k});
+      justResults.push(v.total);
+      justGoals.push(v.goal);
   }
   results.reverse();
   goals.reverse();
+  const yLabels = generateChartYLabels(sectionCount, justResults, justGoals);
+  const { xAxisLabelFontSize, xAxisLabelMarginTop, spacing, xAxisLabelRotation } = getChartLayoutSettings(numberOfWeeks);
     return (
         <View>
           <Surface key={"chartSurface"} style={styles.homeScreenSurface} elevation={1}>
               <Text style={{ fontSize: 18, fontWeight: 'bold', textAlign: 'center', 
-                marginBottom: 2, marginTop: 8, color:"#E1D9D1" }}>
-                Summary
+                marginBottom: 2, marginTop: 4, color:"#E1D9D1" }}>
+                Progress Tracker
               </Text>
             <LineChart
             // areaChart
@@ -479,8 +508,11 @@ function generateChart(habit: Habit, history: habitHistory[], submissions: Submi
             yAxisTextStyle={{ color: '#E1D9D1' }}
             xAxisColor={"#E1D9D1"}
             yAxisColor={"#E1D9D1"}
-            noOfSections={4}
-            hideRules={false}
+            noOfSections={sectionCount}
+            yAxisLabelTexts={yLabels}
+            maxValue={Number(yLabels[yLabels.length-1])}
+
+            hideRules={false} //this is the axes
             rulesType="solid" // Change from dotted to solid
             rulesColor="#E1D9D1"
             rulesThickness={1}
@@ -506,9 +538,9 @@ function generateChart(habit: Habit, history: habitHistory[], submissions: Submi
                       paddingLeft:16,
                     }}>
                     <Text style={{color: 'lightgray',fontSize:12}}>{"Weekly Total"}</Text>
-                    <Text style={{color: 'white', fontWeight:'bold'}}>{items[0].value}</Text>
-                    <Text style={{color: 'lightgray',fontSize:12,marginTop:12}}>{"Target"}</Text>
                     <Text style={{color: 'white', fontWeight:'bold'}}>{items[1].value}</Text>
+                    <Text style={{color: 'lightgray',fontSize:12,marginTop:12}}>{"Target"}</Text>
+                    <Text style={{color: 'white', fontWeight:'bold'}}>{items[0].value}</Text>
                   </View>
                 );
               },
@@ -517,4 +549,44 @@ function generateChart(habit: Habit, history: habitHistory[], submissions: Submi
           </Surface>
         </View>
     );
+}
+
+import { Dimensions } from 'react-native';
+
+type ChartLayoutSettings = {
+  xAxisLabelFontSize: number;
+  xAxisLabelMarginTop: number;
+  spacing: number;
+  xAxisLabelRotation: number;
+};
+
+function getChartLayoutSettings(weeksDisplayed: number): ChartLayoutSettings {
+  const screenWidth = Dimensions.get('window').width;
+
+  const chartPadding = 40; // Reserved space for y-axis labels, etc.
+  const availableWidth = screenWidth - chartPadding;
+
+  // Base spacing: divide available width by the number of data gaps
+  let spacing = availableWidth / (weeksDisplayed + 1);
+
+  // Apply spacing limits
+  const minSpacing = 20; // Minimum space between points to avoid cramming
+  const maxSpacing = 50; // Prevent overly large gaps when few weeks are shown
+  spacing = Math.min(Math.max(spacing, minSpacing), maxSpacing);
+
+  // Font size scales with spacing, but enforce a readable minimum
+  const fontSize = Math.max(spacing * 0.3, 8);
+
+  // Margin top can shrink slightly as more weeks are shown
+  const marginTop = Math.max(10 - (weeksDisplayed * 0.2), 4);
+
+  // Rotate labels if spacing is too tight
+  const xAxisLabelRotation = spacing < 30 ? 45 : 0;
+
+  return {
+    xAxisLabelFontSize: fontSize,
+    xAxisLabelMarginTop: marginTop,
+    spacing,
+    xAxisLabelRotation,
+  };
 }
