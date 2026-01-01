@@ -1,32 +1,30 @@
-import { useState, useCallback, useEffect } from 'react';
-import { StyleSheet, View, Button, Text } from 'react-native';
-import { MMKV, useMMKVObject} from 'react-native-mmkv';
+import { useState, useCallback, useEffect } from "react";
+import { StyleSheet, View, Button, Text } from "react-native";
+import { MMKV, useMMKVObject } from "react-native-mmkv";
 
-import { storage } from "@/constants/storage"
-import { formData } from "@/constants/old_files/oldFormData"
-import { dateFormat } from '@/constants/dateFormat';
+import { storage } from "@/constants/storage";
+import { formData } from "@/constants/old_files/oldFormData";
+import { dateFormat } from "@/constants/dateFormat";
 
-export default function getDataAsArray(submissionKey : string) {
-    //gets data from formdata as an array
-    const [data, setData] = useMMKVObject<formData>(submissionKey);
-    let intendedDate = new Date(submissionKey)
-    let result: number[] = [];
+export default function getDataAsArray(submissionKey: string) {
+  //gets data from formdata as an array
+  const [data, setData] = useMMKVObject<formData>(submissionKey);
+  let intendedDate = new Date(submissionKey);
+  let result: number[] = [];
 
-    //create the object if it doesnt exist already
-    if (typeof data != "object") {
-        setData(new formData(intendedDate))
+  //create the object if it doesnt exist already
+  if (typeof data != "object") {
+    setData(new formData(intendedDate));
+  }
+
+  for (const key in data) {
+    let val = data[key as keyof formData];
+    if (typeof val == "boolean") {
+      result.push(val ? 1 : 0);
+    } else if (typeof val == "number") {
+      result.push(val);
     }
-
-    for (const key in data) {
-        let val = data[key as keyof formData]
-        if (typeof val == "boolean"){
-            result.push(val ? 1 : 0)
-        }
-        else if (typeof val == "number"){
-            result.push(val);
-        }
-    }
-    // console.log(test)
-    return result
+  }
+  // console.log(test)
+  return result;
 }
-
